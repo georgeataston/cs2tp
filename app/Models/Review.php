@@ -4,9 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Account extends Model
+class Review extends Model
 {
     use HasFactory;
 
@@ -15,14 +14,14 @@ class Account extends Model
      *
      * @var string
      */
-    protected $table = "accounts";
+    protected $table = "reviews";
 
     /**
      * The primary key associated with the table.
      *
      * @var string
      */
-    protected $primaryKey = "aid";
+    protected $primaryKey = "rid";
 
     /**
      * Indicates if the model's ID is auto-incrementing.
@@ -37,9 +36,4 @@ class Account extends Model
      * @var bool
      */
     public $timestamps = true;
-
-    public function reviews(): HasMany
-    {
-        return $this->hasMany(Review::class);
-    }
 }

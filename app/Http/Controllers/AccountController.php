@@ -40,6 +40,6 @@ class AccountController extends Controller
         $account->password = Hash::make($input['password']);
         $account->save(); // save it to the DB.
 
-        return redirect();
+        return redirect(); // redirect back to login page?
     }
 }
