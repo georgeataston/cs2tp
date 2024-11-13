@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('accounts', function (Blueprint $table) {
-            $table->id("aid");
-            $table->string("email");
-            $table->string("password");
+        Schema::create('stocks', function (Blueprint $table) {
+            $table->id("sid");
+            $table->string("symbol")->unique();
             $table->string("name");
-            $table->boolean("isAdmin");
+            $table->integer("quantity")->unsigned();
+            $table->decimal("price", 10, 2);
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('accounts');
+        Schema::dropIfExists('stocks');
     }
 };

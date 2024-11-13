@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('reviews', function (Blueprint $table) {
-            $table->id('rid')->primary();
+            $table->id('rid');
             $table->bigInteger('uid')->unsigned();
             $table->bigInteger('sid')->unsigned();
             $table->integer('rating');
@@ -21,7 +21,7 @@ return new class extends Migration
             $table->timestamps();
 
             $table->foreign('uid')->references('uid')->on('accounts');
-            //$table->foreign('sid')->references('sid')->on('stock');
+            $table->foreign('sid')->references('sid')->on('stock');
         });
     }
 
