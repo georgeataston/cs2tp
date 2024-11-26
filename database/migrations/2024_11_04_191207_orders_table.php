@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void 
     {
-        Schema::create('orders', function (Blueprint $table) {
-            $table->bigIncrements('oid'); // primary key redone to oid
+       Schema::create('orders', function (Blueprint $table) {
+            $table->id(); // primary key
             $table->unsignedBigInteger('user_id')->nullable(); // nullable allows guests to checkout without needing to create an account which makkes user_id null
             $table->decimal('total_price', 8, 2);
             $table->timestamps();
@@ -21,6 +21,7 @@ return new class extends Migration
              * the total price is shown to pay the initial price for the order.
              */
 
+             $table->foreign('user_id')->references('aid')->on('accounts')->onDelete('cascade'); // foriegn key linking back to accounts table
             
         });
     }
