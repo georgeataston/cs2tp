@@ -7,16 +7,19 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up(): void
     {
-        Schema::create('order_items', function (Blueprint $table) {
-            $table->bigIncrements('oiid'); 
-            $table->unsignedBigInteger('oid'); // foreign key to link back each item to a specific order(refers to id in order table)
-            $table->unsignedBigInteger('product_id'); // foreign keyd to reference product infomration for each item in stock database
-            $table->integer('quantity');
-            $table->decimal('price', 8, 2);
-            $table->timestamps();
+       Schema::create('order_items', function (Blueprint $table) {
+            $table->id(); // primary key  changed to 'id'
+            $table->unsignedBigInteger('order_id'); // foreign key linking to orders table
+            $table->unsignedBigInteger('product_id'); // foreign key linking to ghe  stock table
+            $table->integer('quantity'); // how many items per basket
+            $table->decimal('price', 8, 2); // price of item
+            $table->timestamps(); 
 
-            $table->foreign('oid')->references('oid')->on('orders')->onDelete('cascade');
+            // foreign keys
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade'); 
+            $table->foreign('product_id')->references('id')->on('stock')->onDelete('cascade'); 
         });
+    }
     }
 
     public function down(): void
