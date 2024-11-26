@@ -9,6 +9,7 @@ Route::post('/login', [AccountController::class, 'authenticate']);
 Route::get('/logout', [AccountController::class, 'invalidateSession']);
 
 // HTML routes
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', function() { return view('index'); });
+Route::get('/about', function() { return view('about'); });
+Route::get('/contact', function() { return view('contact'); });
+Route::get('/signup', function() { return view('signup'); });
