@@ -13,13 +13,12 @@ return new class extends Migration {
             $table->unsignedBigInteger('product_id'); // foreign key linking to ghe  stock table
             $table->integer('quantity'); // how many items per basket
             $table->decimal('price', 8, 2); // price of item
-            $table->timestamps(); 
+            $table->timestamps();
 
             // foreign keys
-            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade'); 
-            $table->foreign('product_id')->references('id')->on('stock')->onDelete('cascade'); 
+            $table->foreign('order_id')->references('id')->on('orders')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('stocks')->onDelete('cascade');
         });
-    }
     }
 
     public function down(): void
