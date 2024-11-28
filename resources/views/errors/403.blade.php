@@ -13,8 +13,8 @@
 <!--About us section-->
 <section class="about">
     <div class="about-content"><!-- Id for styling-->
-        <h2>Error 404</h2><!--Heading-->
-        <p>The page you were looking for could not be found. Please check your URL or contact us.</p>
+        <h2>Error 403</h2><!--Heading-->
+        <p>You don't have permission to access this URL. As you are already logged in, please check your URL or contact us if you think this is a mistake.</p>
     </div>
 </section>
 
