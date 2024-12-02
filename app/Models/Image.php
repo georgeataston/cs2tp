@@ -9,6 +9,11 @@ class Image extends Model
 {
     use HasFactory;
 
+    protected $table = 'images';
+    protected $primaryKey = 'id';
+    public $incrementing = true;
+    public $timestamps = true;
+
     protected $fillable = ['stock_id', 'image_path'];
 
     public function stock()

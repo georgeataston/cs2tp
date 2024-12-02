@@ -42,6 +42,6 @@ class Stock extends Model
      */
     public function images()
     {
-        return $this->hasMany(Image::class, 'stock_id', 'id');
+        return $this->hasMany(Image::class);
     }
 }
