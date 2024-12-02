@@ -36,4 +36,12 @@ class Stock extends Model
      * @var bool
      */
     public $timestamps = true;
+
+    /**
+     * Relationship: A stock item can have many images.
+     */
+    public function images()
+    {
+        return $this->hasMany(Image::class, 'stock_id', 'id');
+    }
 }
