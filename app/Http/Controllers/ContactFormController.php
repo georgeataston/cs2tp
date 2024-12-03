@@ -33,6 +33,6 @@ class ContactFormController extends Controller
         $entry->message = $input['message'];
         $entry->save();
 
-        return redirect("/");
+        return redirect("/contact")->with("success", "true");
     }
 }
