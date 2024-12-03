@@ -12,4 +12,5 @@ Route::get('/logout', [AccountController::class, 'invalidateSession']);
 Route::get('/', function() { return view('index'); });
 Route::get('/about', function() { return view('about'); });
 Route::get('/contact', function() { return view('contact'); });
+Route::get('/login', function() { return view('login'); });
 Route::get('/signup', function() { return view('signup'); });
