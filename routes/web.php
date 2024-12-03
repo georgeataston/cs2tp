@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\ContactFormController;
 use App\Http\Middleware\ReverseSessionValidator;
 use Illuminate\Support\Facades\Route;
 
@@ -8,6 +9,8 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', [AccountController::class, 'create'])->middleware(ReverseSessionValidator::class);
 Route::post('/login', [AccountController::class, 'authenticate'])->middleware(ReverseSessionValidator::class);
 Route::get('/logout', [AccountController::class, 'invalidateSession']);
+
+Route::post('/contact', [ContactFormController::class, 'create']);
 
 // HTML routes
 Route::get('/', function() { return view('index'); });
