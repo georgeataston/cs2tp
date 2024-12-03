@@ -38,7 +38,7 @@
                 <img src="" alt="Jordan 1 Retro"> <!-- Linking picture to product under the class to have it displayed on the home page-->
                 <h3>Jordan 1 Retro</h3> <!-- Name of the product-->
                 <p>Timeless kicks that never go out of style.</p> <!-- Description of the product-->
-                <span class="price">£89.99</span> <!-- Price of the product-->
+                <span class="price">£72.29</span> <!-- Price of the product-->
             </div>
         </div>
     </section>
