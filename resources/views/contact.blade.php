@@ -15,15 +15,19 @@
         <div class="contact-content"><!-- Assigns id to use for when styling-->
             <h2>Contact Us</h2><!--Heading-->
             <p>If you have any questions, comments, or just want to say hi, feel free to reach out to us. We'd love to hear from you!</p><!--Sentence for customers asking them to leave us a message-->
-            <form action="#" method="post" class="contact-form"><!--Assigns id and submits data via post method-->
+            <form action="/contact" method="post" class="contact-form"><!--Assigns id and submits data via post method-->
+                @csrf
                 <label for="name">Name:</label> <!-- Gets name from user-->
-                <input type="text" id="name" name="name" required><!-- Ensures something is entered-->
+                <input type="text" id="name" name="name" value="{{old('name')}}"><!-- Ensures something is entered-->
+                @error('name')<p id="form-error">{{ $message }}</p>@enderror
 
                 <label for="email">Email:</label> <!-- Gets email from the user-->
-                <input type="email" id="email" name="email" required><!--Esnures something is entered-->
+                <input type="email" id="email" name="email" value="{{old('email')}}"><!--Esnures something is entered-->
+                @error('email')<p id="form-error">{{ $message }}</p>@enderror
 
                 <label for="message">Message:</label> <!-- Gets the message from the user-->
-                <textarea id="message" name="message" rows="5" required></textarea><!--Ensures something is enetered-->
+                <textarea id="message" name="message" rows="5">{{old('message')}}</textarea><!--Ensures something is enetered-->
+                @error('message')<p id="form-error">{{ $message }}</p>@enderror
 
                 <button type="submit" class="submit-btn">Send Message</button> <!-- Send message button which is styled using the id-->
             </form><!-- End of form-->
@@ -33,3 +37,13 @@
     @include("footer")
 </body>
 </html>
+
+<style>
+    #form-error {
+        color: red;
+    }
+
+    #password-error {
+        color: red;
+    }
+</style>
