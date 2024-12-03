@@ -16,7 +16,7 @@
             <h2>Contact Us</h2><!--Heading-->
             <p>If you have any questions, comments, or just want to say hi, feel free to reach out to us. We'd love to hear from you!</p><!--Sentence for customers asking them to leave us a message-->
             @if (session('success') == "true")
-                <p>Your request has been submitted successfully! Thank you for contacting us.</p>
+                <p id="form-success">Your request has been submitted successfully! Thank you for contacting us.</p>
             @endif
             <form action="/contact" method="post" class="contact-form"><!--Assigns id and submits data via post method-->
                 @csrf
