@@ -22,7 +22,7 @@
                 @error('name')<p id="form-error">{{ $message }}</p>@enderror
 
                 <label for="email">Email:</label> <!-- Gets email from the user-->
-                <input type="email" id="email" name="email" value="{{old('email')}}"><!--Esnures something is entered-->
+                <input type="text" id="email" name="email" value="{{old('email')}}"><!--Esnures something is entered-->
                 @error('email')<p id="form-error">{{ $message }}</p>@enderror
 
                 <label for="message">Message:</label> <!-- Gets the message from the user-->
