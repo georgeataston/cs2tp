@@ -16,11 +16,14 @@
             <form action="/login" method="post">
                 @csrf
                 <p class="credentials">Enter email</p>
-                <input type="email" placeholder="Enter email" name="email" required>
+                <input type="text" placeholder="Enter email" name="email">
+                @error('email')<p id="form-error">{{ $message }}</p>@enderror
 
                 <p class="credentials">Enter password</p>
-                <input type="password" placeholder="Enter Password" name="psw" required>
+                <input type="password" placeholder="Enter Password" name="password">
+                @error('password')<p id="form-error">{{ $message }}</p>@enderror
 
+                @error('login')<p id="form-error">{{ $message }}</p>@enderror
                 <button type="submit" class="submit-btn">Login</button>
             </form>
         </div>
@@ -29,3 +32,9 @@
     @include("footer")
 </body>
 </html>
+
+<style>
+    #form-error {
+        color: red;
+    }
+</style>
