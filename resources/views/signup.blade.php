@@ -13,23 +13,25 @@
     <section class="auth-form"><!-- Section for creating account-->
         <div class="auth-form-content"><!--Fields for creating account using User input-->
             <h2>Create a New Account</h2> <!-- Displays to user about creating a new account-->
-            <form id="signup-form" action="#" method="post"> <!--Assigns id to the form and submits data via post method-->
-                <label for="fName">First Name:</label> <!-- Gets First Name from the user  -->
-                <input type="text" id="fName" name="fName" required minlength="3"> <!-- Ensure it is at least 3 characters long-->
-
-                <label for="lName">Last Name:</label> <!-- Gets Last Name from the user -->
-                <input type="text" id="Name" name="Name" required minlength="3"> <!-- Ensure it is at least 3 characters long-->
+            <form id="signup-form" action="/register" method="post"> <!--Assigns id to the form and submits data via post method-->
+                @csrf
+                <label for="fName">Full Name:</label> <!-- Gets First Name from the user  -->
+                <input type="text" id="fName" name="fName" value="{{old('fName')}}" >
+                @error('fName')<p id="form-error">{{ $message }}</p>@enderror
 
                 <label for="email">Email:</label> <!-- Gets the email from the user-->
-                <input type="email" id="email" name="email" required><!--Makes sure the fiels does not remain empty-->
+                <input type="email" id="email" name="email" value="{{old('email')}}" >
+                @error('email')<p id="form-error">{{ $message }}</p>@enderror
 
                 <label for="password">Password:</label> <!-- Gets the password from the user-->
-                <input type="password" id="password" name="password" required minlength="8" pattern=".*[!@#$%^&*(),.?\"].*" title="Password should contain at least one special character."> <!-- Ensure it is at leats 8 characters long and has a special character in there too-->
+                <input type="password" id="password" name="password">
+                @error('password')<p id="form-error">{{ $message }}</p>@enderror
+
                 <label for="cPassword">Confirm Password:</label> <!-- Gets password again from the user-->
-                <input type="password" id="cPassword" name="cPassword" required><!--Ensures field has some data in there and not blank-->
+                <input type="password" id="cPassword" name="cPassword" >
 
-                <p id="password-error" style="color: red; display: none;">Passwords do not match.</p> <!-- If the 2 passwords don't match it will tell the user about it with red text-->
-
+                <!-- If the 2 passwords don't match it will tell the user about it with red text-->
+                @error('cPassword')<p id="password-error">{{ $message }}</p>@enderror
                 <button type="submit" class="submit-btn">Sign Up</button> <!-- Submit button which is styled using the class name-->
             </form><!-- End of form-->
         </div>
@@ -38,3 +40,13 @@
     @include("footer")
 </body>
 </html>
+
+<style>
+    #form-error {
+        color: red;
+    }
+
+    #password-error {
+        color: red;
+    }
+</style>
