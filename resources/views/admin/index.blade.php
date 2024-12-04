@@ -29,19 +29,19 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="index.html">Home</a>
+                    <a class="nav-link" href="/admin">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="categories.html">Categories</a>
+                    <a class="nav-link" href="/admin/categories">Categories</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="process_orders.html">Orders</a>
+                    <a class="nav-link" href="/admin/orders/process">Orders</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="admin.html">Admin</a>
+                    <a class="nav-link" href="/admin">Admin</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="account.html">Account</a>
+                    <a class="nav-link" href="/account">Account</a>
                 </li>
             </ul>
         </div>
@@ -56,7 +56,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Admin Order Processor</h5>
                         <p class="card-text">Search & filter status of selected products and orders.</p>
-                        <a href="process_orders.html" class="btn btn-primary">Process Orders</a>
+                        <a href="/admin/orders/process" class="btn btn-primary">Process Orders</a>
                     </div>
                 </div>
             </div>
@@ -66,7 +66,7 @@
                     <div class="card-body">
                         <h5 class="card-title">Process Orders Received</h5>
                         <p class="card-text">Manage and track the orders received.</p>
-                        <a href="view_orders.html" class="btn btn-primary">View Orders</a>
+                        <a href="/admin/orders" class="btn btn-primary">View Orders</a>
                     </div>
                 </div>
             </div>
@@ -76,17 +76,17 @@
                     <div class="card-body">
                         <h5 class="card-title">Show Categories</h5>
                         <p class="card-text">Show categories with links to them.</p>
-                        <a href="categories.html" class="btn btn-primary">Explore Categories</a>
+                        <a href="/admin/categories" class="btn btn-primary">Explore Categories</a>
                     </div>
                 </div>
-            </div>   
+            </div>
             <!-- Product Display Section -->
             <div class="col-md-4">
                 <div class="card mb-4 shadow-sm">
                     <div class="card-body">
                         <h5 class="card-title">Product Display Search</h5>
                         <p class="card-text">Search for products available in inventory.</p>
-                        <a href="search_products.html" class="btn btn-primary">Search Products</a>
+                        <a href="/admin/products" class="btn btn-primary">Search Products</a>
                     </div>
                 </div>
             </div>

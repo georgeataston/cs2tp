@@ -32,19 +32,19 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="index.html">Home</a>
+                    <a class="nav-link" href="/admin">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="categories.html">Categories</a>
+                    <a class="nav-link" href="/admin/categories">Categories</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="process_orders.html">Orders</a>
+                    <a class="nav-link" href="/admin/orders/process">Orders</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="admin.html">Admin</a>
+                    <a class="nav-link" href="/admin">Admin</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="account.html">Account</a>
+                    <a class="nav-link" href="/account">Account</a>
                 </li>
             </ul>
         </div>

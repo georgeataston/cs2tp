@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>View Orders - Shoe Reselling Portal</title>
+    <title>Process Orders - Shoe Reselling Portal</title>
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         .page-container {
             margin-top: 50px;
-        }  
+        }
         .navbar-nav .nav-link {
             color: #fff !important;
         }
     </style>
 </head>
-<body>  
+<body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="index.html">Shoe Reselling Portal</a>
@@ -26,19 +26,19 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="index.html">Home</a>
+                    <a class="nav-link" href="/admin">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="categories.html">Categories</a>
+                    <a class="nav-link" href="/admin/categories">Categories</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="process_orders.html">Orders</a>
+                    <a class="nav-link" href="/admin/orders/process">Orders</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="admin.html">Admin</a>
+                    <a class="nav-link" href="/admin">Admin</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="account.html">Account</a>
+                    <a class="nav-link" href="/account">Account</a>
                 </li>
             </ul>
         </div>
@@ -46,21 +46,38 @@
 
     <!-- Page Content -->
     <div class="container page-container">
-        <h2 class="text-center mb-4">View Orders Received</h2>
+        <h2 class="text-center mb-4">Admin Order Processor</h2>
         <div class="row">
             <div class="col-md-12">
+                <!-- Search Form -->
+                <form class="form-inline mb-4" id="searchForm">
+                    <div class="form-group mr-3">
+                        <label for="orderStatus" class="mr-2">Order Status:</label>
+                        <select id="orderStatus" class="form-control">
+                            <option value="all">All</option>
+                            <option value="pending">Pending</option>
+                            <option value="processed">Processed</option>
+                            <option value="shipped">Shipped</option>
+                            <option value="delivered">Delivered</option>
+                            <option value="canceled">Canceled</option>
+                        </select>
+                    </div>
+                    <div class="form-group mr-3">
+                        <label for="searchProduct" class="mr-2">Product:</label>
+                        <input type="text" id="searchProduct" class="form-control" placeholder="Enter product name">
+                    </div>
+                    <button type="button" class="btn btn-primary" onclick="filterOrders()">Search</button>
+                </form>
+
                 <!-- Orders Table -->
-                <table class="table table-striped table-bordered">
+                <table class="table table-striped table-bordered" id="ordersTable">
                     <thead class="thead-dark">
                         <tr>
                             <th>Order ID</th>
                             <th>Customer Name</th>
                             <th>Product</th>
-                            <th>Quantity</th>
                             <th>Status</th>
                             <th>Order Date</th>
-                            <th>Shipping Address</th>
-                            <th>Total Amount</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -69,11 +86,8 @@
                             <td>ORD001</td>
                             <td>John Doe</td>
                             <td>Nike Air Max 270</td>
-                            <td>1</td>
                             <td>Pending</td>
                             <td>2024-11-20</td>
-                            <td>123 Main St, New York, NY</td>
-                            <td>$150.00</td>
                             <td>
                                 <button class="btn btn-success btn-sm">Mark as Processed</button>
                                 <button class="btn btn-danger btn-sm">Cancel Order</button>
@@ -83,11 +97,8 @@
                             <td>ORD002</td>
                             <td>Jane Smith</td>
                             <td>Adidas Ultraboost</td>
-                            <td>2</td>
                             <td>Shipped</td>
                             <td>2024-11-18</td>
-                            <td>456 Elm St, Los Angeles, CA</td>
-                            <td>$300.00</td>
                             <td>
                                 <button class="btn btn-warning btn-sm">Update Status</button>
                             </td>
@@ -96,11 +107,8 @@
                             <td>ORD003</td>
                             <td>Mark Johnson</td>
                             <td>Puma RS-X</td>
-                            <td>1</td>
                             <td>Delivered</td>
                             <td>2024-11-15</td>
-                            <td>789 Oak St, Chicago, IL</td>
-                            <td>$120.00</td>
                             <td>
                                 <button class="btn btn-secondary btn-sm">View Details</button>
                             </td>
@@ -109,11 +117,8 @@
                             <td>ORD004</td>
                             <td>Alice Brown</td>
                             <td>Nike Air Force 1</td>
-                            <td>3</td>
                             <td>Processed</td>
                             <td>2024-11-16</td>
-                            <td>321 Maple St, Houston, TX</td>
-                            <td>$300.00</td>
                             <td>
                                 <button class="btn btn-warning btn-sm">Update Status</button>
                             </td>
@@ -122,11 +127,8 @@
                             <td>ORD005</td>
                             <td>Bob White</td>
                             <td>Reebok Classic</td>
-                            <td>1</td>
                             <td>Pending</td>
                             <td>2024-11-21</td>
-                            <td>654 Pine St, Phoenix, AZ</td>
-                            <td>$80.00</td>
                             <td>
                                 <button class="btn btn-success btn-sm">Mark as Processed</button>
                                 <button class="btn btn-danger btn-sm">Cancel Order</button>
@@ -136,11 +138,8 @@
                             <td>ORD006</td>
                             <td>Chris Green</td>
                             <td>Vans Old Skool</td>
-                            <td>2</td>
                             <td>Canceled</td>
                             <td>2024-11-10</td>
-                            <td>987 Cedar St, San Antonio, TX</td>
-                            <td>$140.00</td>
                             <td>
                                 <button class="btn btn-secondary btn-sm">View Details</button>
                             </td>
@@ -149,11 +148,8 @@
                             <td>ORD007</td>
                             <td>David Black</td>
                             <td>Converse Chuck Taylor</td>
-                            <td>1</td>
                             <td>Delivered</td>
                             <td>2024-11-12</td>
-                            <td>159 Spruce St, San Diego, CA</td>
-                            <td>$65.00</td>
                             <td>
                                 <button class="btn btn-secondary btn-sm">View Details</button>
                             </td>
@@ -162,11 +158,8 @@
                             <td>ORD008</td>
                             <td>Eve White</td>
                             <td>New Balance 574</td>
-                            <td>1</td>
                             <td>Processed</td>
                             <td>2024-11-17</td>
-                            <td>753 Birch St, Dallas, TX</td>
-                            <td>$90.00</td>
                             <td>
                                 <button class="btn btn-warning btn-sm">Update Status</button>
                             </td>
@@ -175,11 +168,8 @@
                             <td>ORD009</td>
                             <td>Frank Brown</td>
                             <td>Asics Gel-Lyte</td>
-                            <td>1</td>
                             <td>Shipped</td>
                             <td>2024-11-19</td>
-                            <td>951 Willow St, San Francisco, CA</td>
-                            <td>$100.00</td>
                             <td>
                                 <button class="btn btn-warning btn-sm">Update Status</button>
                             </td>
@@ -188,11 +178,8 @@
                             <td>ORD010</td>
                             <td>Grace Red</td>
                             <td>Jordan 1 Retro</td>
-                            <td>1</td>
                             <td>Pending</td>
                             <td>2024-11-22</td>
-                            <td>357 Aspen St, Miami, FL</td>
-                            <td>$180.00</td>
                             <td>
                                 <button class="btn btn-success btn-sm">Mark as Processed</button>
                                 <button class="btn btn-danger btn-sm">Cancel Order</button>
@@ -213,5 +200,22 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function filterOrders() {
+            const status = $('#orderStatus').val().toLowerCase();
+            const product = $('#searchProduct').val().toLowerCase();
+
+            $('#ordersTable tbody tr').filter(function () {
+                const rowStatus = $(this).find('td:eq(3)').text().toLowerCase();
+                const rowProduct = $(this).find('td:eq(2)').text().toLowerCase();
+
+                if ((status === 'all' || rowStatus.includes(status)) && rowProduct.includes(product)) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        }
+    </script>
 </body>
 </html>
