@@ -14,7 +14,7 @@ class SessionValidator
     public function handle(Request $request, Closure $next): Response
     {
         if (!$request->session()->has('id'))
-            return redirect('login'); // Proper messaging will come at a later stage, awaiting the front-end.
+            return redirect('login')->with('fail', 'invalidsession');
 
         return $next($request);
     }

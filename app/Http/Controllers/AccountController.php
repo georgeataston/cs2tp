@@ -73,7 +73,7 @@ class AccountController extends Controller
         // Create the user's session and put their account ID in it.
         $request->session()->regenerate();
         $request->session()->put('id', $user->aid);
-        return redirect('/'); // return to the home page
+        return redirect('/account');
     }
 
     // Invalidate the session, "logging the user out".

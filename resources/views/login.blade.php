@@ -13,6 +13,10 @@
     <section class="auth-form">
         <div class="auth-form-content">
             <h2>Login to Account</h2>
+            @if (session('fail') == "invalidsession")
+                <p id="form-error">You must log in to access this page.</p>
+                <br>
+            @endif
             <form action="/login" method="post">
                 @csrf
                 <p class="credentials">Enter email</p>
