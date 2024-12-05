@@ -8,17 +8,72 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        .page-container {
-            margin-top: 50px;
+        /* General Page Styles */
+        body {
+            background-color: #121212; /* Dark background */
+            color: #f1f1f1; /* Light text color */
+            font-family: 'Arial', sans-serif;
         }
+
+        .navbar {
+            background-color: #1f1f1f; /* Dark gray background for the navbar */
+        }
+
         .navbar-nav .nav-link {
             color: #fff !important;
         }
-        .category-card {
-            transition: transform 0.2s;
+
+        .navbar-nav .nav-link:hover {
+            color: #ff8c00 !important; /* Hover effect color */
         }
+
+        .page-container {
+            margin-top: 50px;
+        }
+
+        .card {
+            border-radius: 10px; /* Rounded corners for cards */
+            background-color: #2c2c2c; /* Dark card background */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Subtle shadow effect */
+        }
+
+        .card-title {
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #ff8c00; /* Gold color for card titles */
+        }
+
+        .card-body {
+            background-color: #2c2c2c;
+        }
+
         .category-card:hover {
-            transform: scale(1.05);
+            transform: scale(1.05); /* Hover effect on cards */
+        }
+
+        .card-text {
+            color: #ddd; /* Muted text color */
+        }
+
+        .btn-primary {
+            background-color: #ff8c00; /* Golden button color */
+            border-color: #ff8c00;
+        }
+
+        .btn-primary:hover {
+            background-color: #ff8c00; /* Hover effect for button */
+            border-color: #ff8c00;
+        }
+
+        .footer {
+            background-color: #1f1f1f; /* Dark footer */
+            color: #fff;
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .footer p {
+            margin: 0;
         }
     </style>
 </head>
@@ -32,7 +87,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="index.html">Home</a>
+                    <a class="nav-link" href="home.html">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="categories.html">Categories</a>
@@ -119,7 +174,7 @@
     </div>
 
     <!-- Footer -->
-    <footer class="bg-dark text-white text-center py-3">
+    <footer class="footer">
         <p>&copy; 2024 Shoe Reselling Portal. All Rights Reserved.</p>
     </footer>
 

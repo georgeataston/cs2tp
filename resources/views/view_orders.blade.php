@@ -8,15 +8,86 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        .page-container {
-            margin-top: 50px;
-        }  
+        body {
+            background-color: #212529;
+            color: #ffffff;
+        }
+
+        .navbar {
+            background-color: #343a40;
+        }
+
         .navbar-nav .nav-link {
             color: #fff !important;
         }
+
+        .navbar-nav .nav-link:hover {
+            color: #d3d3d3 !important;
+        }
+
+        .page-container {
+            margin-top: 50px;
+        }
+
+        .form-control {
+            background-color: #495057;
+            border: 1px solid #6c757d;
+            color: #ffffff;
+        }
+
+        .form-control:focus {
+            background-color: #343a40;
+            border-color: #ff8c00;
+            color: #ffffff;
+        }
+
+        .btn-primary {
+            background-color: #ff8c00;
+            border-color: #ff8c00;
+        }
+        .btn-primary:hover {
+            background-color: #ff8c00;
+            border-color: #ff8c00;
+        }
+
+        .table {
+            background-color: #343a40;
+            color: #ffffff;
+        }
+
+        .table th, .table td {
+            border-color: #6c757d;
+        }
+
+        .table th {
+            background-color: #495057;
+        }
+
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: #2f3438;
+        }
+
+        .table-striped tbody tr:nth-of-type(even) {
+            background-color: #343a40;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+
+        footer {
+            background-color: #343a40;
+        }
+
     </style>
 </head>
-<body>  
+<body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="index.html">Shoe Reselling Portal</a>
@@ -26,7 +97,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="index.html">Home</a>
+                    <a class="nav-link" href="home.html">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="categories.html">Categories</a>
