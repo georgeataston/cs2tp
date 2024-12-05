@@ -67,6 +67,10 @@ footer {
     text-align: center;
 }
 
+.account-details h2 {
+    text-align: center;
+}
+
 .account-details .update-btn {
     padding: 12px 25px;
     background: linear-gradient(to right, #ff4500, #ff8c00);

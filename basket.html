@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crep Culture - Your Basket</title>
+    
+    <!-- Link to CSS files -->
+
+    <link rel="stylesheet" href="https://dev-pr7-cs2tp.hotten.cloud/css/styles.css">
+    <link rel="stylesheet" href="https://dev-pr7-cs2tp.hotten.cloud/css/basket.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1 class="o">Crep Culture</h1>
+        </div>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/#shop">Shop</a>
+            <a href="/about">About Us</a>
+            <a href="/contact">Contact</a>
+            <div class="auth-buttons">
+                <a href="/account" class="auth-btn">My Account</a>
+                <a href="/logout" class="auth-btn">Logout</a>
+            </div>
+        </nav>
+        <div class="basket">
+            <a href="/cart">
+                <img src="https://dev-pr7-cs2tp.hotten.cloud/img/cart.png" alt="Basket">
+                <span class="cart-count">2</span>
+            </a>
+        </div>
+    </header>
+    <!-- Main Basket section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2>Your Basket</h2>
+            <p>Review and manage your selected items</p>
+        </div>
+    </section>
+    <!-- Contents of the basket displayed here -->
+    <section class="basket-content">
+        <table class="basket-table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            
+            <!-- insert backend basket content data here -->
+            <tbody>
+                <tr>
+                    <td>Filler</td>
+                    <td>£99.99</td>
+                    <td>
+                        <input type="number" value="1" min="1" max="10">
+                    </td>
+                    <td>£99.99</td>
+                    <td><button class="remove-btn">Remove</button></td>
+                </tr>
+                <tr>
+                    <td>FILLER</td>
+                    <td>£299.99</td>
+                    <td>
+                        <input type="number" value="1" min="1" max="10">
+                    </td>
+                    <td>£299.99</td>
+                    <td><button class="remove-btn">Remove</button></td>
+                </tr>
+            </tbody>
+
+            <!-- Basket summary goes below -->
+        </table>
+        <div class="basket-summary">
+            <h3>Basket Summary</h3>
+            <!-- insert real data beloww -->
+            <p>Subtotal: £279.98</p>
+            <p>Shipping: £5.00</p>
+            <p>Total: £284.98</p>
+            <button class="checkout-btn">Proceed to Checkout</button>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Crep Culture | <a href="#privacy">Privacy Policy</a> | <a href="#terms">Terms of Service</a></p>
+    </footer>
+</body>
+</html>
