@@ -8,15 +8,9 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        body {
-            background-color: #212529;
-            color: #ffffff;
+        .page-container {
+            margin-top: 50px;
         }
-
-        .navbar {
-            background-color: #343a40;
-        }
-
         .navbar-nav .nav-link {
             color: #fff !important;
         }
@@ -97,19 +91,19 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="home.html">Home</a>
+                    <a class="nav-link" href="/admin">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="categories.html">Categories</a>
+                    <a class="nav-link" href="/admin/categories">Categories</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="process_orders.html">Orders</a>
+                    <a class="nav-link" href="/admin/orders/process">Orders</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="admin.html">Admin</a>
+                    <a class="nav-link" href="/admin">Admin</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="account.html">Account</a>
+                    <a class="nav-link" href="/account">Account</a>
                 </li>
             </ul>
         </div>

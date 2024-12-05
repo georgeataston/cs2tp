@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\ContactFormController;
+use App\Http\Middleware\AdminSessionValidator;
 use App\Http\Middleware\ReverseSessionValidator;
 use Illuminate\Support\Facades\Route;
 
@@ -18,3 +19,10 @@ Route::get('/about', function() { return view('about'); });
 Route::get('/contact', function() { return view('contact'); });
 Route::get('/login', function() { return view('login'); })->middleware(ReverseSessionValidator::class);
 Route::get('/signup', function() { return view('signup'); })->middleware(ReverseSessionValidator::class);
+
+// Admin HTML routes
+Route::get('/admin', function() { return view('admin/index'); })->middleware(AdminSessionValidator::class);;
+Route::get('/admin/categories', function() { return view('admin/categories'); })->middleware(AdminSessionValidator::class);
+Route::get('/admin/orders/process', function() { return view('admin/process_orders'); })->middleware(AdminSessionValidator::class);
+Route::get('/admin/orders', function() { return view('admin/view_orders'); })->middleware(AdminSessionValidator::class);
+Route::get('/admin/search', function() { return view('admin/search_products'); })->middleware(AdminSessionValidator::class);
