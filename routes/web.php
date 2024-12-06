@@ -20,6 +20,7 @@ Route::get('/about', function() { return view('about'); });
 Route::get('/contact', function() { return view('contact'); });
 Route::get('/login', function() { return view('login'); })->middleware(ReverseSessionValidator::class);
 Route::get('/signup', function() { return view('signup'); })->middleware(ReverseSessionValidator::class);
+Route::get('/basket', function() { return view('basket'); });
 
 Route::get('/account', function() {
     $account = Account::where('aid', '=', session('id'))->first();

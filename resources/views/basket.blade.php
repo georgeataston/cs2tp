@@ -3,35 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crep Culture - Your Basket</title>
-    
-    <!-- Link to CSS files -->
+    <title>Basket - Crep Culture</title>
 
-    <link rel="stylesheet" href="https://dev-pr7-cs2tp.hotten.cloud/css/styles.css">
-    <link rel="stylesheet" href="https://dev-pr7-cs2tp.hotten.cloud/css/basket.css">
+    <!-- Link to CSS files -->
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/useraccount.css') }}">
 </head>
 <body>
-    <header>
-        <div class="logo">
-            <img src="https://dev-pr7-cs2tp.hotten.cloud/img/logo.png" alt="Crep Culture Logo"> 
-        </div>
-        <nav>
-            <a href="/">Home</a>
-            <a href="/#shop">Shop</a>
-            <a href="/about">About Us</a>
-            <a href="/contact">Contact</a>
-            <div class="auth-buttons">
-                <a href="/account" class="auth-btn">My Account</a>
-                <a href="/logout" class="auth-btn">Logout</a>
-            </div>
-        </nav>
-        <div class="basket">
-            <a href="/cart">
-                <img src="https://dev-pr7-cs2tp.hotten.cloud/img/cart.png" alt="Basket">
-                <span class="cart-count">2</span>
-            </a>
-        </div>
-    </header>
+    @include('header'
+)
     <!-- Main Basket section -->
     <section class="hero">
         <div class="hero-content">
@@ -51,7 +31,7 @@
                     <th>Action</th>
                 </tr>
             </thead>
-            
+
             <!-- insert backend basket content data here -->
             <tbody>
                 <tr>
@@ -86,8 +66,6 @@
         </div>
     </section>
 
-    <footer>
-        <p>&copy; 2024 Crep Culture | <a href="#privacy">Privacy Policy</a> | <a href="#terms">Terms of Service</a></p>
-    </footer>
+    @include('footer')
 </body>
 </html>

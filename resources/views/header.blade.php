@@ -20,7 +20,7 @@
 
     <!--Class for the basket logo which will by styled and displayed on the home page-->
     <div class="basket">
-        <a href="/cart"> <!--Linking to the basket page-->
+        <a href="/basket"> <!--Linking to the basket page-->
             <img src="{{ asset('img/cart.png') }}" alt="Basket" /> <!--The basket logo-->
             <span class="cart-count">0</span> <!--Displays number of items in the basket -->
         </a>
