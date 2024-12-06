@@ -14,10 +14,9 @@
     <section class="about">
         <div class="about-content"><!-- Id for styling-->
             <h2>Our Story</h2><!--Heading-->
-            <p>Welcome to Crep Culture, the ultimate destination for sneaker enthusiasts and luxury footwear lovers. Founded in 2023, Crep Culture was born out of a passion for high-quality kicks that make a statement.</p>
-            <p>Our mission is simple: to bring the latest in luxury sneakers to a community that appreciates style, comfort, and quality. We curate a collection from the world’s leading brands, offering something for everyone who values exceptional footwear.</p>
-            <p>Join us on our journey as we step into the future of sneaker culture!</p> <!-- About us message to give the customers some back story-->
-        </div>
+            <p>Welcome to Crep Culture, the greatest destination for sneakerheads and luxury shoe collectors. Crep Culture, which was founded in 2023, was inspired by a desire to make a statement with high-quality kicks.</p>
+            <p>Our objective is straightforward: to deliver the latest premium sneakers to a community that values style, comfort, and quality. We curate a variety of the world's top brands, so there's something for everyone who values high-quality footwear.</p>
+            <p>Join us on a journey as we explore the future of sneaker culture.</p> <!-- About us message to give the customers some back story-->
     </section>
 
     @include("footer")
