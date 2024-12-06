@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products - Crep Culture</title>
     <link rel="stylesheet" href="{{asset('css/styles.css')}}">
-    <link rel="stylesheet" href="{{asset('css/product.css')}}">
+    <link rel="stylesheet" href="{{asset('css/shop.css')}}">
 </head>
 <body>
     @include("header")
@@ -108,9 +108,19 @@
             </select>
         </section>
 
-
         <section class="product-grid" id="product-grid">
-
+            @if($stockList->isEmpty())
+                <p>There are no items listed right now. Please check back later.</p>
+            @else
+                @foreach($stockList as $stock)
+                    <a href="/shop/{{$stock->id}}" class="product-item">
+                        <img src="{{$stock->images->first()->image_path}}" alt="{{$stock->category->name}} {{$stock->name}}" class="product-image">
+                        <h3 class="product-name">{{$stock->category->name}}</h3>
+                        <h3 class="product-name">{{$stock->name}}</h3>
+                        <p class="product-price">£{{$stock->price}}</p>
+                    </a>
+                @endforeach
+            @endif
         </section>
     </div>
 

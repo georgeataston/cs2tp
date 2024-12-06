@@ -32,7 +32,11 @@ Route::get('/account', function() {
     return view('useraccount')->with('name', $name)->with('email', $email)->with('fullName', $fullName);
 })->middleware(SessionValidator::class);
 
-Route::get('/shop', function() { return view('shop'); });
+Route::get('/shop', function() {
+    $stockList = Stock::where('quantity', '>', '0')->get();
+
+    return view('shop')->with('stockList', $stockList);
+});
 Route::get('/shop/{id}', function(string $id) {
     if (!is_numeric($id))
         abort('404');
