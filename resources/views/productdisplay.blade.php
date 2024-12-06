@@ -4,18 +4,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Display</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>{{$stock->category->name}} {{$stock->name}} - Crep Culture</title>
+    <link rel="stylesheet" href="{{asset('css/styles.css')}}">
+    <link rel="stylesheet" href="{{asset('css/productdisplay.css')}}">
 </head>
 <body>
     @include("header")
     <main class="product-display">
         <div class="product-image-section">
-            <img src="trail-running-shoes.jpg" alt="Trail Running Shoes">
+            <img src="{{$stock->images->first()->image_path}}" alt="{{$stock->category->name}} {{$stock->name}}">
         </div>
         <div class="product-info-section">
-            <h1>Trail Running Shoes</h1>
-            <p class="price">£100.00</p>
+            <h1>{{$stock->category->name}}</h1>
+            <h2>{{$stock->name}}</h2>
+            <p class="price">£{{$stock->price}}</p>
             <form class="product-options">
                 <label for="size">Size</label>
                 <select id="size" name="size">
@@ -35,10 +37,9 @@
                 <input type="number" id="quantity" name="quantity" value="1" min="1">
                 <button type="submit" class="add-to-cart-btn">Add to Cart</button>
             </form>
-            <p class="description">Durable trail running shoes with excellent grip.</p>
+            <p class="description">{{$stock->description}}</p>
         </div>
-    
-    
-    @include("footer")
+    </main>
+    @include('footer')
 </body>
 </html>
