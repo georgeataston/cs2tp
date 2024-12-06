@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Models\Stock;
 use App\Http\Controllers\ContactFormController;
 use App\Http\Middleware\ReverseSessionValidator;
 use App\Http\Middleware\SessionValidator;
@@ -30,3 +31,15 @@ Route::get('/account', function() {
 
     return view('useraccount')->with('name', $name)->with('email', $email)->with('fullName', $fullName);
 })->middleware(SessionValidator::class);
+
+Route::get('/shop', function() { return view('shop'); });
+Route::get('/shop/{id}', function(string $id) {
+    if (!is_numeric($id))
+        abort('404');
+
+    $stock = Stock::where('id', '=', $id)->first();
+    if ($stock == null)
+        abort('404');
+
+    return view('productdisplay')->with('stock', $stock);
+});

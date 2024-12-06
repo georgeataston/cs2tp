@@ -4,10 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Stock extends Model
+class Category extends Model
 {
     use HasFactory;
 
@@ -16,14 +15,14 @@ class Stock extends Model
      *
      * @var string
      */
-    protected $table = "stocks";
+    protected $table = "categories";
 
     /**
      * The primary key associated with the table.
      *
      * @var string
      */
-    protected $primaryKey = "id";
+    protected $primaryKey = "cid";
 
     /**
      * Indicates if the model's ID is auto-incrementing.
@@ -39,16 +38,8 @@ class Stock extends Model
      */
     public $timestamps = true;
 
-    /**
-     * Relationship: A stock item can have many images.
-     */
-    public function images(): HasMany
+    public function items(): HasMany
     {
-        return $this->hasMany(Image::class);
-    }
-
-    public function category(): BelongsTo
-    {
-        return $this->belongsTo(Category::class, 'category_id');
+        return $this->hasMany(Stock::class);
     }
 }
