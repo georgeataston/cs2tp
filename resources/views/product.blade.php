@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products - Crep Culture</title>
-    <link rel="stylesheet" href="product.css">
+    <link rel="stylesheet" href="{{asset('css/styles.css')}}">
+    <link rel="stylesheet" href="{{asset('css/product.css')}}">
 </head>
 <body>
     @include("header")
 
- 
+
 
     <!-- Product Page Header -->
     <section class="product-header">
@@ -90,12 +91,12 @@
 </div>
 
 
-        
+
         <button type="submit" class="filter-btn">Apply Filters</button>
     </form>
 </aside>
 
-     
+
         <section class="sort-by-section">
             <label for="sort-by">Sort by:</label>
             <select id="sort-by">
@@ -107,9 +108,9 @@
             </select>
         </section>
 
-        
+
         <section class="product-grid" id="product-grid">
-            
+
         </section>
     </div>
 
