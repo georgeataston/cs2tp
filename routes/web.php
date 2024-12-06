@@ -4,6 +4,8 @@ use App\Http\Controllers\AccountController;
 use App\Models\Stock;
 use App\Http\Controllers\ContactFormController;
 use App\Http\Middleware\ReverseSessionValidator;
+use App\Http\Middleware\SessionValidator;
+use App\Models\Account;
 use Illuminate\Support\Facades\Route;
 
 // API routes
@@ -19,6 +21,16 @@ Route::get('/about', function() { return view('about'); });
 Route::get('/contact', function() { return view('contact'); });
 Route::get('/login', function() { return view('login'); })->middleware(ReverseSessionValidator::class);
 Route::get('/signup', function() { return view('signup'); })->middleware(ReverseSessionValidator::class);
+Route::get('/basket', function() { return view('basket'); });
+
+Route::get('/account', function() {
+    $account = Account::where('aid', '=', session('id'))->first();
+    $name = preg_split("/\s/", $account->name)[0];
+    $fullName = $account->name;
+    $email = $account->email;
+
+    return view('useraccount')->with('name', $name)->with('email', $email)->with('fullName', $fullName);
+})->middleware(SessionValidator::class);
 
 Route::get('/shop', function() { return view('shop'); });
 Route::get('/shop/{id}', function(string $id) {

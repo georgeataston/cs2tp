@@ -41,7 +41,9 @@ class AccountController extends Controller
         $account->password = Hash::make($input['password']);
         $account->save(); // save it to the DB.
 
-        return redirect("/"); // redirect back to login page?
+        $request->session()->regenerate();
+        $request->session()->put('id', $account->aid);
+        return redirect('/account');
     }
 
     /**
@@ -73,7 +75,7 @@ class AccountController extends Controller
         // Create the user's session and put their account ID in it.
         $request->session()->regenerate();
         $request->session()->put('id', $user->aid);
-        return redirect('/'); // return to the home page
+        return redirect('/account');
     }
 
     // Invalidate the session, "logging the user out".
