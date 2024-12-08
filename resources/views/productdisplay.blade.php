@@ -15,7 +15,7 @@
             <img src="{{$stock->images->first()->image_path}}" alt="{{$stock->category->name}} {{$stock->name}}">
         </div>
         <div class="product-info-section">
-            <h1>{{$stock->category->name}}</h1>
+            <h1>{{$stock->category->brand->name}} {{$stock->category->name}}</h1>
             <h2>{{$stock->name}}</h2>
             <p class="price">£{{$stock->price}}</p>
             <form class="product-options">
