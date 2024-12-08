@@ -22,7 +22,13 @@
     <div class="basket">
         <a href="/basket"> <!--Linking to the basket page-->
             <img src="{{ asset('img/cart.png') }}" alt="Basket" /> <!--The basket logo-->
-            <span class="cart-count">0</span> <!--Displays number of items in the basket -->
+            <span class="cart-count">
+                @if(session('cart') == null)
+                    0
+                @else
+                    {{sizeOf(session('cart'))}}
+                @endif
+            </span> <!--Displays number of items in the basket -->
         </a>
     </div>
 </header>
