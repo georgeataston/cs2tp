@@ -20,8 +20,8 @@
         <div class="basket-summary">
             <h3>Basket Summary</h3>
             <ul>
-                @foreach($items as $item)
-                    <li>x1 {{$item->category->brand->name}} {{$item->category->name}} {{$item->name}} @ £{{$item->price}}</li>
+                @foreach($cart as $item)
+                    <li>x{{$item['quantity']}} {{$item['name']}} @ £{{$item['price']}}<br>{{$item['size']}}</li>
                 @endforeach
             </ul>
             <p class="total">Subtotal: <span>£{{$total}}</span></p>

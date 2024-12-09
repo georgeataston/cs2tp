@@ -34,6 +34,7 @@
                     <option>UK 12</option>
                     <option>UK 13</option>
                 </select>
+                @error('size')<p id="form-error">{{ $message }}</p>@enderror
                 <label for="quantity">Quantity</label>
                 <input type="number" id="quantity" name="quantity" value="1" min="1">
                 <input type="hidden" name="id" value="{{$stock->id}}" />
@@ -53,5 +54,9 @@
 <style>
     #form-success {
         color: green;
+    }
+
+    #form-error {
+        color: red;
     }
 </style>

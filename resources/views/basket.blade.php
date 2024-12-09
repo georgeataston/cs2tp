@@ -38,16 +38,17 @@
 
                 <!-- insert backend basket content data here -->
                 <tbody>
-                @foreach($items as $item)
+                @foreach($cart as $item)
                     <tr>
-                        <td>{{$item->category->brand->name}} {{$item->category->name}} {{$item->name}}</td>
-                        <td>{{$item->price}}</td>
-                        <td>1</td>
-                        <td>£{{$item->price}}</td>
+                        <td>{{$item['name']}}<br>{{$item['size']}}</td>
+                        <td>£{{$item['price']}}</td>
+                        <td>{{$item['quantity']}}</td>
+                        <td>£{{$item['price'] * $item['quantity']}}</td>
                         <td>
                             <form action="/basket/remove" method="post">
                                 @csrf
-                                <input type="hidden" name="id" value="{{$item->id}}" />
+                                <input type="hidden" name="id" value="{{$item['id']}}" />
+                                <input type="hidden" name="size" value="{{$item['size']}}" />
                                 <button class="remove-btn">Remove</button>
                             </form>
 

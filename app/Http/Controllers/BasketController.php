@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Stock;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -27,11 +28,11 @@ class BasketController extends Controller
         ]);
 
         if (strtolower($input['size']) == 'select') {
-            // error
+            return back()->withErrors(['size' => 'Please select a size.']);
         }
 
         if (!str_starts_with($input['size'], 'UK ')) {
-            //error
+            abort(400);
         }
 
         // add to session
@@ -40,10 +41,21 @@ class BasketController extends Controller
             $cart = array();
         }
 
-        array_push($cart, ['id' => $input['id'], 'size' => $input['size'], 'quantity' => $input['quantity']]);
+        $stock = Stock::where('id', '=', $input['id'])->first();
+        if ($stock == null) {
+            abort(400);
+        }
+
+        array_push($cart,
+            ['id' => $input['id'],
+                'size' => $input['size'],
+                'quantity' => $input['quantity'],
+                'name' => $stock->category->brand->name . ' ' . $stock->category->name . ' ' . $stock->name,
+                'price' => $stock->price]);
+
         $request->session()->put('cart', $cart);
 
-        return redirect('/shop/' . $input['id'])->with('success', 'added');
+        return back()->with('success', 'added');
     }
 
     public function remove(Request $request): RedirectResponse
@@ -51,7 +63,8 @@ class BasketController extends Controller
         // Validate user input, check for required values
         // and sanitise the input
         $input = $request->validate([
-            'id' => 'required|integer'
+            'id' => 'required|integer',
+            'size' => 'string'
         ]);
 
         // remove from session
@@ -60,7 +73,13 @@ class BasketController extends Controller
             return redirect('/basket');
         }
 
-        
+        foreach($cart as $item => $v) {
+            if ($v['id'] == $input['id'] && $v['size'] == $input['size']) {
+                unset($cart[$item]);
+            }
+        }
+
+        $request->session()->put('cart', $cart);
 
         return redirect('/basket');
     }
