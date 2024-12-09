@@ -4,10 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Category extends Model
+class Brand extends Model
 {
     use HasFactory;
 
@@ -16,14 +15,14 @@ class Category extends Model
      *
      * @var string
      */
-    protected $table = "categories";
+    protected $table = "brands";
 
     /**
      * The primary key associated with the table.
      *
      * @var string
      */
-    protected $primaryKey = "cid";
+    protected $primaryKey = "bid";
 
     /**
      * Indicates if the model's ID is auto-incrementing.
@@ -39,13 +38,8 @@ class Category extends Model
      */
     public $timestamps = true;
 
-    public function items(): HasMany
+    public function categories(): HasMany
     {
-        return $this->hasMany(Stock::class, "category_id");
-    }
-
-    public function brand(): BelongsTo
-    {
-        return $this->belongsTo(Brand::class, 'brand_id');
+        return $this->hasMany(Category::class, "brand_id");
     }
 }

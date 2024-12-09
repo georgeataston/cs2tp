@@ -7,15 +7,53 @@
     <!-- Link to CSS file  -->
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     <link rel="stylesheet" href="{{ asset('css/useraccount.css') }}">
+    <link rel="stylesheet" href="{{asset('css/unifiedheaders.css')}}">
 </head>
 <body>
     @include('header')
 
     <!-- Main account section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h2>My Account</h2>
-            <p>Welcome back, {{$name}}! View your order history and manage your account details.</p>
+    <section class="unified-header">
+        <h1>My Account</h1>
+        <p>Welcome back, {{$name}}! View your order history and manage your account details.</p>
+    </section>
+
+
+    <!-- Order history section -->
+    <section class="featured-products">
+        <h2>Order History</h2>
+        <div class="products">
+            <!-- Table displaying order details -->
+            <table>
+                <thead>
+                <tr>
+                    <th>Order Number</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach ($orders as $order)
+                    <tr>
+                        <td>#{{$order->id}}</td>
+                        <td>{{$order->created_at}}</td>
+                        <td>
+                            @if($order->status == 0)
+                                Order Submitted
+                            @elseif($order->status == 1)
+                                Order Processing
+                            @elseif($order->status == 2)
+                                Awaiting Dispatch
+                            @elseif($order->status == 3)
+                                Complete / Dispatched
+                            @endif
+                        </td>
+                        <td>£{{$order->total_price}}</td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
         </div>
     </section>
 
@@ -36,29 +74,6 @@
         </form>
     </section>
 
-    <!-- Order history section -->
-    <section class="featured-products">
-        <h2>Order History</h2>
-        <div class="products">
-            <!-- Table displaying order details -->
-            <table>
-                <thead>
-                    <tr>
-                        <th>Order Number</th>
-                        <th>Date</th>
-                        <th>Status</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Insert data for orders below? -->
-                    <tr>
-
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
 
     @include('footer')
 </body>

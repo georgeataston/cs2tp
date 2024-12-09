@@ -11,9 +11,9 @@
 
     <section class="hero">
         <div class="hero-content">
-            <h2>Luxury Kicks</h2> <!-- Displays a slogan on the page-->
+            <h2>Crep Culture</h2> <!-- Displays a slogan on the page-->
             <p>Explore the finest sneakers curated just for you. Elevate your style with Crep Culture.</p><!-- A sentence displayed along with the slogan-->
-            <a href="#shop" class="cta">Shop Now</a> <!-- Labelled as shop in order to make the css for the section-->
+            <a href="/shop" class="cta">Shop Now</a> <!-- Labelled as shop in order to make the css for the section-->
         </div>
     </section>
 

@@ -14,8 +14,13 @@
 
     <!-- Product Page Header -->
     <section class="product-header">
-        <h1>All Products</h1>
+        <h1>{{$shopTitle}}</h1>
         <p>Purchase a range of shoes here. Connect with resellers for cheaper products.</p>
+        <br>
+        <form action="/shop" method="get">
+            @csrf
+            <input type="text" id="search-bar" placeholder="Search all products..." name="search"/>
+        </form>
     </section>
 
     <!-- Main Container -->
@@ -24,23 +29,14 @@
 <aside class="filter-section">
     <h3>Browse by Brand</h3>
     <ul>
-        <li><a href="#">Air Jordans</a>
-            <ul>
-            </ul>
-        </li>
-        <li><a href="#">Nike</a>
-            <ul>
-            </ul>
-        </li>
-        <li><a href="#">Yeezy</a>
-            <ul>
-            </ul>
-        </li>
+        @foreach($brands as $brand)
+            <li><a href="/shop/brand/{{$brand->bid}}">{{$brand->name}}</a></li>
+        @endforeach
     </ul>
 
     <h3>Filter by</h3>
     <form id="filter-form">
-        <!-- Product Type -->
+{{--        <!-- Product Type -->
         <div>
             <h4>Product Type</h4>
             <label><input type="checkbox" name="type" value="jordans"> Air Jordans</label><br>
@@ -60,7 +56,7 @@
             <label><input type="checkbox" name="model" value="yeezy350"> Yeezy 350</label><br>
             <label><input type="checkbox" name="model" value="yeezy380"> Yeezy 380</label><br>
             <label><input type="checkbox" name="model" value="yeezy450"> Yeezy 450</label>
-        </div>
+        </div>--}}
 
         <!-- Price -->
         <div>
@@ -108,6 +104,7 @@
             </select>
         </section>
 
+
         <section class="product-grid" id="product-grid">
             @if($stockList->isEmpty())
                 <p>There are no items listed right now. Please check back later.</p>
@@ -115,7 +112,7 @@
                 @foreach($stockList as $stock)
                     <a href="/shop/{{$stock->id}}" class="product-item">
                         <img src="{{$stock->images->first()->image_path}}" alt="{{$stock->category->name}} {{$stock->name}}" class="product-image">
-                        <h3 class="product-name">{{$stock->category->name}}</h3>
+                        <h3 class="product-name">{{$stock->category->brand->name}} {{$stock->category->name}}</h3>
                         <h3 class="product-name">{{$stock->name}}</h3>
                         <p class="product-price">£{{$stock->price}}</p>
                     </a>
