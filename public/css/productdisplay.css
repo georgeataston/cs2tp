@@ -78,6 +78,10 @@ header nav {
     color: #fff;
 }
 
+.product-options option {
+    color: #000000;
+}
+
 .add-to-cart-btn {
     display: block;
     width: 100%;
