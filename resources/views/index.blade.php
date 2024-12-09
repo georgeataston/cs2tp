@@ -23,22 +23,19 @@
         <h2>Featured Products</h2> <!-- Heading for the section-->
         <div class="products"><!-- Putting some products under the products class to have them displayed as featured products on the home page along with CSS styling.-->
             <div class="product"><!-- Under the products class-->
-                <img src="" alt="Air Max 90"> <!-- Linking picture to product under the class to have it displayed on the home page-->
-                <h3>Air Max 90</h3> <!-- Name of the product-->
-                <p>Classic design with modern comfort.</p> <!-- Description of the product-->
-                <span class="price">£99.99</span> <!-- Price of the product-->
+                <img src="" alt="Air Max 95 Hyper Turquoise"> <!-- Linking picture to product under the class to have it displayed on the home page-->
+                <h3>Air Max 95 Hyper Turquoise</h3> <!-- Name of the product-->
+                <span class="price">£300.00</span> <!-- Price of the product-->
             </div>
             <div class="product">
-                <img src="" alt="Yeezy Boost 350"> <!-- Linking picture to product under the class to have it displayed on the home page-->
-                <h3>Yeezy Boost 350</h3> <!-- Name of the product-->
-                <p>Iconic style with unparalleled comfort.</p> <!-- Description of the product-->
-                <span class="price">£786.99</span> <!-- Price of the product-->
+                <img src="" alt="Jordan 1 Dior High"> <!-- Linking picture to product under the class to have it displayed on the home page-->
+                <h3>Jordan 1 Dior High</h3> <!-- Name of the product-->
+                <span class="price">£15000.00</span> <!-- Price of the product-->
             </div>
             <div class="product">
-                <img src="" alt="Jordan 1 Retro"> <!-- Linking picture to product under the class to have it displayed on the home page-->
-                <h3>Jordan 1 Retro</h3> <!-- Name of the product-->
-                <p>Timeless kicks that never go out of style.</p> <!-- Description of the product-->
-                <span class="price">£72.29</span> <!-- Price of the product-->
+                <img src="" alt="Dunk Low 'Grey Fog'"> <!-- Linking picture to product under the class to have it displayed on the home page-->
+                <h3>Dunk Low 'Grey Fog'</h3> <!-- Name of the product-->
+                <span class="price">£150.00</span> <!-- Price of the product-->
             </div>
         </div>
     </section>
