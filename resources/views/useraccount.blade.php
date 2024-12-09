@@ -19,6 +19,44 @@
     </section>
 
 
+    <!-- Order history section -->
+    <section class="featured-products">
+        <h2>Order History</h2>
+        <div class="products">
+            <!-- Table displaying order details -->
+            <table>
+                <thead>
+                <tr>
+                    <th>Order Number</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Total</th>
+                </tr>
+                </thead>
+                <tbody>
+                @foreach ($orders as $order)
+                    <tr>
+                        <td>#{{$order->id}}</td>
+                        <td>{{$order->created_at}}</td>
+                        <td>
+                            @if($order->status == 0)
+                                Order Submitted
+                            @elseif($order->status == 1)
+                                Order Processing
+                            @elseif($order->status == 2)
+                                Awaiting Dispatch
+                            @elseif($order->status == 3)
+                                Complete / Dispatched
+                            @endif
+                        </td>
+                        <td>£{{$order->total_price}}</td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
+    </section>
+
     <!-- Account details form -->
     <section class="account-details">
         <h2>Update Account Details</h2>
@@ -36,29 +74,6 @@
         </form>
     </section>
 
-    <!-- Order history section -->
-    <section class="featured-products">
-        <h2>Order History</h2>
-        <div class="products">
-            <!-- Table displaying order details -->
-            <table>
-                <thead>
-                    <tr>
-                        <th>Order Number</th>
-                        <th>Date</th>
-                        <th>Status</th>
-                        <th>Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Insert data for orders below? -->
-                    <tr>
-
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
 
     @include('footer')
 </body>
