@@ -4,6 +4,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\BasketController;
 use App\Http\Controllers\OrderController;
 use App\Models\Brand;
+use App\Models\Feature;
 use App\Models\Order;
 use App\Models\Stock;
 use App\Http\Controllers\ContactFormController;
@@ -27,7 +28,15 @@ Route::post('/basket/remove', [BasketController::class, 'remove']);
 Route::post('/orders/checkout', [OrderController::class, 'checkout']);
 
 // HTML routes
-Route::get('/', function() { return view('index'); });
+Route::get('/', function() {
+    $featuresRaw = Feature::all();
+    $features = new Collection;
+    foreach($featuresRaw as $feat) {
+        $features->push($feat->item);
+    }
+    return view('index')->with('features', $features);
+});
+
 Route::get('/about', function() { return view('about'); });
 Route::get('/contact', function() { return view('contact'); });
 Route::get('/login', function() { return view('login'); })->middleware(ReverseSessionValidator::class);

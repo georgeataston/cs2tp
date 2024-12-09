@@ -22,7 +22,14 @@
     <section class="featured-products" id="shop">
         <h2>Featured Products</h2> <!-- Heading for the section-->
         <div class="products"><!-- Putting some products under the products class to have them displayed as featured products on the home page along with CSS styling.-->
-            <div class="product"><!-- Under the products class-->
+            @foreach($features as $feature)
+                <a href="/shop/{{$feature->id}}" class="product">
+                    <img src="{{$feature->images->first()->image_path}}" alt="{{$feature->category->name}} {{$feature->name}}"> <!-- Linking picture to product under the class to have it displayed on the home page-->
+                    <h3>{{$feature->category->brand->name}} {{$feature->category->name}}</h3> <!-- Name of the product-->
+                    <span class="price">£{{$feature->price}}</span> <!-- Price of the product-->
+                </a>
+            @endforeach
+{{--            <div class="product"><!-- Under the products class-->
                 <img src="" alt="Air Max 90"> <!-- Linking picture to product under the class to have it displayed on the home page-->
                 <h3>Air Max 90</h3> <!-- Name of the product-->
                 <p>Classic design with modern comfort.</p> <!-- Description of the product-->
@@ -39,7 +46,7 @@
                 <h3>Jordan 1 Retro</h3> <!-- Name of the product-->
                 <p>Timeless kicks that never go out of style.</p> <!-- Description of the product-->
                 <span class="price">£72.29</span> <!-- Price of the product-->
-            </div>
+            </div>--}}
         </div>
     </section>
 
