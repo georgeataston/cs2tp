@@ -4,6 +4,7 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\BasketController;
 use App\Http\Controllers\OrderController;
 use App\Models\Brand;
+use App\Models\Feature;
 use App\Models\Order;
 use App\Models\Stock;
 use App\Http\Controllers\ContactFormController;
@@ -27,7 +28,15 @@ Route::post('/basket/remove', [BasketController::class, 'remove']);
 Route::post('/orders/checkout', [OrderController::class, 'checkout']);
 
 // HTML routes
-Route::get('/', function() { return view('index'); });
+Route::get('/', function() {
+    $featuresRaw = Feature::all();
+    $features = new Collection;
+    foreach($featuresRaw as $feat) {
+        $features->push($feat->item);
+    }
+    return view('index')->with('features', $features);
+});
+
 Route::get('/about', function() { return view('about'); });
 Route::get('/contact', function() { return view('contact'); });
 Route::get('/login', function() { return view('login'); })->middleware(ReverseSessionValidator::class);
@@ -41,19 +50,13 @@ Route::get('/basket', function() {
         return view('basket')->with('empty', 'true');
     }
 
-    $items = array();
     $total = 0;
     foreach ($cart as $item) {
-        $stock = Stock::where('id', '=', $item['id'])->first();
-        if ($stock == null)
-            continue;
-
-        $total += $stock->price;
-        array_push($items, $stock);
+        $total += $item['price'] * $item['quantity'];
     }
     unset($item);
 
-    return view('basket')->with('items', $items)->with('total', $total);
+    return view('basket')->with('cart', $cart)->with('total', $total);
 });
 
 Route::get('/basket/checkout', function() {
@@ -62,30 +65,24 @@ Route::get('/basket/checkout', function() {
         return view('basket')->with('empty', 'true');
     }
 
-    $items = array();
     $total = 0;
     foreach ($cart as $item) {
-        $stock = Stock::where('id', '=', $item['id'])->first();
-        if ($stock == null)
-            continue;
-
-        $total += $stock->price;
-        array_push($items, $stock);
+        $total += $item['price'] * $item['quantity'];
     }
     unset($item);
 
     // Check for logged in
     $id = session('id');
     if ($id == null) {
-        return view('checkout')->with('items', $items)->with('total', $total);
+        return view('checkout')->with('cart', $cart)->with('total', $total);
     }
 
     $user = Account::where('aid', '=', $id)->first();
     if ($user == null) {
-        return view('checkout')->with('items', $items)->with('total', $total);
+        return view('checkout')->with('cart', $cart)->with('total', $total);
     }
 
-    return view('checkout')->with('items', $items)->with('total', $total)->with('user', $user);
+    return view('checkout')->with('cart', $cart)->with('total', $total)->with('user', $user);
 });
 
 Route::get('/basket/thankyou', function() { return view('thankyou'); });

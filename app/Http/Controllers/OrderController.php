@@ -63,15 +63,9 @@ class OrderController extends Controller
             abort(400);
         }
 
-        $items = array();
         $total = 0;
         foreach ($cart as $item) {
-            $stock = Stock::where('id', '=', $item['id'])->first();
-            if ($stock == null)
-                continue;
-
-            $total += $stock->price;
-            array_push($items, $stock);
+            $total += $item['price']*$item['quantity'];
         }
         unset($item);
 
@@ -94,12 +88,13 @@ class OrderController extends Controller
         $order->save();
 
         // load items into order_items
-        foreach($items as $item) {
+        foreach($cart as $item) {
             $orderItem = new OrderItem;
             $orderItem->order_id = $order->id;
-            $orderItem->product_id = $item->id;
-            $orderItem->quantity = 1;
-            $orderItem->price = $item->price;
+            $orderItem->product_id = $item['id'];
+            $orderItem->size = $item['size'];
+            $orderItem->quantity = $item['quantity'];
+            $orderItem->price = $item['price'];
             $orderItem->status = 0;
             $orderItem->save();
         }
@@ -107,6 +102,6 @@ class OrderController extends Controller
         // clear basket
         $request->session()->put('cart', array());
 
-        return redirect('/basket/thankyou')->with('items', $items)->with('total', $total)->with("orderId", $order->id)->with("email", $input['email']);
+        return redirect('/basket/thankyou')->with('total', $total)->with("orderId", $order->id)->with("email", $input['email']);
     }
 }
