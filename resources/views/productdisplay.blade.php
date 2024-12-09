@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{$stock->category->name}} {{$stock->name}} - Crep Culture</title>
+    <title>{{$stock->category->brand->name}} {{$stock->category->name}} {{$stock->name}} - Crep Culture</title>
     <link rel="stylesheet" href="{{asset('css/styles.css')}}">
     <link rel="stylesheet" href="{{asset('css/productdisplay.css')}}">
 </head>

@@ -36,7 +36,7 @@
 
     <h3>Filter by</h3>
     <form id="filter-form">
-        <!-- Product Type -->
+{{--        <!-- Product Type -->
         <div>
             <h4>Product Type</h4>
             <label><input type="checkbox" name="type" value="jordans"> Air Jordans</label><br>
@@ -56,7 +56,7 @@
             <label><input type="checkbox" name="model" value="yeezy350"> Yeezy 350</label><br>
             <label><input type="checkbox" name="model" value="yeezy380"> Yeezy 380</label><br>
             <label><input type="checkbox" name="model" value="yeezy450"> Yeezy 450</label>
-        </div>
+        </div>--}}
 
         <!-- Price -->
         <div>

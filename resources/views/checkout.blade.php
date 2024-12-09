@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crep Culture - Checkout</title>
+    <title>Checkout - Crep Culture</title>
     <link rel="stylesheet" href="{{asset('css/styles.css')}}">
     <link rel="stylesheet" href="{{asset('css/checkout.css')}}">
     <link rel="stylesheet" href="{{asset('css/unifiedheaders.css')}}">
