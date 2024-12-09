@@ -7,17 +7,17 @@
     <!-- Link to CSS file  -->
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     <link rel="stylesheet" href="{{ asset('css/useraccount.css') }}">
+    <link rel="stylesheet" href="{{asset('css/unifiedheaders.css')}}">
 </head>
 <body>
     @include('header')
 
     <!-- Main account section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h2>My Account</h2>
-            <p>Welcome back, {{$name}}! View your order history and manage your account details.</p>
-        </div>
+    <section class="unified-header">
+        <h1>My Account</h1>
+        <p>Welcome back, {{$name}}! View your order history and manage your account details.</p>
     </section>
+
 
     <!-- Account details form -->
     <section class="account-details">

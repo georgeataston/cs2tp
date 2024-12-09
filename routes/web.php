@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\BasketController;
+use App\Http\Controllers\OrderController;
 use App\Models\Stock;
 use App\Http\Controllers\ContactFormController;
 use App\Http\Middleware\ReverseSessionValidator;
@@ -18,6 +19,8 @@ Route::post('/contact', [ContactFormController::class, 'create']);
 
 Route::post('/basket/add', [BasketController::class, 'add']);
 Route::post('/basket/remove', [BasketController::class, 'remove']);
+
+Route::post('/orders/checkout', [OrderController::class, 'checkout']);
 
 // HTML routes
 Route::get('/', function() { return view('index'); });
@@ -45,6 +48,40 @@ Route::get('/basket', function() {
 
     return view('basket')->with('items', $items)->with('total', $total);
 });
+
+Route::get('/basket/checkout', function() {
+    $cart = session('cart');
+    if (empty($cart) || sizeof($cart) == 0) {
+        return view('basket')->with('empty', 'true');
+    }
+
+    $items = array();
+    $total = 0;
+    foreach ($cart as $item) {
+        $stock = Stock::where('id', '=', $item['id'])->first();
+        if ($stock == null)
+            continue;
+
+        $total += $stock->price;
+        array_push($items, $stock);
+    }
+    unset($item);
+
+    // Check for logged in
+    $id = session('id');
+    if ($id == null) {
+        return view('checkout')->with('items', $items)->with('total', $total);
+    }
+
+    $user = Account::where('aid', '=', $id)->first();
+    if ($user == null) {
+        return view('checkout')->with('items', $items)->with('total', $total);
+    }
+
+    return view('checkout')->with('items', $items)->with('total', $total)->with('user', $user);
+});
+
+Route::get('/basket/thankyou', function() { return view('thankyou'); });
 
 Route::get('/account', function() {
     $account = Account::where('aid', '=', session('id'))->first();

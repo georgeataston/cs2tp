@@ -7,24 +7,21 @@
 
     <!-- Link to CSS files -->
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/useraccount.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/basket.css') }}">
+    <link rel="stylesheet" href="{{asset('css/unifiedheaders.css')}}">
 </head>
 <body>
     @include('header')
     @if(session('cart') == null)
-        <section class="hero">
-            <div class="hero-content">
-                <h2>Your Basket is Empty</h2>
-                <p>Come back once you have browsed our amazing selection!</p>
-            </div>
+        <section class="unified-header">
+            <h1>Your Basket is Empty!</h1>
+            <p>Come back once you have browsed our amazing selection!</p>
         </section>
     @else
         <!-- Main Basket section -->
-        <section class="hero">
-            <div class="hero-content">
-                <h2>Your Basket</h2>
-                <p>Review and manage your selected items</p>
-            </div>
+        <section class="unified-header">
+            <h1>Your Basket</h1>
+            <p>Review and manage your selected items</p>
         </section>
         <!-- Contents of the basket displayed here -->
         <section class="basket-content">
@@ -67,7 +64,7 @@
                 <p>Subtotal: £{{$total}}</p>
                 <p>Shipping: FREE</p>
                 <p>Total: £{{$total}}</p>
-                <button class="checkout-btn">Proceed to Checkout</button>
+                <a href="/basket/checkout"><button class="checkout-btn">Proceed to Checkout</button></a>
             </div>
         </section>
     @endif
