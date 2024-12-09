@@ -3,12 +3,15 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\BasketController;
 use App\Http\Controllers\OrderController;
+use App\Models\Brand;
 use App\Models\Order;
 use App\Models\Stock;
 use App\Http\Controllers\ContactFormController;
 use App\Http\Middleware\ReverseSessionValidator;
 use App\Http\Middleware\SessionValidator;
 use App\Models\Account;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 // API routes
@@ -105,11 +108,44 @@ Route::get('/account', function() {
 
 // Shop
 
-Route::get('/shop', function() {
-    $stockList = Stock::where('quantity', '>', '0')->get();
+Route::get('/shop', function(Request $request) {
+    $stockList = Stock::where('quantity', '>', '0');
+    $shopTitle = "All Products";
 
-    return view('shop')->with('stockList', $stockList);
+    $brands = Brand::all();
+
+    $searchQuery = $request->query('search');
+    if ($searchQuery != null) {
+        $stockList = $stockList->where('name', 'LIKE', '%'.$searchQuery.'%');
+        $shopTitle = "Search Results for $searchQuery";
+    }
+
+    $stockList = $stockList->get();
+    return view('shop')->with('stockList', $stockList)->with("shopTitle", $shopTitle)->with('brands', $brands);
 });
+
+Route::get('/shop/brand/{id}', function(string $id) {
+    if (!is_numeric($id))
+        abort('404');
+
+    $brands = Brand::all();
+
+    $brand = Brand::where('bid', '=', $id)->first();
+    if ($brand == null)
+        abort('404');
+
+    $shopTitle = $brand->name;
+    $stockList = new Collection;
+    $categories = $brand->categories;
+    foreach($categories as $cat) {
+        foreach($cat->items as $item) {
+            $stockList->push($item);
+        }
+    }
+
+    return view('shop')->with('stockList', $stockList)->with('shopTitle', $shopTitle)->with('brands', $brands);
+});
+
 Route::get('/shop/{id}', function(string $id) {
     if (!is_numeric($id))
         abort('404');

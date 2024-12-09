@@ -41,7 +41,7 @@ class Category extends Model
 
     public function items(): HasMany
     {
-        return $this->hasMany(Stock::class);
+        return $this->hasMany(Stock::class, "category_id");
     }
 
     public function brand(): BelongsTo

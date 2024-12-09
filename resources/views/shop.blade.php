@@ -14,8 +14,13 @@
 
     <!-- Product Page Header -->
     <section class="product-header">
-        <h1>All Products</h1>
+        <h1>{{$shopTitle}}</h1>
         <p>Purchase a range of shoes here. Connect with resellers for cheaper products.</p>
+        <br>
+        <form action="/shop" method="get">
+            @csrf
+            <input type="text" id="search-bar" placeholder="Search all products..." name="search"/>
+        </form>
     </section>
 
     <!-- Main Container -->
@@ -24,18 +29,9 @@
 <aside class="filter-section">
     <h3>Browse by Brand</h3>
     <ul>
-        <li><a href="#">Air Jordans</a>
-            <ul>
-            </ul>
-        </li>
-        <li><a href="#">Nike</a>
-            <ul>
-            </ul>
-        </li>
-        <li><a href="#">Yeezy</a>
-            <ul>
-            </ul>
-        </li>
+        @foreach($brands as $brand)
+            <li><a href="/shop/brand/{{$brand->bid}}">{{$brand->name}}</a></li>
+        @endforeach
     </ul>
 
     <h3>Filter by</h3>
@@ -107,6 +103,7 @@
                 <option value="new-arrivals">New Arrivals</option>
             </select>
         </section>
+
 
         <section class="product-grid" id="product-grid">
             @if($stockList->isEmpty())
