@@ -81,7 +81,9 @@ class AccountController extends Controller
     // Invalidate the session, "logging the user out".
     public function invalidateSession(Request $request): RedirectResponse
     {
+        $cart = $request->session()->get('cart');
         $request->session()->invalidate();
+        $request->session()->put('cart', $cart); // keeps the user's cart
 
         return redirect('/');
     }
