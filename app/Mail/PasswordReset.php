@@ -29,7 +29,7 @@ class PasswordReset extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            from: new Address("crepculture@hotten.cloud", "Crep Culture Support"),
+            from: new Address("support@mail.crepculture.shop", "Crep Culture Support"),
             subject: 'Password Reset | Crep Culture',
         );
     }
