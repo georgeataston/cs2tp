@@ -16,11 +16,11 @@
                 <br><br>
                 If you did not request this password reset, please disregard this e-mail. Your account has not been compromised.
                 <br><br>
-                To reset your password, <a href="{{ env('APP_URL') }}/recovery/{{ $passwordReset->token }}">please click here to create a new password.</a>
+                To reset your password, <a href="https://{{ env('APP_URL') }}/recovery/{{ $passwordReset->token }}">please click here to create a new password.</a>
                 <br><br>
                 Can't click? Please copy the following URL into your browser:
                 <br>
-                {{ env('APP_URL') }}/recovery/{{ $passwordReset->token }}
+                https://{{ env('APP_URL') }}/recovery/{{ $passwordReset->token }}
                 <br><br>
                 This request will expire in 30 minutes. If you require any further assistance please reply to this e-mail.
                 <br><br>
