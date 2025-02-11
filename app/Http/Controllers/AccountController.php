@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
+use App\Models\PasswordReset;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class AccountController extends Controller
 {
@@ -86,5 +88,64 @@ class AccountController extends Controller
         $request->session()->put('cart', $cart); // keeps the user's cart
 
         return redirect('/');
+    }
+
+    public function requestPasswordReset(Request $request): RedirectResponse {
+        $credentials = $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        $user = Account::where('email', '=', $credentials['email'])->first();
+        if (!$user) {
+            return redirect('recovery')->with("success", "true"); // just for security lol
+        }
+
+        $previousReset = PasswordReset::where('aid', '=', $user->aid)->first();
+        if ($previousReset)
+            $previousReset->delete();
+
+        $reset = new PasswordReset;
+        $reset->aid = $user->aid;
+        $reset->token = bin2hex(random_bytes(64 / 2));
+
+        $timestamp = time(); // Get current timestamp
+        $newTimestamp = strtotime("+30 minutes", $timestamp);
+
+        $reset->expiry = $newTimestamp;
+        $reset->save();
+
+        //Mail::to($user->email)->send(new \App\Mail\PasswordReset($user, $reset));
+
+        return redirect('recovery')->with("success", "true");
+    }
+
+    public function forgottenPasswordReset(Request $request): RedirectResponse {
+        $credentials = $request->validate([
+            'password' => 'required',
+            'repeat_password' => 'required',
+            'token' => 'required',
+        ]);
+
+        if ($credentials['password'] != $credentials['repeat_password']) {
+            return back()->withErrors(['submit' => 'Passwords do not match.']);
+        }
+
+        $reset = PasswordReset::where('token', '=', $credentials['token'])->first();
+        if (!$reset) {
+            return redirect('/recovery')->with('error', 'Request is invalid or has expired.');
+        }
+
+        if (time() > $reset->expiry) {
+            $reset->delete();
+            return redirect('/recovery')->with('error', 'Request is invalid or has expired.');
+        }
+
+        $account = $reset->account;
+        $account->password = Hash::make($credentials['password']);
+        $account->save();
+
+        $reset->delete();
+
+        return redirect('/login')->with('success', 'Password reset successfully.');
     }
 }

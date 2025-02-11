@@ -6,6 +6,7 @@ use App\Http\Controllers\OrderController;
 use App\Models\Brand;
 use App\Models\Feature;
 use App\Models\Order;
+use App\Models\PasswordReset;
 use App\Models\Stock;
 use App\Http\Controllers\ContactFormController;
 use App\Http\Middleware\ReverseSessionValidator;
@@ -19,6 +20,8 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', [AccountController::class, 'create'])->middleware(ReverseSessionValidator::class);
 Route::post('/login', [AccountController::class, 'authenticate'])->middleware(ReverseSessionValidator::class);
 Route::get('/logout', [AccountController::class, 'invalidateSession']);
+Route::post('/recovery', [AccountController::class, 'requestPasswordReset'])->middleware(ReverseSessionValidator::class);
+Route::post('/recovery/reset', [AccountController::class, 'forgottenPasswordReset'])->middleware(ReverseSessionValidator::class);
 
 Route::post('/contact', [ContactFormController::class, 'create']);
 
@@ -41,6 +44,23 @@ Route::get('/about', function() { return view('about'); });
 Route::get('/contact', function() { return view('contact'); });
 Route::get('/login', function() { return view('login'); })->middleware(ReverseSessionValidator::class);
 Route::get('/signup', function() { return view('signup'); })->middleware(ReverseSessionValidator::class);
+
+Route::get('/recovery/{token?}', function (?string $token = null) {
+    if (!$token)
+        return view('password_recovery');
+
+    $reset = PasswordReset::where('token', '=', $token)->first();
+    if (!$reset) {
+        return redirect('/recovery')->with("error", "Request is invalid or has expired.");
+    }
+
+    if (time() > $reset->expiry) {
+        $reset->delete();
+        return redirect('/recovery')->with("error", "Request is invalid or has expired.");
+    }
+
+    return view('password_reset')->with("token", $token);
+})->middleware(ReverseSessionValidator::class);
 
 // Basket
 
@@ -152,4 +172,8 @@ Route::get('/shop/{id}', function(string $id) {
         abort('404');
 
     return view('productdisplay')->with('stock', $stock);
+});
+
+Route::get('/exampepwdreset', function() {
+    return view('mail/password_reset');
 });
