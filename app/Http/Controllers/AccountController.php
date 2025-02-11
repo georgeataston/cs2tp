@@ -114,7 +114,7 @@ class AccountController extends Controller
         $reset->expiry = $newTimestamp;
         $reset->save();
 
-        //Mail::to($user->email)->send(new \App\Mail\PasswordReset($user, $reset));
+        Mail::to($user->email)->send(new \App\Mail\PasswordReset($user, $reset));
 
         return redirect('recovery')->with("success", "true");
     }
