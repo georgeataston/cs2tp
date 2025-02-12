@@ -101,17 +101,19 @@ class AccountController extends Controller
         }
 
         $previousReset = PasswordReset::where('aid', '=', $user->aid)->first();
-        if ($previousReset)
+        if ($previousReset) {
+            if (time() < $previousReset->allow_new_request) {
+                return redirect('recovery')->with("success", "You already have an active request. Please allow up to 3 minutes to receive the e-mail. You may request a new reset after this time period has elapsed.");
+            }
             $previousReset->delete();
+        }
+
 
         $reset = new PasswordReset;
         $reset->aid = $user->aid;
         $reset->token = bin2hex(random_bytes(64 / 2));
-
-        $timestamp = time(); // Get current timestamp
-        $newTimestamp = strtotime("+30 minutes", $timestamp);
-
-        $reset->expiry = $newTimestamp;
+        $reset->expiry = strtotime("+30 minutes", time());
+        $reset->allow_new_request = strtotime("+3 minutes", time());
         $reset->save();
 
         Mail::to($user->email)->send(new \App\Mail\PasswordReset($user, $reset));

@@ -18,7 +18,7 @@
                 <br><br>
                 To reset your password, <a href="https://{{ env('APP_URL') }}/recovery/{{ $passwordReset->token }}">please click here to create a new password.</a>
                 <br><br>
-                Can't click? Please copy the following URL into your browser:
+                Can't click? Please paste the following URL into your browser:
                 <br>
                 https://{{ env('APP_URL') }}/recovery/{{ $passwordReset->token }}
                 <br><br>

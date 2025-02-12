@@ -30,7 +30,11 @@
                 @if (session("success"))
                     <br>
                     <br>
-                    <p id="form-success">If an account with that e-mail exists, a password reset link has been sent.</p>
+                    @if (session("success") == "true")
+                        <p id="form-success">If an account with that e-mail exists, a password reset link has been sent.</p>
+                    @else
+                        <p id="form-error">{{session('success')}}</p>
+                    @endif
                 @endif
             </form>
             <br>
