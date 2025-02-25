@@ -42,6 +42,7 @@ Route::get('/', function() {
 
 Route::get('/about', function() { return view('about'); });
 Route::get('/contact', function() { return view('contact'); });
+Route::get('/help', function () { return view('help');
 Route::get('/login', function() { return view('login'); })->middleware(ReverseSessionValidator::class);
 Route::get('/signup', function() { return view('signup'); })->middleware(ReverseSessionValidator::class);
 
