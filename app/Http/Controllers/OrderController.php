@@ -75,12 +75,9 @@ class OrderController extends Controller
         $order = new Order;
         if ($request->session()->get('id') != null) {
             $order->user_id = $request->session()->get('id');
-            $order->fullName = $input['fullName'];
-            $order->email = $input['email'];
-        } else {
-            $order->fullName = $input['fullName'];
-            $order->email = $input['email'];
         }
+        $order->fullName = $input['fullName'];
+        $order->email = $input['email'];
 
         $order->total_price = $total;
         $order->status = 0;

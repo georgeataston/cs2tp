@@ -27,7 +27,7 @@
             </thead>
             <tbody>
             <tr>
-                <td>{{ $order->id }}</td>
+                <td>#{{ $order->id }}</td>
                 <td>{{ $order->created_at }}</td>
                 @if($order->status == 0)
                     <td>New</td>
@@ -41,7 +41,11 @@
                     <td>Unknown - ID {{$order->status}}</td>
                 @endif
                 <td>£{{ $order->total_price }}</td>
-                <td>{{ $order->fullName }}<br>{{ $order->email }}</td>
+                <td>
+                    {{ $order->fullName }}<br>
+                    {{ $order->email }}<br>
+                    ID: {{ $order->user_id }}
+                </td>
                 <td>
                     {{ $order->addressLineOne }}<br>
                     {{ $order->addressLineTwo }}<br>
