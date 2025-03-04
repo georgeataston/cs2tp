@@ -10,7 +10,7 @@
 </head>
 <body>
     @include("header")
-    <main class="product-display">
+    <div class="product-display">
         <div class="product-image-section">
             <img src="{{$stock->images->first()->image_path}}" alt="{{$stock->category->name}} {{$stock->name}}">
         </div>
@@ -46,7 +46,41 @@
             </form>
             <p class="description">{{$stock->description}}</p>
         </div>
-    </main>
+    </div>
+    <div class="product-display">
+        <div class="product-info-section">
+            <h2>Reviews</h2>
+            @if($reviews->count() == 0)
+                <p>There are no reviews for this product.</p>
+            @endif
+
+            @if($canLeaveReview)
+                <br>
+                <h3>Thanks for buying this product. Leave a review!</h3>
+                <p>Please leave your review, with a title and your opinion. Please also choose a rating, with 5 being outstanding and 1 being very poor.</p>
+                <br>
+                <form class="product-options" action="/reviews/create" method="post">
+                    <label for="rating">Rating</label>
+                    <input type="number" id="rating" name="rating" min="1" max="5">
+                    @error('rating')<p id="form-error">{{ $message }}</p>@enderror
+
+                    <label for="title">Title</label>
+                    <input type="text" id="title" name="title" placeholder="Your review title">
+                    @error('title')<p id="form-error">{{ $message }}</p>@enderror
+
+                    <label for="content">Your review</label>
+                    <textarea type="text" id="content" name="content" placeholder="Your review"></textarea>
+                    @error('content')<p id="form-error">{{ $message }}</p>@enderror
+
+                    <input type="hidden" name="sid" value="{{$stock->id}}" />
+                    <button type="submit" class="add-to-cart-btn">Submit Review</button>
+                    @error('submit')<p id="form-error">{{ $message }}</p>@enderror
+                </form>
+            @endif
+
+        </div>
+
+    </div>
     @include('footer')
 </body>
 </html>

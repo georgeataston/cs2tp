@@ -51,4 +51,8 @@ class Stock extends Model
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
+
+    public function reviews(): HasMany {
+        return $this->hasMany(Review::class, 'sid');
+    }
 }

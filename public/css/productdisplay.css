@@ -68,7 +68,8 @@ header nav {
 }
 
 .product-options select,
-.product-options input {
+.product-options input,
+.product-options textarea {
     width: 100%;
     padding: 8px;
     margin-bottom: 10px;

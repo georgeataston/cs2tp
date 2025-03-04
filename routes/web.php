@@ -7,6 +7,7 @@ use App\Models\Brand;
 use App\Models\Feature;
 use App\Models\Order;
 use App\Models\PasswordReset;
+use App\Models\Review;
 use App\Models\Stock;
 use App\Http\Controllers\ContactFormController;
 use App\Http\Middleware\AdminSessionValidator;
@@ -176,7 +177,23 @@ Route::get('/shop/{id}', function(string $id) {
     if ($stock == null)
         abort('404');
 
-    return view('productdisplay')->with('stock', $stock);
+    $reviews = Review::where('sid', '=', $id)->get();
+    $canLeaveReview = false;
+    if (session('id')) {
+        $orders = Order::where('user_id', '=', session('id'))->get();
+        foreach($orders as $order) {
+            foreach($order->items as $item) {
+                if ($item->product_id == $item->id && $item->status == 1) {
+                    $canLeaveReview = true;
+                    break;
+                }
+            }
+        }
+    }
+
+    
+
+    return view('productdisplay')->with('stock', $stock)->with('reviews', $reviews)->with('canLeaveReview', $canLeaveReview);
 });
 
 Route::get('/exampepwdreset', function() {
