@@ -5,6 +5,8 @@
     }
     /**/
     body {
+    height: 100vh;  /* Set the body to take up the full viewport height */
+    overflow: hidden;  /* Prevent scrolling */
     font-family: 'Montserrat', sans-serif;    /*Sets font to Montserrat and sans-serif as a fallback*/
     background: linear-gradient(to left, #1f1f1f, #262626);    /*Background goes from dark to ligh grey*/
     color: #f2f2f2;    /*Text colour as light grey*/
@@ -66,12 +68,15 @@
     z-index: -1;/*Behind anchor text*/
     }
     .hero {
+    min-height: 78vh;  /* Minimum height will  hopefuly prevent it from shrinking too much i hope  */
+    height: auto;  /* Auto ensures flexibility if the  exceeds the view bit  */
     height: 78vh;/*Height to 78% of viewport height*/
     display: flex;/*Flexbox layout*/
     align-items: center;/*Vertically centre content*/
     justify-content: center;/*Horizontally centre content*/
     text-align: center;/*Centre text*/
     position: relative;/*Set position to relative*/
+    
     }
     .hero::before {
     content: "";
