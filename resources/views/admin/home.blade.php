@@ -80,29 +80,7 @@
     </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="/admin">Crep Culture Admin</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin/stock">Stock</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin/orders">Orders</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/admin/accounts">Accounts</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+    @include('admin/header')
 
     <!-- Page Content -->
     <div class="container page-container">
@@ -139,10 +117,7 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="footer">
-        <p>&copy; 2025 Crep Culture. All Rights Reserved.</p>
-    </footer>
+    @include('admin/footer')
 
     <!-- Bootstrap JS, Popper.js, and jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

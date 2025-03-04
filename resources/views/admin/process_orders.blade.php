@@ -126,32 +126,7 @@
     </style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="index.html">Shoe Reselling Portal</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="home.html">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="categories.html">Categories</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="process_orders.html">Orders</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="admin.html">Admin</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="account.html">Account</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
+    @include('admin/header')
 
     <!-- Page Content -->
     <div class="container page-container">
@@ -300,10 +275,7 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-dark text-white text-center py-3">
-        <p>&copy; 2024 Shoe Reselling Portal. All Rights Reserved.</p>
-    </footer>
+    @include('admin/footer')
 
     <!-- Bootstrap JS, Popper.js, and jQuery -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
@@ -313,11 +285,11 @@
         function filterOrders() {
             const status = $('#orderStatus').val().toLowerCase();
             const product = $('#searchProduct').val().toLowerCase();
-            
+
             $('#ordersTable tbody tr').filter(function () {
                 const rowStatus = $(this).find('td:eq(3)').text().toLowerCase();
                 const rowProduct = $(this).find('td:eq(2)').text().toLowerCase();
-                
+
                 if ((status === 'all' || rowStatus.includes(status)) && rowProduct.includes(product)) {
                     $(this).show();
                 } else {
