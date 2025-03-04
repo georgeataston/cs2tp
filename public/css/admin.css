@@ -2,6 +2,7 @@
 body {
     background-color: #2c2c2c; /* Light gray background */
     font-family: 'Arial', sans-serif;
+    color: white;
 }
 
 .btn-primary {
@@ -68,6 +69,10 @@ body {
     color: #666; /* Slightly muted text color */
 }
 
+.card-title {
+    color: black;
+}
+
 footer {
     background-color: #343a40;
 }
@@ -97,3 +102,4 @@ footer {
     font-size: 0.875rem;
     border-radius: 0.2rem;
 }
+

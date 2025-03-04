@@ -19,7 +19,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Order Processor</h5>
-                        <p class="card-text">Manage and action customer orders.</p>
+                        <p class="card-text">Manage and action unprocessed orders.</p>
                         <a href="/admin/orders" class="btn btn-primary">Continue</a>
                     </div>
                 </div>

@@ -39,6 +39,6 @@ class Order extends Model
     public $timestamps = true;
 
     public function items(): HasMany {
-        return $this->hasMany(OrderItem::class);
+        return $this->hasMany(OrderItem::class, "order_id");
     }
 }

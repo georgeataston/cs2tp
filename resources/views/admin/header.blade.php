@@ -13,7 +13,7 @@
                 <a class="nav-link" href="/admin/stock">Stock</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/admin/orders">Orders</a>
+                <a class="nav-link" href="/admin/orders/all">Orders</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/admin/accounts">Accounts</a>

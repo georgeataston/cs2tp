@@ -43,6 +43,6 @@ class OrderItem extends Model
     }
 
     public function stock(): HasOne {
-        return $this->hasOne(Stock::class);
+        return $this->hasOne(Stock::class, 'id', 'product_id');
     }
 }

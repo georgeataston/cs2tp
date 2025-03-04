@@ -13,7 +13,7 @@
         @else
             @if(session('isAdmin') == 1)
                 <div class="auth-buttons"> <!-- Putting login and sign-up buttons in a class to make it easier for styles to affect all-->
-                    <a href="/admin" class="auth-btn login-btn cta">>Admin</a>
+                    <a href="/admin" class="auth-btn login-btn cta">Admin</a>
                     <a href="/account" class="auth-btn login-btn cta">Account</a> <!-- Link to the login page with login button while assigning buttons in the same class-->
                     <a href="/logout" class="auth-btn signup-btn cta">Sign Out</a><!-- Link sign-up button to the sign-up page while being in same class-->
                 </div>

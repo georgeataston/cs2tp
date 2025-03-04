@@ -31,6 +31,10 @@ Route::post('/basket/remove', [BasketController::class, 'remove']);
 
 Route::post('/orders/checkout', [OrderController::class, 'checkout']);
 
+Route::post('/admin/orders/api/pick', [OrderController::class, 'pick'])->middleware(AdminSessionValidator::class);
+Route::post('/admin/orders/api/unpick', [OrderController::class, 'unpick'])->middleware(AdminSessionValidator::class);
+Route::post('/admin/orders/api/complete', [OrderController::class, 'complete'])->middleware(AdminSessionValidator::class);
+
 // HTML routes
 Route::get('/', function() {
     $featuresRaw = Feature::all();
@@ -181,4 +185,33 @@ Route::get('/exampepwdreset', function() {
 
 // Admin routes
 Route::get('/admin', function() { return view ('admin/home'); })->middleware(AdminSessionValidator::class);
-Route::get('/admin/orders', function() { return view ('admin/process_orders'); })->middleware(AdminSessionValidator::class);
+
+Route::get('/admin/orders', function() {
+    $orders = Order::where('status', '<', 3)->get();
+    return view ('admin/order_processor')->with('orders', $orders)->with('all', false);
+})->middleware(AdminSessionValidator::class);
+
+Route::get('/admin/orders/all', function() {
+    $orders = Order::orderBy("id", "desc")->get();
+    return view ('admin/order_processor')->with('orders', $orders)->with('all', true);
+})->middleware(AdminSessionValidator::class);
+
+Route::get('/admin/orders/{id}', function(string $id) {
+    if (!is_numeric($id))
+        abort('404');
+
+    $order = Order::where('id', '=', $id)->first();
+    if ($order == null)
+        abort('404');
+
+    $canShip = true;
+    foreach ($order->items as $item) {
+        if ($item->status == 0)
+            $canShip = false;
+    }
+
+    if ($order->status != 2)
+        $canShip = false;
+
+    return view ('admin/order_view')->with('order', $order)->with('canShip', $canShip);
+})->middleware(AdminSessionValidator::class);
