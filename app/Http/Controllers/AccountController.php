@@ -53,6 +53,7 @@ class AccountController extends Controller
      * Must contain the following string values:
      * - 'email'
      * - 'password'
+     * - 'redirect'
      */
     public function authenticate(Request $request): RedirectResponse
     {
@@ -61,6 +62,7 @@ class AccountController extends Controller
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
+            'redirect' => 'required'
         ]);
 
         // Check if the user exists via their e-mail
@@ -77,7 +79,8 @@ class AccountController extends Controller
         // Create the user's session and put their account ID in it.
         $request->session()->regenerate();
         $request->session()->put('id', $user->aid);
-        return redirect('/account');
+
+        return redirect($credentials['redirect']);
     }
 
     // Invalidate the session, "logging the user out".
