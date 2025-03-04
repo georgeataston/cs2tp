@@ -7,77 +7,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        /* General Page Styles */
-        body {
-            background-color: #2c2c2c; /* Light gray background */
-            font-family: 'Arial', sans-serif;
-        }
-
-        .btn-primary {
-            background-color: #ff8c00;
-            border-color: #ff8c00;
-        }
-
-        .navbar {
-            background-color: #343a40; /* Dark gray background for the navbar */
-        }
-
-        .navbar-nav .nav-link {
-            color: #fff !important;
-        }
-
-        .navbar-nav .nav-link:hover {
-            color: #ff8c00 !important; /* Hover effect color */
-        }
-
-        .page-container {
-            margin-top: 50px;
-        }
-
-        .card {
-            border-radius: 10px; /* Rounded corners for cards */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
-        }
-
-        .card-title {
-            font-weight: bold;
-            font-size: 1.2rem;
-        }
-
-        .card-body {
-            background-color: #ffffff;
-        }
-
-        .btn-primary {
-            background-color: #ff8c00; /* Golden button color */
-            border-color: #ff8c00;
-        }
-
-        .btn-primary:hover {
-            background-color: #ff8c00; /* Hover effect for button */
-            border-color: #ff8c00;
-        }
-
-        .footer {
-            background-color: #343a40; /* Same as navbar for consistency */
-            color: #fff;
-            text-align: center;
-            padding: 20px 0;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-
-        .footer p {
-            margin: 0;
-        }
-
-        .card-text {
-            font-size: 1rem;
-            color: #666; /* Slightly muted text color */
-        }
-    </style>
+    <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
 </head>
 <body>
     @include('admin/header')
