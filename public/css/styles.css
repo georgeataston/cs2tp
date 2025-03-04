@@ -345,6 +345,18 @@
         margin-right: 120px; /*Margin to right of navigation */
         align-items: center;/*Vertically align items to centre*/
         }
+        a:link {
+            text-decoration: none;
+        }
+        a:visited {
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: none;
+        }
+        a:active {
+            text-decoration: none;
+        }
         nav a {
         position: relative;
         color: #ddd; /*Text colour*/
@@ -356,7 +368,7 @@
         border-radius: 10px; /*round corners*/
         overflow: hidden; /*hide overflow content*/
         transition: color 0.3s ease; /*transition text colour over 0.3s when it changes*/
-        background: rgba(255, 255, 255, 0.1); /*background with 10% opacity*/
+            background: rgba(255, 255, 255, 0.1); /*background with 10% opacity*/
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /*shadow around link*/
         }
         nav a:hover {
@@ -423,4 +435,4 @@
         .basket {
         margin-left: 10px; /*reduce left margin of basket to 10px.*/
         }
-        }
+    }

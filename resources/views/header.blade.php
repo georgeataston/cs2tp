@@ -2,7 +2,7 @@
     <img src="{{ asset('img/logo.png') }}" alt="Crep Culture Logo"> <!-- The logo for our website-->
     <nav>
         <a href="/">Home</a><!-- Linking the index page with the Home button-->
-        <a href="/#shop">Shop</a><!-- Linking shop page with the Shop button-->
+        <a href="/shop">Shop</a><!-- Linking shop page with the Shop button-->
         <a href="/about">About Us</a><!--Linking about us page with the About Us button-->
         <a href="/contact">Contact</a><!-- Linking contact page with the contact button-->
         @if(session('id') == null)
@@ -20,9 +20,15 @@
 
     <!--Class for the basket logo which will by styled and displayed on the home page-->
     <div class="basket">
-        <a href="/cart"> <!--Linking to the basket page-->
+        <a href="/basket"> <!--Linking to the basket page-->
             <img src="{{ asset('img/cart.png') }}" alt="Basket" /> <!--The basket logo-->
-            <span class="cart-count">0</span> <!--Displays number of items in the basket -->
+            <span class="cart-count">
+                @if(session('cart') == null)
+                    0
+                @else
+                    {{sizeOf(session('cart'))}}
+                @endif
+            </span> <!--Displays number of items in the basket -->
         </a>
     </div>
 </header>

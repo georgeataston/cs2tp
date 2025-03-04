@@ -1,0 +1,69 @@
+.basket-content {
+    padding: 50px 20px;
+    background-color: #1e1e1e;
+}
+
+.basket-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 30px;
+}
+
+.basket-table th, .basket-table td {
+    padding: 15px;
+    border-bottom: 1px solid #444;
+    text-align: left;
+}
+
+.basket-table th {
+    background-color: #333;
+    color: #ff9000;
+}
+
+.basket-table input[type="number"] {
+    width: 50px;
+    padding: 5px;
+    background-color: #333;
+    color: #f2f2f2;
+    border: 1px solid #444;
+}
+
+.remove-btn {
+    padding: 5px 10px;
+    background: linear-gradient(to right, #ff4500, #ff8c00);
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.basket-summary {
+    background-color: #333;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.basket-summary h3 {
+    color: #ff9000;
+    margin-bottom: 15px;
+}
+
+.checkout-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    background: linear-gradient(to right, #ff4500, #ff8c00);
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.checkout-btn:hover {
+    background: linear-gradient(to right, #ff6347, #ffa500);
+    transform: scale(1.05);
+}

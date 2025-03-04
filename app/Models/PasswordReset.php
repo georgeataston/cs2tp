@@ -4,9 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Account extends Model
+class PasswordReset extends Model
 {
     use HasFactory;
 
@@ -15,14 +16,14 @@ class Account extends Model
      *
      * @var string
      */
-    protected $table = "accounts";
+    protected $table = "password_reset";
 
     /**
      * The primary key associated with the table.
      *
      * @var string
      */
-    protected $primaryKey = "aid";
+    protected $primaryKey = "pwrid";
 
     /**
      * Indicates if the model's ID is auto-incrementing.
@@ -38,13 +39,8 @@ class Account extends Model
      */
     public $timestamps = true;
 
-    public function reviews(): HasMany
+    public function account(): BelongsTo
     {
-        return $this->hasMany(Review::class);
-    }
-
-    public function resets(): HasMany
-    {
-        return $this->hasMany(PasswordReset::class);
+        return $this->belongsTo(Account::class, 'aid');
     }
 }

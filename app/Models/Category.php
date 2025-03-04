@@ -4,9 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Account extends Model
+class Category extends Model
 {
     use HasFactory;
 
@@ -15,14 +16,14 @@ class Account extends Model
      *
      * @var string
      */
-    protected $table = "accounts";
+    protected $table = "categories";
 
     /**
      * The primary key associated with the table.
      *
      * @var string
      */
-    protected $primaryKey = "aid";
+    protected $primaryKey = "cid";
 
     /**
      * Indicates if the model's ID is auto-incrementing.
@@ -38,13 +39,13 @@ class Account extends Model
      */
     public $timestamps = true;
 
-    public function reviews(): HasMany
+    public function items(): HasMany
     {
-        return $this->hasMany(Review::class);
+        return $this->hasMany(Stock::class, "category_id");
     }
 
-    public function resets(): HasMany
+    public function brand(): BelongsTo
     {
-        return $this->hasMany(PasswordReset::class);
+        return $this->belongsTo(Brand::class, 'brand_id');
     }
 }
