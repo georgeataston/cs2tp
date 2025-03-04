@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shoe Reselling Portal</title>
+    <title>Admin | Crep Culture</title>
     <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -51,7 +51,7 @@
 
         .btn-primary {
             background-color: #ff8c00; /* Golden button color */
-            border-color: #ff8c00; 
+            border-color: #ff8c00;
         }
 
         .btn-primary:hover {
@@ -82,26 +82,23 @@
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="index.html">Shoe Reselling Portal</a>
+        <a class="navbar-brand" href="/admin">Crep Culture Admin</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="home.html">Home</a>
+                    <a class="nav-link" href="/admin">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="categories.html">Categories</a>
+                    <a class="nav-link" href="/admin/stock">Stock</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="process_orders.html">Orders</a>
+                    <a class="nav-link" href="/admin/orders">Orders</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="admin.html">Admin</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="account.html">Account</a>
+                    <a class="nav-link" href="/admin/accounts">Accounts</a>
                 </li>
             </ul>
         </div>
@@ -110,46 +107,32 @@
     <!-- Page Content -->
     <div class="container page-container">
         <div class="row">
-            <!-- Admin Order Processor Section -->
             <div class="col-md-4 mb-4">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Admin Order Processor</h5>
-                        <p class="card-text">Search & filter status of selected products and orders.</p>
-                        <a href="process_orders.html" class="btn btn-primary">Process Orders</a>
+                        <h5 class="card-title">Order Processor</h5>
+                        <p class="card-text">Manage and action customer orders.</p>
+                        <a href="/admin/orders" class="btn btn-primary">Continue</a>
                     </div>
                 </div>
             </div>
 
-            <!-- Process Orders Section -->
             <div class="col-md-4 mb-4">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Process Orders Received</h5>
-                        <p class="card-text">Manage and track the orders received.</p>
-                        <a href="view_orders.html" class="btn btn-primary">View Orders</a>
+                        <h5 class="card-title">Stock Management</h5>
+                        <p class="card-text">Manage the current stock. Including categories, brands and images.</p>
+                        <a href="/admin/stock" class="btn btn-primary">Continue</a>
                     </div>
                 </div>
             </div>
 
-            <!-- Show Categories Section -->
             <div class="col-md-4 mb-4">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">Show Categories</h5>
-                        <p class="card-text">Show categories with links to them.</p>
-                        <a href="categories.html" class="btn btn-primary">Explore Categories</a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Product Display Section -->
-            <div class="col-md-4 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Product Display Search</h5>
-                        <p class="card-text">Search for products available in inventory.</p>
-                        <a href="search_products.html" class="btn btn-primary">Search Products</a>
+                        <h5 class="card-title">Account Management</h5>
+                        <p class="card-text">Manager user accounts.</p>
+                        <a href="/admin/accounts" class="btn btn-primary">Continue</a>
                     </div>
                 </div>
             </div>
@@ -158,7 +141,7 @@
 
     <!-- Footer -->
     <footer class="footer">
-        <p>&copy; 2024 Shoe Reselling Portal. All Rights Reserved.</p>
+        <p>&copy; 2025 Crep Culture. All Rights Reserved.</p>
     </footer>
 
     <!-- Bootstrap JS, Popper.js, and jQuery -->

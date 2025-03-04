@@ -181,8 +181,4 @@ Route::get('/exampepwdreset', function() {
 
 // Admin routes
 Route::get('/admin', function() { return view ('admin/home'); })->middleware(AdminSessionValidator::class);
-Route::get('/admin/categories', function() { return view ('admin/categories'); })->middleware(AdminSessionValidator::class);
-Route::get('/admin/orders', function() { return view ('admin/view_orders'); })->middleware(AdminSessionValidator::class);
-Route::get('/admin/orders/process', function() { return view ('admin/process_orders'); })->middleware(AdminSessionValidator::class);
-Route::get('/admin/reviews', function() { return view ('admin/product_review'); })->middleware(AdminSessionValidator::class);
-Route::get('/admin/search', function() { return view ('admin/search_products'); })->middleware(AdminSessionValidator::class);
+Route::get('/admin/orders', function() { return view ('admin/process_orders'); })->middleware(AdminSessionValidator::class);
