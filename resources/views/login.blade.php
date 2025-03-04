@@ -14,7 +14,7 @@
         <div class="auth-form-content">
             <h2>Login to Account</h2>
             @if (session('fail') == "invalidsession")
-                <p id="form-error">You must log in to access this page.</p>
+                <p id="form-error">Please log in to access this page.</p>
                 <br>
             @elseif (session('success'))
                 <p id="form-success">{{session('success')}}</p>
@@ -29,6 +29,12 @@
                 <p class="credentials">Enter password</p>
                 <input type="password" placeholder="Enter Password" name="password">
                 @error('password')<p id="form-error">{{ $message }}</p>@enderror
+
+                @if (session('redirect'))
+                    <input hidden type="text" name="redirect" value="/{{session("redirect")}}">
+                @else
+                    <input hidden type="text" name="redirect" value="/">
+                @endif
 
                 @error('login')<p id="form-error">{{ $message }}</p>@enderror
                 <button type="submit" class="submit-btn">Login</button>
