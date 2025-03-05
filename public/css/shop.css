@@ -58,6 +58,15 @@ header img {
     color: #dadada;
 }
 
+.sort-by-section {
+    padding: 20px; 
+    background-color: #1f1f1f; 
+    border-bottom: 1px solid #444;
+    margin-bottom: 20px; /* addd space below the sort by section */
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Sspace between the label and  the dropdown menu*/
+}
 
 .main-container {
     display: flex;
