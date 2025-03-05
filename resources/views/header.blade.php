@@ -1,5 +1,5 @@
 <header>
-    <img src="{{ asset('img/logo.png') }}" alt="Crep Culture Logo"> <!-- The logo for our website-->
+    <img class="logo" src="{{ asset('img/logo.png') }}" alt="Crep Culture Logo"> <!-- The logo for our website-->
     <nav>
         <a href="/">Home</a><!-- Linking the index page with the Home button-->
         <a href="/shop">Shop</a><!-- Linking shop page with the Shop button-->
