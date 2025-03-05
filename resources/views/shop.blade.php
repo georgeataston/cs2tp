@@ -23,6 +23,19 @@
         </form>
     </section>
 
+      <!-- sort by filter-->
+        <section class="sort-by-section">
+            <label for="sort-by">Sort by:</label>
+            <select id="sort-by">
+                <option value="default">Default</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="popularity">Popularity</option>
+                <option value="new-arrivals">New Arrivals</option>
+            </select>
+        </section>
+
+
     <!-- Main Container -->
     <div class="main-container">
         <!-- Filter Section -->
@@ -37,18 +50,7 @@
     <h3>Filter by</h3>
     <form id="filter-form">
         
-        <!-- sort by filter-->
-        <section class="sort-by-section">
-            <label for="sort-by">Sort by:</label>
-            <select id="sort-by">
-                <option value="default">Default</option>
-                <option value="price-asc">Price: Low to High</option>
-                <option value="price-desc">Price: High to Low</option>
-                <option value="popularity">Popularity</option>
-                <option value="new-arrivals">New Arrivals</option>
-            </select>
-        </section>
-
+      
 {{--        <!-- Product Type -->
         <div>
             <h4>Product Type</h4>
