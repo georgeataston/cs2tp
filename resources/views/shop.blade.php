@@ -67,6 +67,19 @@
             <label><input type="checkbox" name="price" value="higher"> £251-500 </label>
         </div>
 
+         <!-- sort by -->    <!-- added under price to ensure consistancy -->
+         <section class="sort-by-section">
+            <label for="sort-by">Sort by:</label>
+            <select id="sort-by">
+                <option value="default">Default</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="popularity">Popularity</option>
+                <option value="new-arrivals">New Arrivals</option>
+            </select>
+        </section>
+
+
         <!-- Size -->
 <div>
     <h4>Size</h4>
@@ -93,17 +106,7 @@
 </aside>
 
 
-        <section class="sort-by-section">
-            <label for="sort-by">Sort by:</label>
-            <select id="sort-by">
-                <option value="default">Default</option>
-                <option value="price-asc">Price: Low to High</option>
-                <option value="price-desc">Price: High to Low</option>
-                <option value="popularity">Popularity</option>
-                <option value="new-arrivals">New Arrivals</option>
-            </select>
-        </section>
-
+       
 
         <section class="product-grid" id="product-grid">
             @if($stockList->isEmpty())
