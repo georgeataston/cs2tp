@@ -1,5 +1,13 @@
 /* Product page/shop page css*/
 
+header img {
+    height: 50px;
+    width: 150px;
+    height: 149px;
+    object-fit: cover; /* nsures the image fills the space around */
+}
+
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
