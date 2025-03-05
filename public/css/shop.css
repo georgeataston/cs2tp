@@ -66,17 +66,10 @@ header img {
     display: flex;
     align-items: center;
     gap: 10px; /* Sspace between the label and  the dropdown menu*/
+    transform: translateX(2px);   /* move to right very little*/
 }
 
-.sort-by-section {
-    padding: 20px; 
-    background-color: #1f1f1f; /* Match the background color of the product-header */
-    border-bottom: 1px solid #444; 
-    margin-bottom: 20px; /* addsm space below the Sort by section */
-    display: flex;
-    align-items: center;
-    gap: 10px; /* space between the label and the  dropdown menus */
-}
+
 
 
 .main-container {
