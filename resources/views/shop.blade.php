@@ -15,7 +15,7 @@
     <!-- Product Page Header -->
     <section class="product-header">
         <h1>{{$shopTitle}}</h1>
-        <p>Purchase a range of shoes here. Connect with resellers for cheaper products.</p>
+        <p>Browse our fantastic range of shoes here. Discover new styles on Crep Culture.</p>
         <br>
         <form action="/shop" method="get">
             @csrf
@@ -33,6 +33,9 @@
                 <option value="popularity">Popularity</option>
                 <option value="new-arrivals">New Arrivals</option>
             </select>
+           <div>
+                <p>| {{ $stockList->count() }} products found</p>
+           </div>
         </section>
 
 
@@ -104,10 +107,7 @@
         <button type="submit" class="filter-btn">Apply Filters</button>
     </form>
 </aside>
-
-
-     
-
+        
         <section class="product-grid" id="product-grid">
             @if($stockList->isEmpty())
                 <p>There are no items listed right now. Please check back later.</p>
