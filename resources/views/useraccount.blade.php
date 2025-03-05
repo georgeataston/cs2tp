@@ -59,18 +59,33 @@
 
     <!-- Account details form -->
     <section class="account-details">
-        <h2>Update Account Details</h2>
-        <form class="update-form">
+        <h2 id="orange">Account Details</h2><br>
+        <h2>Update Personal Details</h2><br>
+        <form class="update-form" action="/account/update/details" method="post">
+            @csrf
             <label for="name">Name:</label>
             <input type="text" id="name" name="name" required value="{{$fullName}}">
 
             <label for="email">Email:</label>
             <input type="email" id="email" name="email" required value="{{$email}}">
 
-            <label for="password">New Password:</label>
+            <label for="password">Current Password:</label>
             <input type="password" id="password" name="password">
 
             <button type="submit" class="update-btn">Update Details</button>
+        </form>
+
+        <br><br>
+        <h2>Update Password</h2><br>
+        <form class="update-form" action="/account/update/password" method="post">
+            @csrf
+            <label for="currentPassword">Current Password:</label>
+            <input type="password" id="currentPassword" name="currentPassword">
+
+            <label for="newPassword">New Password:</label>
+            <input type="password" id="newPassword" name="newPassword">
+
+            <button type="submit" class="update-btn">Update Password</button><br>
         </form>
     </section>
 
