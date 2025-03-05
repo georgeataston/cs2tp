@@ -49,27 +49,43 @@
     </div>
     <div class="product-display">
         <div class="product-info-section">
-            <h2>Reviews</h2>
+            <h2 id="orange">Reviews</h2>
             @if($reviews->count() == 0)
                 <p>There are no reviews for this product.</p>
             @endif
 
+            @if(session('review_success'))
+                <p id="form-success">{{ session('review_success') }}</p>
+            @endif
+
+            @if($hasLeftReview)
+                <p>Thank you for leaving a review. Your opinion supports other shoppers make informed decisions! If you have any problems with your review, please do let us know and contact us.</p>
+            @endif
+
             @if($canLeaveReview)
                 <br>
-                <h3>Thanks for buying this product. Leave a review!</h3>
+                <h3 id="orange">Thanks for buying this product. Leave a review!</h3>
                 <p>Please leave your review, with a title and your opinion. Please also choose a rating, with 5 being outstanding and 1 being very poor.</p>
                 <br>
                 <form class="product-options" action="/reviews/create" method="post">
+                    @csrf
                     <label for="rating">Rating</label>
-                    <input type="number" id="rating" name="rating" min="1" max="5">
+                    <select id="rating" name="rating">
+                        <option value="0"  {{!old('rating') ? 'selected' : ''}} disabled hidden>Choose rating</option>
+                        <option value="5" {{old('rating') == 5 ? 'selected' : ''}}>5 stars</option>
+                        <option value="4" {{old('rating') == 4 ? 'selected' : ''}}>4 stars</option>
+                        <option value="3" {{old('rating') == 3 ? 'selected' : ''}}>3 stars</option>
+                        <option value="2" {{old('rating') == 2 ? 'selected' : ''}}>2 stars</option>
+                        <option value="1" {{old('rating') == 1 ? 'selected' : ''}}>1 star</option>
+                    </select>
                     @error('rating')<p id="form-error">{{ $message }}</p>@enderror
 
                     <label for="title">Title</label>
-                    <input type="text" id="title" name="title" placeholder="Your review title">
+                    <input type="text" id="title" name="title" placeholder="Your review title" value="{{old('title') ? old('title') : ""}}">
                     @error('title')<p id="form-error">{{ $message }}</p>@enderror
 
                     <label for="content">Your review</label>
-                    <textarea type="text" id="content" name="content" placeholder="Your review"></textarea>
+                    <textarea type="text" id="content" name="content" placeholder="Your review">{{old('content') ? old('content') : ""}}</textarea>
                     @error('content')<p id="form-error">{{ $message }}</p>@enderror
 
                     <input type="hidden" name="sid" value="{{$stock->id}}" />
@@ -78,6 +94,20 @@
                 </form>
             @endif
 
+            @if($reviews->count() != 0) <br>@endif
+            @foreach($reviews as $review)
+                <div class="review">
+                    <h3 id="orange">{{ $review->title }}</h3>
+                    <p id="gold"><b>{{ $review->rating }} stars</b></p>
+                    <p>by {{ $review->user->name }}</p><br>
+                    <p>{{ $review->content }}</p>
+                    @if (session('isAdmin'))
+                        <br>
+                        <p class="link-grey">admin controls: <span>edit</span> <span>delete</span> | review id #{{ $review->rid }}</p>
+                    @endif
+                </div>
+                <br>
+            @endforeach
         </div>
 
     </div>
@@ -93,4 +123,37 @@
     #form-error {
         color: red;
     }
+
+    #gold {
+        color: gold;
+    }
+
+    #grey {
+        color: grey;
+    }
+
+    .link-grey {
+        color: grey;
+    }
+
+    .link-grey span {
+        color: grey;
+        text-decoration: underline;
+    }
+
+    .link-grey span :hover {
+        cursor: pointer;
+        color: grey;
+        text-decoration-color: gray;
+        text-decoration-style: wavy;
+    }
+
+    .edit-box {
+        display: none;
+    }
+
+    .delete-box {
+        display: none;
+    }
+
 </style>

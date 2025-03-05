@@ -26,10 +26,14 @@ class ReviewController extends Controller
         // and sanitise the input
         $input = $request->validate([
             'sid' => 'required|integer',
-            'rating' => 'required|integer|min:1|max:5',
+            'rating' => 'required|integer|min:0|max:5',
             'title' => 'required|string',
             'content' => 'required|string',
         ]);
+
+        if ($input['rating'] == 0) {
+            return back()->withInput()->withErrors('rating', 'Please select a rating.');
+        }
 
         // Security checks
 
@@ -39,23 +43,29 @@ class ReviewController extends Controller
         }
 
         $userId = $request->session()->get('id');
-        $user = Account::where('id', '=', $userId)->first();
+        $user = Account::where('aid', '=', $userId)->first();
 
         // ensure user actually exists
         if (!$user) {
             return back()->withInput()->withErrors('submit', 'Apparently your account does not exist! Please refresh the page or log out and log back in to refresh your session.');
         }
 
-        $item = Stock::where('id', '=', $input['sid'])->first();
-        if (!$item)
+        $stock = Stock::where('id', '=', $input['sid'])->first();
+        if (!$stock)
             abort(400);
 
         // ensure they have bought the item
         $hasBoughtItem = false;
+        $reviewLeft = Review::where('sid', '=', $input['sid'])->where('aid', '=', $userId)->first();
+
+        if ($reviewLeft) {
+            return back()->withInput()->withErrors('submit', 'You have already left a review on this item!');
+        }
+
         $orders = Order::where('user_id', '=', $userId)->get();
         foreach($orders as $order) {
             foreach($order->items as $item) {
-                if ($item->product_id == $item->id && $item->status == 1) {
+                if ($item->product_id == $stock->id && $item->status == 1 && $order->status == 3) {
                     $hasBoughtItem = true;
                     break;
                 }
@@ -70,12 +80,12 @@ class ReviewController extends Controller
 
         $review = new Review;
         $review->aid = $userId;
-        $review->sid = $item->id;
+        $review->sid = $stock->id;
         $review->rating = $input['rating'];
         $review->title = $input['title'];
         $review->content = $input['content'];
         $review->save();
 
-        return redirect('/shop/' . $item->id)->with("review_success", "Your review has been submitted. Thank you!");
+        return redirect('/shop/' . $stock->id)->with("review_success", "Your review has been submitted. Thank you!");
     }
 }

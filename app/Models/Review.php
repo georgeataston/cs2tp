@@ -40,7 +40,7 @@ class Review extends Model
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(Account::class);
+        return $this->belongsTo(Account::class, 'aid');
     }
 
     public function stock(): BelongsTo

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\BasketController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ReviewController;
 use App\Models\Brand;
 use App\Models\Feature;
 use App\Models\Order;
@@ -31,6 +32,8 @@ Route::post('/basket/add', [BasketController::class, 'add']);
 Route::post('/basket/remove', [BasketController::class, 'remove']);
 
 Route::post('/orders/checkout', [OrderController::class, 'checkout']);
+
+Route::post('/reviews/create', [ReviewController::class, 'create'])->middleware(SessionValidator::class);
 
 Route::post('/admin/orders/api/pick', [OrderController::class, 'pick'])->middleware(AdminSessionValidator::class);
 Route::post('/admin/orders/api/unpick', [OrderController::class, 'unpick'])->middleware(AdminSessionValidator::class);
@@ -179,21 +182,26 @@ Route::get('/shop/{id}', function(string $id) {
 
     $reviews = Review::where('sid', '=', $id)->get();
     $canLeaveReview = false;
+    $hasLeftReview = false;
     if (session('id')) {
-        $orders = Order::where('user_id', '=', session('id'))->get();
-        foreach($orders as $order) {
-            foreach($order->items as $item) {
-                if ($item->product_id == $item->id && $item->status == 1) {
-                    $canLeaveReview = true;
-                    break;
+
+        $reviewLeft = Review::where('sid', '=', $id)->where('aid', '=', session('id'))->first();
+        if (!$reviewLeft) {
+            $orders = Order::where('user_id', '=', session('id'))->get();
+            foreach($orders as $order) {
+                foreach($order->items as $item) {
+                    if ($item->product_id == $stock->id && $item->status == 1 && $order->status == 3) {
+                        $canLeaveReview = true;
+                        break;
+                    }
                 }
             }
+        } else {
+            $hasLeftReview = true;
         }
     }
 
-    
-
-    return view('productdisplay')->with('stock', $stock)->with('reviews', $reviews)->with('canLeaveReview', $canLeaveReview);
+    return view('productdisplay')->with('stock', $stock)->with('reviews', $reviews)->with('canLeaveReview', $canLeaveReview)->with('hasLeftReview', $hasLeftReview);
 });
 
 Route::get('/exampepwdreset', function() {
