@@ -12,35 +12,33 @@
 
     <section class="auth-form">
         <div class="auth-form-content">
-            <h2>Login to Account</h2>
-            @if (session('fail') == "invalidsession")
-                <p id="form-error">Please log in to access this page.</p>
-                <br>
-            @elseif (session('success'))
-                <p id="form-success">{{session('success')}}</p>
-                <br>
-            @endif
-            <form action="/login" method="post">
+            <h2>Password Recovery</h2>
+            <p>Please enter your account's e-mail address and a password reset link will be sent to you.</p>
+            <br>
+            <form action="/recovery" method="post">
                 @csrf
+                @if (session('error'))
+                    <p id="form-error">{{session('error')}}</p>
+                    <br>
+                @endif
                 <p class="credentials">Enter email</p>
                 <input type="text" placeholder="Enter email" name="email">
                 @error('email')<p id="form-error">{{ $message }}</p>@enderror
 
-                <p class="credentials">Enter password</p>
-                <input type="password" placeholder="Enter Password" name="password">
-                @error('password')<p id="form-error">{{ $message }}</p>@enderror
-
-                @if (session('redirect'))
-                    <input hidden type="text" name="redirect" value="/{{session("redirect")}}">
-                @else
-                    <input hidden type="text" name="redirect" value="/">
-                @endif
-
                 @error('login')<p id="form-error">{{ $message }}</p>@enderror
-                <button type="submit" class="submit-btn">Login</button>
+                <button type="submit" class="submit-btn">Reset Password</button>
+                @if (session("success"))
+                    <br>
+                    <br>
+                    @if (session("success") == "true")
+                        <p id="form-success">If an account with that e-mail exists, a password reset link has been sent.</p>
+                    @else
+                        <p id="form-error">{{session('success')}}</p>
+                    @endif
+                @endif
             </form>
             <br>
-            <p>Forgotten your password? <a id="white-link" href="/recovery">Recover your account.</a></p>
+            <p>Don't know your email? <a id="white-link" href="/contact">Contact us.</a></p>
         </div>
     </section>
 

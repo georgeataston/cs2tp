@@ -1,0 +1,105 @@
+/* General Page Styles */
+body {
+    background-color: #2c2c2c; /* Light gray background */
+    font-family: 'Arial', sans-serif;
+    color: white;
+}
+
+.btn-primary {
+    background-color: #ff8c00;
+    border-color: #ff8c00;
+}
+
+.navbar {
+    background-color: #343a40; /* Dark gray background for the navbar */
+}
+
+.navbar-nav .nav-link {
+    color: #fff !important;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #ff8c00 !important; /* Hover effect color */
+}
+
+.page-container {
+    margin-top: 50px;
+}
+
+.card {
+    border-radius: 10px; /* Rounded corners for cards */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow effect */
+}
+
+.card-title {
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.card-body {
+    background-color: #ffffff;
+}
+
+.btn-primary {
+    background-color: #ff8c00; /* Golden button color */
+    border-color: #ff8c00;
+}
+
+.btn-primary:hover {
+    background-color: #ff8c00; /* Hover effect for button */
+    border-color: #ff8c00;
+}
+
+.footer {
+    background-color: #343a40; /* Same as navbar for consistency */
+    color: #fff;
+    text-align: center;
+    padding: 20px 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.footer p {
+    margin: 0;
+}
+
+.card-text {
+    font-size: 1rem;
+    color: #666; /* Slightly muted text color */
+}
+
+.card-title {
+    color: black;
+}
+
+footer {
+    background-color: #343a40;
+}
+
+.btn-success, .btn-danger, .btn-warning, .btn-secondary {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    border-color: #ffc107;
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    border-color: #6c757d;
+}
+
+.btn-sm {
+    padding: 0.2rem 0.5rem;
+    font-size: 0.875rem;
+    border-radius: 0.2rem;
+}
+

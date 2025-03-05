@@ -4,17 +4,26 @@
         <a href="/">Home</a><!-- Linking the index page with the Home button-->
         <a href="/shop">Shop</a><!-- Linking shop page with the Shop button-->
         <a href="/about">About Us</a><!--Linking about us page with the About Us button-->
-        <a href="/contact">Contact</a><!-- Linking contact page with the contact button-->
         @if(session('id') == null)
+            <a href="/contact">Contact</a><!-- Linking contact page with the contact button-->
             <div class="auth-buttons"> <!-- Putting login and sign-up buttons in a class to make it easier for styles to affect all-->
                 <a href="/login" class="auth-btn login-btn cta">Login</a> <!-- Link to the login page with login button while assigning buttons in the same class-->
                 <a href="/signup" class="auth-btn signup-btn cta">Sign Up</a><!-- Link sign-up button to the sign-up page while being in same class-->
             </div>
         @else
-            <div class="auth-buttons"> <!-- Putting login and sign-up buttons in a class to make it easier for styles to affect all-->
-                <a href="/account" class="auth-btn login-btn cta">Account</a> <!-- Link to the login page with login button while assigning buttons in the same class-->
-                <a href="/logout" class="auth-btn signup-btn cta">Sign Out</a><!-- Link sign-up button to the sign-up page while being in same class-->
-            </div>
+            @if(session('isAdmin') == 1)
+                <div class="auth-buttons"> <!-- Putting login and sign-up buttons in a class to make it easier for styles to affect all-->
+                    <a href="/admin" class="auth-btn login-btn cta">Admin</a>
+                    <a href="/account" class="auth-btn login-btn cta">Account</a> <!-- Link to the login page with login button while assigning buttons in the same class-->
+                    <a href="/logout" class="auth-btn signup-btn cta">Sign Out</a><!-- Link sign-up button to the sign-up page while being in same class-->
+                </div>
+            @else
+                <a href="/contact">Contact</a><!-- Linking contact page with the contact button-->
+                <div class="auth-buttons"> <!-- Putting login and sign-up buttons in a class to make it easier for styles to affect all-->
+                    <a href="/account" class="auth-btn login-btn cta">Account</a> <!-- Link to the login page with login button while assigning buttons in the same class-->
+                    <a href="/logout" class="auth-btn signup-btn cta">Sign Out</a><!-- Link sign-up button to the sign-up page while being in same class-->
+                </div>
+            @endif
         @endif
     </nav>
 

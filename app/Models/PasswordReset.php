@@ -4,9 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class Order extends Model
+class PasswordReset extends Model
 {
     use HasFactory;
 
@@ -15,14 +16,14 @@ class Order extends Model
      *
      * @var string
      */
-    protected $table = "orders";
+    protected $table = "password_reset";
 
     /**
      * The primary key associated with the table.
      *
      * @var string
      */
-    protected $primaryKey = "id";
+    protected $primaryKey = "pwrid";
 
     /**
      * Indicates if the model's ID is auto-incrementing.
@@ -38,7 +39,8 @@ class Order extends Model
      */
     public $timestamps = true;
 
-    public function items(): HasMany {
-        return $this->hasMany(OrderItem::class, "order_id");
+    public function account(): BelongsTo
+    {
+        return $this->belongsTo(Account::class, 'aid');
     }
 }

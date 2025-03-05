@@ -42,4 +42,9 @@ class Account extends Model
     {
         return $this->hasMany(Review::class);
     }
+
+    public function resets(): HasMany
+    {
+        return $this->hasMany(PasswordReset::class);
+    }
 }
