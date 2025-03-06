@@ -3,10 +3,12 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\BasketController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ReviewController;
 use App\Models\Brand;
 use App\Models\Feature;
 use App\Models\Order;
 use App\Models\PasswordReset;
+use App\Models\Review;
 use App\Models\Stock;
 use App\Http\Controllers\ContactFormController;
 use App\Http\Middleware\AdminSessionValidator;
@@ -30,6 +32,11 @@ Route::post('/basket/add', [BasketController::class, 'add']);
 Route::post('/basket/remove', [BasketController::class, 'remove']);
 
 Route::post('/orders/checkout', [OrderController::class, 'checkout']);
+
+Route::post('/reviews/create', [ReviewController::class, 'create'])->middleware(SessionValidator::class);
+Route::post('/admin/reviews/edit', [ReviewController::class, 'edit'])->middleware(AdminSessionValidator::class);
+Route::post('/admin/reviews/delete', [ReviewController::class, 'delete'])->middleware(AdminSessionValidator::class);
+Route::post('/admin/reviews/restore', [ReviewController::class, 'restore'])->middleware(AdminSessionValidator::class);
 
 Route::post('/admin/orders/api/pick', [OrderController::class, 'pick'])->middleware(AdminSessionValidator::class);
 Route::post('/admin/orders/api/unpick', [OrderController::class, 'unpick'])->middleware(AdminSessionValidator::class);
@@ -176,7 +183,52 @@ Route::get('/shop/{id}', function(string $id) {
     if ($stock == null)
         abort('404');
 
-    return view('productdisplay')->with('stock', $stock);
+    $reviews = Review::where('sid', '=', $id);
+    if (!session('isAdmin'))
+        $reviews = $reviews->where('deleted', '=', '0');
+    $reviews = $reviews->get();
+
+    $canLeaveReview = false;
+    $hasLeftReview = false;
+    if (session('id')) {
+
+        $reviewLeft = Review::where('sid', '=', $id)->where('aid', '=', session('id'))->first();
+        if (!$reviewLeft) {
+            $orders = Order::where('user_id', '=', session('id'))->get();
+            foreach($orders as $order) {
+                foreach($order->items as $item) {
+                    if ($item->product_id == $stock->id && $item->status == 1 && $order->status == 3) {
+                        $canLeaveReview = true;
+                        break;
+                    }
+                }
+            }
+        } else {
+            $hasLeftReview = true;
+        }
+    }
+
+    // review average
+    $reviewTotal = 0;
+    $reviewCount = 0;
+    foreach($reviews as $review) {
+        if ($review->deleted == 1)
+            continue;
+
+        $reviewTotal = $reviewTotal + $review->rating;
+        $reviewCount = $reviewCount + 1;
+    }
+
+    $reviewAverage = 0;
+    if ($reviewCount > 0)
+        $reviewAverage = $reviewTotal / $reviewCount;
+
+    return view('productdisplay')->with('stock', $stock)
+        ->with('reviews', $reviews)
+        ->with('canLeaveReview', $canLeaveReview)
+        ->with('hasLeftReview', $hasLeftReview)
+        ->with('reviewAverage', $reviewAverage)
+        ->with('reviewCount', $reviewCount);
 });
 
 Route::get('/exampepwdreset', function() {
