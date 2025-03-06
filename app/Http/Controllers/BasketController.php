@@ -28,7 +28,7 @@ class BasketController extends Controller
         ]);
 
         if (strtolower($input['size']) == 'select') {
-            return back()->withErrors(['size' => 'Please select a size.']);
+            return back()->withErrors(['size' => 'Please select a size.'])->withInput();
         }
 
         if (!str_starts_with($input['size'], 'UK ')) {
@@ -42,8 +42,12 @@ class BasketController extends Controller
         }
 
         $stock = Stock::where('id', '=', $input['id'])->first();
-        if ($stock == null) {
+        if ($stock == null || $stock->isOutOfStock()) {
             abort(400);
+        }
+
+        if ($stock->quantity < $input['quantity']) {
+            return back()->withErrors(['quantity' => 'We do not have enough stock for the amount requested.'])->withInput();
         }
 
         array_push($cart,

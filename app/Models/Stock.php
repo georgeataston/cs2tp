@@ -53,7 +53,7 @@ class Stock extends Model
     }
     public function isLowStock(): bool
     {
-        return $this->quantity > 0 && $this->quantity < 5; 
+        return $this->quantity > 0 && $this->quantity <= 5;
     }
 
     public function isOutOfStock(): bool

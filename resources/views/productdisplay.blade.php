@@ -17,38 +17,46 @@
         <div class="product-info-section">
             <h1>{{$stock->category->brand->name}} {{$stock->category->name}}</h1>
             <h2>{{$stock->name}}</h2>
-            <p class="price">£{{$stock->price}}</p>
-            @if ($stock->quantity == 0)
+            @if(!$stock->isOutOfStock())
+                <p class="price">£{{$stock->price}}</p>
+            @endif
+            @if ($stock->isOutOfStock())
+                <br>
                  <div class="alert out-of-stock"> Out of Stock</div>
-            @elseif ($stock->quantity > 0 && $stock->quantity < 5)
+                <br>
+            @elseif ($stock->isLowStock())
                  <div class="alert low-stock"> Low in Stock: Only {{ $stock->quantity }} left!</div>
-              @endif
-            <form class="product-options" action="/basket/add" method="post">
-                @csrf
-                <label for="size">Size</label>
-                <select id="size" name="size">
-                    <option>Select</option>
-                    <option>UK 4</option>
-                    <option>UK 5</option>
-                    <option>UK 6</option>
-                    <option>UK 7</option>
-                    <option>UK 8</option>
-                    <option>UK 9</option>
-                    <option>UK 10</option>
-                    <option>UK 11</option>
-                    <option>UK 12</option>
-                    <option>UK 13</option>
-                </select>
-                @error('size')<p id="form-error">{{ $message }}</p>@enderror
-                <label for="quantity">Quantity</label>
-                <input type="number" id="quantity" name="quantity" value="1" min="1">
-                <input type="hidden" name="id" value="{{$stock->id}}" />
-                <button type="submit" class="add-to-cart-btn">Add to Cart</button>
-                @if (session('success') == "added")
-                    <p id="form-success">Item has been added to your basket!</p>
-                    <br>
-                @endif
-            </form>
+                <br><br>
+            @endif
+            @if (!$stock->isOutOfStock())
+                <form class="product-options" action="/basket/add" method="post">
+                    @csrf
+                    <label for="size">Size</label>
+                    <select id="size" name="size">
+                        <option>Select</option>
+                        <option>UK 4</option>
+                        <option>UK 5</option>
+                        <option>UK 6</option>
+                        <option>UK 7</option>
+                        <option>UK 8</option>
+                        <option>UK 9</option>
+                        <option>UK 10</option>
+                        <option>UK 11</option>
+                        <option>UK 12</option>
+                        <option>UK 13</option>
+                    </select>
+                    @error('size')<p id="form-error">{{ $message }}</p>@enderror
+                    <label for="quantity">Quantity</label>
+                    <input type="number" id="quantity" name="quantity" min="1" value="{{old('quantity') ? old('quantity') : 1}}">
+                    @error('quantity')<p id="form-error">{{ $message }}</p>@enderror
+                    <input type="hidden" name="id" value="{{$stock->id}}" />
+                    <button type="submit" class="add-to-cart-btn">Add to Cart</button>
+                    @if (session('success') == "added")
+                        <p id="form-success">Item has been added to your basket!</p>
+                        <br>
+                    @endif
+                </form>
+            @endif
             <p class="description">{{$stock->description}}</p>
         </div>
     </main>
