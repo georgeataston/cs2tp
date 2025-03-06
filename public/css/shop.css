@@ -33,15 +33,6 @@ header {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-header img {
-    width: 150px;
-    height: 149px;
-    object-fit: cover; /* nsures the image fills the space around */
-}
-
-
-
-
 .product-header {
     padding: 20px;
     background-color: #1f1f1f;
@@ -60,6 +51,19 @@ header img {
     font-size: 1rem;
     color: #dadada;
 }
+
+.sort-by-section {
+    padding: 20px;
+    background-color: #1f1f1f;
+    border-bottom: 1px solid #444;
+    margin-bottom: 20px; /* addd space below the sort by section */
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Sspace between the label and  the dropdown menu*/
+    transform: translateX(2px);   /* move to right very little*/
+}
+
+
 
 
 .main-container {

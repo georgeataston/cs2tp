@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products - Crep Culture</title>
-    <link rel="stylesheet" href="{{asset('css/styles.css')}}">
     <link rel="stylesheet" href="{{asset('css/shop.css')}}">
+    <link rel="stylesheet" href="{{asset('css/styles.css')}}">
 </head>
 <body>
     @include("header")
@@ -15,13 +15,29 @@
     <!-- Product Page Header -->
     <section class="product-header">
         <h1>{{$shopTitle}}</h1>
-        <p>Purchase a range of shoes here. Connect with resellers for cheaper products.</p>
+        <p>Browse our fantastic range of shoes here. Discover new styles on Crep Culture.</p>
         <br>
         <form action="/shop" method="get">
             @csrf
             <input type="text" id="search-bar" placeholder="Search all products..." name="search"/>
         </form>
     </section>
+
+
+       <section class="sort-by-section">
+            <label for="sort-by">Sort by:</label>
+            <select id="sort-by">
+                <option value="default">Default</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="popularity">Popularity</option>
+                <option value="new-arrivals">New Arrivals</option>
+            </select>
+           <div>
+                <p>| {{ $stockList->count() }} products found</p>
+           </div>
+        </section>
+
 
     <!-- Main Container -->
     <div class="main-container">
@@ -91,19 +107,6 @@
         <button type="submit" class="filter-btn">Apply Filters</button>
     </form>
 </aside>
-
-
-        <section class="sort-by-section">
-            <label for="sort-by">Sort by:</label>
-            <select id="sort-by">
-                <option value="default">Default</option>
-                <option value="price-asc">Price: Low to High</option>
-                <option value="price-desc">Price: High to Low</option>
-                <option value="popularity">Popularity</option>
-                <option value="new-arrivals">New Arrivals</option>
-            </select>
-        </section>
-
 
         <section class="product-grid" id="product-grid">
             @if($stockList->isEmpty())

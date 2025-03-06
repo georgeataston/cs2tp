@@ -336,7 +336,9 @@
         align-items: center;/*Align items to centre of header*/
         }
         header .logo {
-        flex: 0 1 auto; /*Ensure logo does not take up too much space*/
+        width: 120px;
+        height: 100px;
+        object-fit: cover; /* nsures the image fills the space around */
         }
         nav {
         display: flex; /*Flexbox layout*/
