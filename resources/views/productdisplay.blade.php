@@ -18,6 +18,11 @@
             <h1>{{$stock->category->brand->name}} {{$stock->category->name}}</h1>
             <h2>{{$stock->name}}</h2>
             <p class="price">£{{$stock->price}}</p>
+            @if ($stock->quantity == 0)
+                 <div class="alert out-of-stock"> Out of Stock</div>
+            @elseif ($stock->quantity > 0 && $stock->quantity < 5)
+                 <div class="alert low-stock"> Low in Stock: Only {{ $stock->quantity }} left!</div>
+              @endif
             <form class="product-options" action="/basket/add" method="post">
                 @csrf
                 <label for="size">Size</label>
