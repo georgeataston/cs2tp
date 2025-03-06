@@ -52,6 +52,8 @@
             <h2 id="orange">Reviews</h2>
             @if($reviews->count() == 0)
                 <p>There are no reviews for this product.</p>
+            @else
+                <p><span id="gold"><b>{{ $reviewAverage }} star</b></span> review on average from {{ $reviews->count() }} shoppers.</p>
             @endif
 
             @if(session('review_success'))
@@ -59,6 +61,7 @@
             @endif
 
             @if($hasLeftReview)
+                <br>
                 <p>Thank you for leaving a review. Your opinion supports other shoppers make informed decisions! If you have any problems with your review, please do let us know and contact us.</p>
             @endif
 

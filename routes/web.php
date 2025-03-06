@@ -201,7 +201,21 @@ Route::get('/shop/{id}', function(string $id) {
         }
     }
 
-    return view('productdisplay')->with('stock', $stock)->with('reviews', $reviews)->with('canLeaveReview', $canLeaveReview)->with('hasLeftReview', $hasLeftReview);
+    // review average
+    $reviewTotal = 0;
+    foreach($reviews as $review) {
+        $reviewTotal = $reviewTotal + $review->rating;
+    }
+
+    $reviewAverage = 0;
+    if ($reviews->count() > 0)
+        $reviewAverage = $reviewTotal / $reviews->count();
+
+    return view('productdisplay')->with('stock', $stock)
+        ->with('reviews', $reviews)
+        ->with('canLeaveReview', $canLeaveReview)
+        ->with('hasLeftReview', $hasLeftReview)
+        ->with('reviewAverage', $reviewAverage);
 });
 
 Route::get('/exampepwdreset', function() {
