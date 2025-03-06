@@ -14,7 +14,7 @@ class AdminSessionValidator
     public function handle(Request $request, Closure $next): Response
     {
         if (!$request->session()->has('id') || !$request->session()->has('isAdmin'))
-            return redirect('login'); // Proper messaging will come at a later stage, awaiting the front-end.
+            return redirect('login')->with('fail', 'invalidsession')->with('redirect', $request->path());
 
         if ($request->session()->get('isAdmin') != 1)
             abort('403');
