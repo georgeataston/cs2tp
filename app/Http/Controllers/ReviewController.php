@@ -88,4 +88,88 @@ class ReviewController extends Controller
 
         return redirect('/shop/' . $stock->id)->with("review_success", "Your review has been submitted. Thank you!");
     }
+
+    public function edit(Request $request): RedirectResponse
+    {
+        // Validate user input, check for required values
+        // and sanitise the input
+        $input = $request->validate([
+            'rid' => 'required|integer',
+            'title' => 'required|string',
+            'content' => 'required|string',
+            'reason' => 'required|string',
+        ]);
+
+        $user = Account::where('aid', '=', $request->session()->get('id'))->first();
+        if (!$user)
+            abort(401);
+        if ($user->isAdmin == 0)
+            abort(403);
+
+        $review = Review::where('rid', '=', $input['rid'])->first();
+        if (!$review)
+            abort(400);
+
+        $review->edited = 1;
+        $review->edited_by = $user->aid;
+        $review->edited_reason = $input['reason'];
+        $review->title = $input['title'];
+        $review->content = $input['content'];
+        $review->save();
+
+        return redirect('/shop/' . $review->sid)->with("review_success", "Review has been edited successfully.");
+    }
+
+    public function delete(Request $request): RedirectResponse
+    {
+        // Validate user input, check for required values
+        // and sanitise the input
+        $input = $request->validate([
+            'rid' => 'required|integer',
+            'reason' => 'required|string',
+        ]);
+
+        $user = Account::where('aid', '=', $request->session()->get('id'))->first();
+        if (!$user)
+            abort(401);
+        if ($user->isAdmin == 0)
+            abort(403);
+
+        $review = Review::where('rid', '=', $input['rid'])->first();
+        if (!$review)
+            abort(400);
+
+        $review->deleted = 1;
+        $review->deleted_by = $user->aid;
+        $review->deleted_reason = $input['reason'];
+        $review->save();
+
+        return redirect('/shop/' . $review->sid)->with("review_success", "Review has been deleted successfully.");
+    }
+
+    public function restore(Request $request): RedirectResponse
+    {
+        // Validate user input, check for required values
+        // and sanitise the input
+        $input = $request->validate([
+            'rid' => 'required|integer',
+        ]);
+
+        $user = Account::where('aid', '=', $request->session()->get('id'))->first();
+        if (!$user)
+            abort(401);
+        if ($user->isAdmin == 0)
+            abort(403);
+
+        $review = Review::where('rid', '=', $input['rid'])->first();
+        if (!$review)
+            abort(400);
+
+        $review->deleted = 0;
+        $review->deleted_by = $user->aid;
+        $review->deleted_reason = "Review restored.";
+        $review->save();
+
+        return redirect('/shop/' . $review->sid)->with("review_success", "Review has been restored successfully.");
+    }
 }

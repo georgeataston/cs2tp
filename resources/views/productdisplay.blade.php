@@ -7,6 +7,40 @@
     <title>{{$stock->category->brand->name}} {{$stock->category->name}} {{$stock->name}} - Crep Culture</title>
     <link rel="stylesheet" href="{{asset('css/styles.css')}}">
     <link rel="stylesheet" href="{{asset('css/productdisplay.css')}}">
+    <script>
+        function onDelete(id) {
+            let btn = document.getElementById(id);
+            if (btn.innerHTML === "delete") {
+                document.getElementById(id + "-form").style.display = "block";
+                btn.innerHTML = "cancel";
+            } else if (btn.innerHTML === "cancel") {
+                document.getElementById(id + "-form").style.display = "none";
+                btn.innerHTML = "delete";
+            }
+        }
+
+        function onEdit(id) {
+            let btn = document.getElementById(id);
+            if (btn.innerHTML === "edit") {
+                document.getElementById(id + "-form").style.display = "block";
+                btn.innerHTML = "cancel";
+            } else if (btn.innerHTML === "cancel") {
+                document.getElementById(id + "-form").style.display = "none";
+                btn.innerHTML = "edit";
+            }
+        }
+
+        function onRestore(id) {
+            let btn = document.getElementById(id);
+            if (btn.innerHTML === "restore") {
+                document.getElementById(id + "-form").style.display = "block";
+                btn.innerHTML = "cancel";
+            } else if (btn.innerHTML === "cancel") {
+                document.getElementById(id + "-form").style.display = "none";
+                btn.innerHTML = "restore";
+            }
+        }
+    </script>
 </head>
 <body>
     @include("header")
@@ -53,7 +87,7 @@
             @if($reviews->count() == 0)
                 <p>There are no reviews for this product.</p>
             @else
-                <p><span id="gold"><b>{{ $reviewAverage }} star</b></span> review on average from {{ $reviews->count() }} shoppers.</p>
+                <p><span id="gold"><b>{{ $reviewAverage }} star</b></span> review on average from {{ $reviewCount }} shoppers.</p>
             @endif
 
             @if(session('review_success'))
@@ -100,13 +134,75 @@
             @if($reviews->count() != 0) <br>@endif
             @foreach($reviews as $review)
                 <div class="review">
+                    @if(session('isAdmin') && $review->deleted == 1)
+                        <p id="form-error"><b>REVIEW DELETED</b></p>
+                    @endif
+                    @if(session('isAdmin') && $review->edited == 1)
+                        <p id="form-success"><b>REVIEW EDITED</b></p>
+                    @endif
                     <h3 id="orange">{{ $review->title }}</h3>
                     <p id="gold"><b>{{ $review->rating }} stars</b></p>
                     <p>by {{ $review->user->name }}</p><br>
                     <p>{{ $review->content }}</p>
                     @if (session('isAdmin'))
                         <br>
-                        <p class="link-grey">admin controls: <span>edit</span> <span>delete</span> | review id #{{ $review->rid }}</p>
+                        @if($review->deleted == 0)
+                                <p class="link-grey">admin controls: <a id="review-{{$review->rid}}-edit" onclick="onEdit('review-{{$review->rid}}-edit')">edit</a> <a id="review-{{$review->rid}}-delete" onclick="onDelete('review-{{$review->rid}}-delete')">delete</a> | review id #{{ $review->rid }}</p>
+                        @else
+                                <p class="link-grey">admin controls: <a id="review-{{$review->rid}}-edit" onclick="onEdit('review-{{$review->rid}}-edit')">edit</a> <a id="review-{{$review->rid}}-restore" onclick="onRestore('review-{{$review->rid}}-restore')">restore</a> | review id #{{ $review->rid }}</p>
+                        @endif
+                        @if($review->deleted == 1)
+                            <br>
+                            <p><span id="form-error">Deleted by</span> {{ $review->deleter->name }}<span id="form-error"> | Reason:</span> "{{ $review->deleted_reason }}"</p>
+                        @endif
+                        @if($review->edited == 1)
+                            <br>
+                            <p><span id="form-success">Edited by</span> {{ $review->editor->name }}<span id="form-success"> | Reason:</span> "{{ $review->edited_reason }}"</p>
+                        @endif
+                        <div id="review-{{$review->rid}}-edit-form" style="display: none">
+                            <br>
+                            <form class="product-options" action="/admin/reviews/edit" method="post">
+                                @csrf
+
+                                <label for="title">Edit title</label>
+                                <input type="text" id="title" name="title" placeholder="Review title" value="{{old('title') ? old('title') : $review->title}}"/>
+                                @error('title')<p id="form-error">{{ $message }}</p>@enderror
+
+                                <label for="content">Edit review</label>
+                                <textarea type="text" id="content" name="content" placeholder="Review content">{{old('content') ? old('content') : $review->content}}</textarea>
+                                @error('content')<p id="form-error">{{ $message }}</p>@enderror
+
+                                <label for="reason">Reason for edit</label>
+                                <textarea type="text" id="reason" name="reason" placeholder="Your reason">{{old('reason') ? old('reason') : ""}}</textarea>
+                                @error('reason')<p id="form-error">{{ $message }}</p>@enderror
+
+                                <input type="hidden" name="rid" value="{{$review->rid}}" />
+                                <button type="submit" class="add-to-cart-btn">Edit Review</button>
+                            </form>
+                        </div>
+
+                        <div id="review-{{$review->rid}}-delete-form" style="display: none">
+                            <br>
+                            <form class="product-options" action="/admin/reviews/delete" method="post">
+                                @csrf
+                                <label for="reason">Reason for deletion</label>
+                                <textarea type="text" id="reason" name="reason" placeholder="Your reason">{{old('reason') ? old('reason') : ""}}</textarea>
+                                @error('reason')<p id="form-error">{{ $message }}</p>@enderror
+
+                                <input type="hidden" name="rid" value="{{$review->rid}}" />
+                                <button type="submit" class="add-to-cart-btn">Delete Review</button>
+                            </form>
+                        </div>
+
+                        <div id="review-{{$review->rid}}-restore-form" style="display: none">
+                            <br>
+                            <form class="product-options" action="/admin/reviews/restore" method="post">
+                                @csrf
+
+                                <input type="hidden" name="rid" value="{{$review->rid}}" />
+                                <button type="submit" class="add-to-cart-btn">Restore Review</button>
+                            </form>
+                        </div>
                     @endif
                 </div>
                 <br>
@@ -137,18 +233,17 @@
 
     .link-grey {
         color: grey;
-    }
 
-    .link-grey span {
-        color: grey;
-        text-decoration: underline;
-    }
+        a {
+            text-decoration: underline;
+        }
 
-    .link-grey span :hover {
-        cursor: pointer;
-        color: grey;
-        text-decoration-color: gray;
-        text-decoration-style: wavy;
+        :hover {
+            cursor: pointer;
+            color: grey;
+            text-decoration-color: gray;
+            text-decoration-style: wavy;
+        }
     }
 
     .edit-box {

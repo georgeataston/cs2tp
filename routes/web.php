@@ -34,6 +34,9 @@ Route::post('/basket/remove', [BasketController::class, 'remove']);
 Route::post('/orders/checkout', [OrderController::class, 'checkout']);
 
 Route::post('/reviews/create', [ReviewController::class, 'create'])->middleware(SessionValidator::class);
+Route::post('/admin/reviews/edit', [ReviewController::class, 'edit'])->middleware(AdminSessionValidator::class);
+Route::post('/admin/reviews/delete', [ReviewController::class, 'delete'])->middleware(AdminSessionValidator::class);
+Route::post('/admin/reviews/restore', [ReviewController::class, 'restore'])->middleware(AdminSessionValidator::class);
 
 Route::post('/admin/orders/api/pick', [OrderController::class, 'pick'])->middleware(AdminSessionValidator::class);
 Route::post('/admin/orders/api/unpick', [OrderController::class, 'unpick'])->middleware(AdminSessionValidator::class);
@@ -180,7 +183,11 @@ Route::get('/shop/{id}', function(string $id) {
     if ($stock == null)
         abort('404');
 
-    $reviews = Review::where('sid', '=', $id)->get();
+    $reviews = Review::where('sid', '=', $id);
+    if (!session('isAdmin'))
+        $reviews = $reviews->where('deleted', '=', '0');
+    $reviews = $reviews->get();
+
     $canLeaveReview = false;
     $hasLeftReview = false;
     if (session('id')) {
@@ -203,19 +210,25 @@ Route::get('/shop/{id}', function(string $id) {
 
     // review average
     $reviewTotal = 0;
+    $reviewCount = 0;
     foreach($reviews as $review) {
+        if ($review->deleted == 1)
+            continue;
+
         $reviewTotal = $reviewTotal + $review->rating;
+        $reviewCount = $reviewCount + 1;
     }
 
     $reviewAverage = 0;
-    if ($reviews->count() > 0)
-        $reviewAverage = $reviewTotal / $reviews->count();
+    if ($reviewCount > 0)
+        $reviewAverage = $reviewTotal / $reviewCount;
 
     return view('productdisplay')->with('stock', $stock)
         ->with('reviews', $reviews)
         ->with('canLeaveReview', $canLeaveReview)
         ->with('hasLeftReview', $hasLeftReview)
-        ->with('reviewAverage', $reviewAverage);
+        ->with('reviewAverage', $reviewAverage)
+        ->with('reviewCount', $reviewCount);
 });
 
 Route::get('/exampepwdreset', function() {
