@@ -92,8 +92,7 @@ class OrderController extends Controller
         foreach($cart as $item) {
             $orderItem = new OrderItem;
             $orderItem->order_id = $order->id;
-            $orderItem->product_id = $item['id'];
-            $orderItem->size = $item['size'];
+            $orderItem->size_id = $item['id'];
             $orderItem->quantity = $item['quantity'];
             $orderItem->price = $item['price'];
             $orderItem->status = 0;

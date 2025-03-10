@@ -42,7 +42,11 @@ class OrderItem extends Model
         return $this->hasOne(Order::class);
     }
 
-    public function stock(): HasOne {
-        return $this->hasOne(Stock::class, 'id', 'product_id');
+    public function size(): HasOne {
+        return $this->hasOne(Size::class, 'id', 'size_id');
+    }
+
+    public function stock(): Stock {
+        return $this->size->stock;
     }
 }

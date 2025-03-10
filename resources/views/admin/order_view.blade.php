@@ -70,8 +70,8 @@
             <tbody>
             @foreach($order->items as $item)
                 <tr>
-                    <td>{{ $item->stock->category->brand->name }} {{ $item->stock->name }}<br>ID: {{ $item->stock->id }}</td>
-                    <td>{{ $item->size }}</td>
+                    <td>{{ $item->stock()->category->brand->name }} {{ $item->stock()->name }}<br>ID: {{ $item->stock()->id }}</td>
+                    <td>{{ $item->size->size }}<br>ID: {{ $item->size->id }}</td>
                     <td>{{ $item->quantity }}</td>
                     <td>{{ $item->price }}</td>
                     @if($order->status < 3)

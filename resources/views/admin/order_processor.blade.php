@@ -46,7 +46,7 @@
 
                                 <td>
                                     @foreach($order->items as $item)
-                                        {{ $item->stock->category->brand->name }} {{ $item->stock->name }} ({{ $item->size }}) (Qty: {{ $item->quantity }})<br>
+                                        {{ $item->stock()->category->brand->name }} {{ $item->stock()->name }} ({{ $item->size->size }}) (Qty: {{ $item->quantity }})<br>
                                     @endforeach
                                 </td>
 

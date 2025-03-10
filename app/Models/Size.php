@@ -5,9 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Stock extends Model
+class Size extends Model
 {
     use HasFactory;
 
@@ -16,7 +15,7 @@ class Stock extends Model
      *
      * @var string
      */
-    protected $table = "stocks";
+    protected $table = "sizes";
 
     /**
      * The primary key associated with the table.
@@ -39,32 +38,13 @@ class Stock extends Model
      */
     public $timestamps = true;
 
-    /**
-     * Relationship: A stock item can have many images.
-     */
-    public function images(): HasMany
+    public function stock(): BelongsTo
     {
-        return $this->hasMany(Image::class);
-    }
-
-    public function category(): BelongsTo
-    {
-        return $this->belongsTo(Category::class, 'category_id');
-    }
-
-    public function sizes(): HasMany
-    {
-        return $this->hasMany(Size::class);
-    }
-
-    public function isLowStock(): bool
-    {
-        return $this->quantity > 0 && $this->quantity <= 5;
+        return $this->belongsTo(Stock::class, 'stocks_id');
     }
 
     public function isOutOfStock(): bool
     {
         return $this->quantity == 0;
     }
-
 }

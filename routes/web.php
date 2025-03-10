@@ -4,11 +4,13 @@ use App\Http\Controllers\AccountController;
 use App\Http\Controllers\BasketController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\StockController;
 use App\Models\Brand;
 use App\Models\Feature;
 use App\Models\Order;
 use App\Models\PasswordReset;
 use App\Models\Review;
+use App\Models\Size;
 use App\Models\Stock;
 use App\Http\Controllers\ContactFormController;
 use App\Http\Middleware\AdminSessionValidator;
@@ -41,6 +43,8 @@ Route::post('/admin/reviews/restore', [ReviewController::class, 'restore'])->mid
 Route::post('/admin/orders/api/pick', [OrderController::class, 'pick'])->middleware(AdminSessionValidator::class);
 Route::post('/admin/orders/api/unpick', [OrderController::class, 'unpick'])->middleware(AdminSessionValidator::class);
 Route::post('/admin/orders/api/complete', [OrderController::class, 'complete'])->middleware(AdminSessionValidator::class);
+
+Route::get('/admin/stock/pleaseneverrunmeoutsideofseeding', [StockController::class, 'pleaseNeverRunMeOutsideOfSeeding'])->middleware(AdminSessionValidator::class);
 
 // HTML routes
 Route::get('/', function() {
@@ -183,6 +187,8 @@ Route::get('/shop/{id}', function(string $id) {
     if ($stock == null)
         abort('404');
 
+    $sizes = Size::where('stocks_id', '=', $id)->get();
+
     $reviews = Review::where('sid', '=', $id);
     if (!session('isAdmin'))
         $reviews = $reviews->where('deleted', '=', '0');
@@ -224,6 +230,7 @@ Route::get('/shop/{id}', function(string $id) {
         $reviewAverage = $reviewTotal / $reviewCount;
 
     return view('productdisplay')->with('stock', $stock)
+        ->with('sizes', $sizes)
         ->with('reviews', $reviews)
         ->with('canLeaveReview', $canLeaveReview)
         ->with('hasLeftReview', $hasLeftReview)

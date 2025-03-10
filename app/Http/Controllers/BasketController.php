@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Size;
 use App\Models\Stock;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -24,14 +25,13 @@ class BasketController extends Controller
         $input = $request->validate([
             'size' => 'required',
             'quantity' => 'required|integer|min:1',
-            'id' => 'required|integer'
         ]);
 
         if (strtolower($input['size']) == 'select') {
             return back()->withErrors(['size' => 'Please select a size.'])->withInput();
         }
 
-        if (!str_starts_with($input['size'], 'UK ')) {
+        if (!is_numeric($input['size'])) {
             abort(400);
         }
 
@@ -41,18 +41,24 @@ class BasketController extends Controller
             $cart = array();
         }
 
-        $stock = Stock::where('id', '=', $input['id'])->first();
-        if ($stock == null || $stock->isOutOfStock()) {
+        $size = Size::where('id', '=', $input['size'])->first();
+        if ($size == null) {
             abort(400);
         }
 
-        if ($stock->quantity < $input['quantity']) {
+        if ($size->isOutOfStock()) {
+            return back()->withErrors(['size' => 'This size is out of stock. Nice try, though!'])->withInput();
+        }
+
+        $stock = $size->stock;
+
+        if ($size->quantity < $input['quantity']) {
             return back()->withErrors(['quantity' => 'We do not have enough stock for the amount requested.'])->withInput();
         }
 
         array_push($cart,
-            ['id' => $input['id'],
-                'size' => $input['size'],
+            ['id' => $size->id,
+                'size' => $size->size,
                 'quantity' => $input['quantity'],
                 'name' => $stock->category->brand->name . ' ' . $stock->category->name . ' ' . $stock->name,
                 'price' => $stock->price]);
@@ -68,7 +74,6 @@ class BasketController extends Controller
         // and sanitise the input
         $input = $request->validate([
             'id' => 'required|integer',
-            'size' => 'string'
         ]);
 
         // remove from session
@@ -78,7 +83,7 @@ class BasketController extends Controller
         }
 
         foreach($cart as $item => $v) {
-            if ($v['id'] == $input['id'] && $v['size'] == $input['size']) {
+            if ($v['id'] == $input['id']) {
                 unset($cart[$item]);
             }
         }
