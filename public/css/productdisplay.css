@@ -87,6 +87,28 @@ header nav {
     color: #000000;
 }
 
+.alert {
+    padding: 10px;
+    font-weight: bold;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 10px;
+    text-align: center;
+    width: 100%;
+}
+
+.low-stock {
+    color: #ff9000;
+    background-color: #fff3cd;
+    border: 1px solid #ff9000;
+}
+
+.out-of-stock {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #dc3545;
+}
+
 .add-to-cart-btn {
     display: block;
     width: 100%;
