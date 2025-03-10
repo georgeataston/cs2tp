@@ -42,4 +42,18 @@ class Brand extends Model
     {
         return $this->hasMany(Category::class, "brand_id");
     }
+
+    public function categoryCount(): int {
+        return Category::where('brand_id', '=', $this->bid)->get()->count();
+    }
+
+    public function stockCount(): int {
+        $amt = 0;
+        $categories = Category::where('brand_id', '=', $this->bid)->get();
+        foreach ($categories as $category) {
+            $amt += Stock::where('category_id', '=', $category->cid)->get()->count();
+        }
+
+        return $amt;
+    }
 }

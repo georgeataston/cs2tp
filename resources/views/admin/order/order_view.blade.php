@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}">
     <link rel="stylesheet" href="{{ asset('css/admintable.css') }}">
+</head>
 <body>
     @include('admin/header')
     <div class="container page-container">
@@ -131,10 +132,10 @@
             <form method="post" action="/admin/orders/api/complete">
                 @csrf
                 <input hidden type="number" name="order_id" value="{{$order->id}}"/>
-                <button class="btn btn-success btn-sm">Mark as Shipped</button>
+                <button class="btn btn-success">Mark as Shipped</button>
             </form>
         @endif
-        <button class="btn btn-secondary btn-sm" onclick="location.href = '/admin/orders'">Back</button>
+        <button class="btn btn-secondary" onclick="location.href = '/admin/orders'">Back</button>
     </div>
 
 </body>

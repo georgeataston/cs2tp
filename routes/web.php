@@ -6,6 +6,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\StockController;
 use App\Models\Brand;
+use App\Models\Category;
 use App\Models\Feature;
 use App\Models\Order;
 use App\Models\PasswordReset;
@@ -245,14 +246,15 @@ Route::get('/exampepwdreset', function() {
 // Admin routes
 Route::get('/admin', function() { return view ('admin/home'); })->middleware(AdminSessionValidator::class);
 
+// Orders
 Route::get('/admin/orders', function() {
     $orders = Order::where('status', '<', 3)->get();
-    return view ('admin/order_processor')->with('orders', $orders)->with('all', false);
+    return view ('admin/order/order_processor')->with('orders', $orders)->with('all', false);
 })->middleware(AdminSessionValidator::class);
 
 Route::get('/admin/orders/all', function() {
     $orders = Order::orderBy("id", "desc")->get();
-    return view ('admin/order_processor')->with('orders', $orders)->with('all', true);
+    return view ('admin/order/order_processor')->with('orders', $orders)->with('all', true);
 })->middleware(AdminSessionValidator::class);
 
 Route::get('/admin/orders/{id}', function(string $id) {
@@ -272,5 +274,77 @@ Route::get('/admin/orders/{id}', function(string $id) {
     if ($order->status != 2)
         $canShip = false;
 
-    return view ('admin/order_view')->with('order', $order)->with('canShip', $canShip);
+    return view ('admin/order/order_view')->with('order', $order)->with('canShip', $canShip);
+})->middleware(AdminSessionValidator::class);
+
+// Stock
+Route::get('/admin/stock', function() {
+   return view('admin/stock/home');
+})->middleware(AdminSessionValidator::class);
+
+Route::get('/admin/stock/brands', function() {
+    $brands = Brand::all();
+
+    return view('admin/stock/brands/home')->with('brands', $brands);
+})->middleware(AdminSessionValidator::class);
+
+Route::get('/admin/stock/brands/{id}', function(string $id) {
+    if (!is_numeric($id))
+        abort('404');
+
+    $brand = Brand::where('bid', '=', $id)->first();
+    if ($brand == null)
+        abort('404');
+
+    return view ('admin/stock/brands/view')->with('brand', $brand);
+})->middleware(AdminSessionValidator::class);
+
+Route::get('/admin/stock/categories', function() {
+    $categories = Category::all();
+
+    return view('admin/stock/categories/home')->with('categories', $categories);
+})->middleware(AdminSessionValidator::class);
+
+Route::get('/admin/stock/categories/{id}', function(string $id) {
+    if (!is_numeric($id))
+        abort('404');
+
+    $category = Category::where('cid', '=', $id)->first();
+    if ($category == null)
+        abort('404');
+
+    $brands = Brand::all();
+
+    return view ('admin/stock/categories/view')->with('category', $category)->with('brands', $brands);
+})->middleware(AdminSessionValidator::class);
+
+Route::get('/admin/stock/manage', function() {
+    $stocks = Stock::all();
+
+    return view('admin/stock/manage/home')->with('stocks', $stocks);
+})->middleware(AdminSessionValidator::class);
+
+Route::get('/admin/stock/manage/{id}', function(string $id) {
+    if (!is_numeric($id))
+        abort('404');
+
+    $stock = Stock::where('id', '=', $id)->first();
+    if ($stock == null)
+        abort('404');
+
+    $categories = Category::all();
+    $sizes = Size::where('stocks_id', '=', $id)->get();
+
+    return view ('admin/stock/manage/view')->with('stock', $stock)->with('categories', $categories)->with('sizes', $sizes);
+})->middleware(AdminSessionValidator::class);
+
+Route::get('/admin/stock/manage/size/{id}', function(string $id) {
+    if (!is_numeric($id))
+        abort('404');
+
+    $size = Size::where('id', '=', $id)->first();
+    if ($size == null)
+        abort('404');
+
+    return view ('admin/stock/manage/size/view')->with('size', $size);
 })->middleware(AdminSessionValidator::class);
