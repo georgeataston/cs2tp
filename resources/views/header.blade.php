@@ -4,6 +4,7 @@
         <a href="/">Home</a><!-- Linking the index page with the Home button-->
         <a href="/shop">Shop</a><!-- Linking shop page with the Shop button-->
         <a href="/about">About Us</a><!--Linking about us page with the About Us button-->
+        <a href="/help">Help</a> 
         @if(session('id') == null)
             <a href="/contact">Contact</a><!-- Linking contact page with the contact button-->
             <div class="auth-buttons"> <!-- Putting login and sign-up buttons in a class to make it easier for styles to affect all-->
