@@ -5,6 +5,7 @@
         <a href="/shop">Shop</a><!-- Linking shop page with the Shop button-->
         <a href="/about">About Us</a><!--Linking about us page with the About Us button-->
         <a href="/contact">Contact</a><!-- Linking contact page with the contact button-->
+        <a href="/help">Help</a><!-- Linking help page with the help button-->
         @if(session('id') == null)
             <div class="auth-buttons"> <!-- Putting login and sign-up buttons in a class to make it easier for styles to affect all-->
                 <a href="/login" class="auth-btn login-btn cta">Login</a> <!-- Link to the login page with login button while assigning buttons in the same class-->
