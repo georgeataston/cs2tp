@@ -439,137 +439,87 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background: linear-gradient(to left, #1f1f1f, #262626); 
-    color: #fff;
+    background-color: #f8f8f8;
+    color: #333;
 }
 
-/* Help Section */
-.help {
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Help Center Styles */
+.help-center {
     text-align: center;
     padding: 50px 20px;
-    line-height: 1.6;
 }
 
-/* Container */
-.container {
-    max-width: 1000px;
-    margin: 0 auto;
+.help-center h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
 }
 
-/* Diamond Layout */
-.diamond-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto;
-    gap: 40px; /* More spacing */
-    justify-items: center;
-    align-items: center;
+.help-center p {
+    font-size: 1.2em;
+    margin-bottom: 40px;
 }
 
-/* Adjust box positions */
-#account-box {
-    grid-column: 1;
-    grid-row: 1;
-    transform: translateY(50px);
+/* FAQ Section */
+.faq-section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
 }
 
-#shipping-box {
-    grid-column: 2;
-    grid-row: 1;
-    transform: translateY(50px);
+.faq-item {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 100%;
+    max-width: 350px;
+    text-align: left;
 }
 
-#returns-box {
-    grid-column: span 2;
-    grid-row: 2;
+.faq-item h2 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
 }
 
-/* Topic Box Styling */
-.topic-box {
-    background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
-    border-radius: 15px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-    padding: 30px;
-    text-align: center;
-    width: 350px; /* Increased width */
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    backdrop-filter: blur(10px); /* Frosted glass effect */
-    color: white; /* Ensure text is readable */
-}
-
-/* Hover effect for interaction */
-.topic-box:hover {
-    transform: scale(1.05);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-}
-
-/* Topic Links */
-.topic-box h3 a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.topic-box ul {
+.faq-item ul {
     list-style: none;
     padding: 0;
 }
 
-.topic-box ul li a {
-    color: #f0f0f0;
-    text-decoration: none;
-    font-size: 16px;
+.faq-item ul li {
+    margin-bottom: 10px;
 }
 
-.topic-box ul li a:hover {
-    text-decoration: underline;
-}
-
-/* Topic Content (Answers) */
-.topic-content div {
-    display: block;
-    padding: 10px;
-    background: rgba(255, 255, 255, 0.3); /* Slightly darker for contrast */
-    border-radius: 10px;
-    color: white;
-    margin-top: 10px;
-    backdrop-filter: blur(8px); /* Frosted glass effect */
-}
-
-/* Contact Us Section */
-.contact-us {
-    text-align: center;
-    margin-top: 40px;
-    padding: 20px;
-}
-
-.contact-link {
+.faq-item ul li a {
     color: #007bff;
     text-decoration: none;
-    font-weight: bold;
+    font-size: 1em;
 }
 
-.contact-link:hover {
+.faq-item ul li a:hover {
     text-decoration: underline;
-}
-
-/* Hidden Content */
-.hidden {
-    display: none;
 }
 
 /* Responsive Design */
-@media screen and (max-width: 768px) {
-    .diamond-layout {
-        grid-template-columns: 1fr;
-        grid-template-rows: auto auto auto;
+@media (max-width: 768px) {
+    .faq-section {
+        flex-direction: column;
+        align-items: center;
     }
 
-    .topic-box {
+    .faq-item {
         width: 90%;
     }
 }
+
 
 
 
