@@ -433,6 +433,9 @@
         min-height: 20px;/*minimum height*/
         line-height: 1; /*adjust line height for proper centring*/
         }
+        /* stlying for help page */ 
+
+        /* General Styles */
         body {
         font-family: Arial, sans-serif;
         margin: 0;
@@ -453,7 +456,7 @@
        margin: 0 auto;
        }
 
-       /* Diamond Layout */
+      /* Diamond Layout */
        .diamond-layout {
        display: grid;
        grid-template-columns: 1fr 1fr;
@@ -470,46 +473,46 @@
        transform: translateY(50px);
        }
 
-       #shipping-box {
-       grid-column: 2;
-       grid-row: 1;
-       transform: translateY(50px);
+      #shipping-box {
+      grid-column: 2;
+      grid-row: 1;
+      transform: translateY(50px);
        }
 
-       #returns-box {
-       grid-column: span 2;
-       grid-row: 2;
+      #returns-box {
+      grid-column: span 2;
+      grid-row: 2;
        }
 
-       /* Topic Box Styling */
-       .topic-box {
-       background: white;
-       border-radius: 10px;
-       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-       padding: 20px;
-       text-align: center;
-       width: 300px;
-       transition: transform 0.3s ease, box-shadow 0.3s ease;
+      /* Topic Box Styling */
+      .topic-box {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      text-align: center;
+      width: 300px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-       /* Contact Us Section */
-      .contact-us {
-      text-align: center;
-      margin-top: 40px;
-      padding: 20px;
+      /* Contact Us Section */
+     .contact-us {
+     text-align: center;
+     margin-top: 40px;
+     padding: 20px;
        }
 
-     .contact-link {
-     color: #007bff;
-     text-decoration: none;
-     font-weight: bold;
+    .contact-link {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
       }
 
-    /* Hidden Content */
-    .hidden {
-     display: none;
+   /* Hidden Content */
+   .hidden {
+    display: none;
       }
-        
+
 
 
 
