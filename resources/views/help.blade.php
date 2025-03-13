@@ -76,10 +76,9 @@
             document.getElementById(topicId).classList.toggle('hidden');
         }
         function toggleContent(contentId) {
-            let content = document.getElementById(contentId);
-            content.classList.toggle('hidden'); // Toggle visibility without hiding others
+            document.querySelectorAll('.topic-content div').forEach(el => el.classList.add('hidden'));
+            document.getElementById(contentId).classList.toggle('hidden');
         }
-
     </script>
 </body>
 </html>
