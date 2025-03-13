@@ -17,7 +17,7 @@
         }
 
         function hideCategoryForm() {
-            document.getElementById("createCategoryButton").style.display = "block";
+            document.getElementById("createCategoryButton").style.display = "inline-block";
             document.getElementById("categoryCreator").style.display = "none";
         }
     </script>
@@ -46,15 +46,20 @@
                 </thead>
                 <tbody>
                     @foreach($categories as $category)
-                        <tr>
+                        <tr class="{{$category->deleted == 1 ? "text-danger" : ""}}">
                             <td>{{ $category->cid }}</td>
                             <td>{{ $category->brand->name }}</td>
                             <td>{{ $category->name }}</td>
-                            <td>{{ $category->stockCount() }}</td>
-                            <td>
-                                <button class="btn btn-secondary btn-sm" onclick="location.href = '/admin/stock/categories/{{$category->cid}}'">Edit</button>
-                                <button class="btn btn-danger btn-sm">Archive</button>
-                            </td>
+                            @if ($category->deleted == 0)
+                                <td>{{ $category->stockCount() }}</td>
+                                <td>
+                                    <button class="btn btn-secondary btn-sm" onclick="location.href = '/admin/stock/categories/{{$category->cid}}'">Edit</button>
+                                    <button class="btn btn-danger btn-sm" onclick="location.href = '/admin/stock/categories/{{$category->cid}}/delete'">Archive</button>
+                                </td>
+                            @else
+                                <td>-</td>
+                                <td>Archived</td>
+                            @endif
                         </tr>
                     @endforeach
                 </tbody>
@@ -86,7 +91,9 @@
                     <button type="button" class="btn btn-secondary" onclick="hideCategoryForm()">Cancel</button>
                     @error('submit')<p class="text-danger">{{ $message }}</p>@enderror
                 </form>
+                <br>
             </div>
+            <button class="btn btn-secondary" onclick="location.href = '/admin/stock/'">Back</button>
         </div>
     </div>
 </div>

@@ -17,7 +17,7 @@
         }
 
         function hideStockForm() {
-            document.getElementById("createStockButton").style.display = "block";
+            document.getElementById("createStockButton").style.display = "inline-block";
             document.getElementById("stockCreator").style.display = "none";
         }
     </script>
@@ -48,17 +48,23 @@
                 </thead>
                 <tbody>
                     @foreach($stocks as $stock)
-                        <tr>
+                        <tr class="{{$stock->deleted == 1 ? "text-danger" : ""}}">
                             <td>{{ $stock->id }}</td>
                             <td>{{ $stock->category->brand->name }}</td>
                             <td>{{ $stock->category->name }}</td>
                             <td>{{ $stock->name }}</td>
-                            <td>{{ $stock->quantity }}</td>
-                            <td>£{{ $stock->price }}</td>
-                            <td>
-                                <button class="btn btn-secondary btn-sm" onclick="location.href = '/admin/stock/manage/{{$stock->id}}'">Edit</button>
-                                <button class="btn btn-danger btn-sm">Archive</button>
-                            </td>
+                            @if ($stock->deleted == 0)
+                                <td>{{ $stock->quantity }}</td>
+                                <td>£{{ $stock->price }}</td>
+                                <td>
+                                    <button class="btn btn-secondary btn-sm" onclick="location.href = '/admin/stock/manage/{{$stock->id}}'">Edit</button>
+                                    <button class="btn btn-danger btn-sm" onclick="location.href = '/admin/stock/manage/{{$stock->id}}/delete'">Archive</button>
+                                </td>
+                            @else
+                                <td>-</td>
+                                <td>-</td>
+                                <td>Archived</td>
+                            @endif
                         </tr>
                     @endforeach
                 </tbody>
@@ -118,6 +124,8 @@
                     <br><br>
                 </form>
             </div>
+            <button class="btn btn-secondary" onclick="location.href = '/admin/stock/'">Back</button>
+            <br><br>
         </div>
     </div>
 </div>

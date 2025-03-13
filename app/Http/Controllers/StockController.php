@@ -132,6 +132,16 @@ class StockController extends Controller
         $category->deleted = 1;
         $category->save();
 
+        foreach ($category->items as $stock) {
+            $stock->deleted = 1;
+            $stock->save();
+
+            foreach ($stock->sizes as $size) {
+                $size->deleted = 1;
+                $size->save();
+            }
+        }
+
         return redirect('/admin/stock/categories/')->with('success', 'Category \'' . $category->name . '\' archived successfully.');
     }
 
@@ -201,6 +211,11 @@ class StockController extends Controller
         $stock->deleted = 1;
         $stock->save();
 
+        foreach ($stock->sizes as $size) {
+            $size->deleted = 1;
+            $size->save();
+        }
+
         return redirect('/admin/stock/manage/')->with('success', 'Stock \'' . $stock->name . '\' archived successfully.');
     }
 
@@ -262,6 +277,33 @@ class StockController extends Controller
         $size->save();
 
         return redirect('/admin/stock/manage/size/' . $size->id)->with('success', 'Size updated successfully.');
+    }
+
+    public function deleteSize(Request $request): RedirectResponse
+    {
+        $input = $request->validate([
+            'size_id' => 'required|integer',
+            'stock_id' => 'required|integer'
+        ]);
+
+        $size = Size::where('id', '=', $input['size_id'])->first();
+        if (!$size)
+            return back()->withInput()->withErrors(['submit' => 'An internal error occurred. Please try again later. (SZID' . $input['size_id'] . ')']);
+
+        $stock = Stock::where('id', '=', $input['stock_id'])->first();
+        if (!$stock)
+            return back()->withInput()->withErrors(['submit' => 'An internal error occurred. Please try again later. (SID' . $input['stock_id'] . ')']);
+
+        if ($stock->id != $size->stocks_id)
+            return back()->withInput()->withErrors(['submit' => 'An internal error occurred. Please try again later. (SID/SZID mismatch)']);
+
+        $stock->quantity = $stock->quantity - $size->quantity;
+        $stock->save();
+
+        $size->deleted = 1;
+        $size->save();
+
+        return redirect('/admin/stock/manage/' . $input['stock_id'])->with('success', 'Size \'' . $size->size . '\' archived successfully.');
     }
 
     public function pleaseNeverRunMeOutsideOfSeeding(Request $request): Response

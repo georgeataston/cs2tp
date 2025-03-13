@@ -17,7 +17,7 @@
         }
 
         function hideBrandForm() {
-            document.getElementById("createBrandButton").style.display = "block";
+            document.getElementById("createBrandButton").style.display = "inline-block";
             document.getElementById("brandCreator").style.display = "none";
         }
     </script>
@@ -46,15 +46,21 @@
                 </thead>
                 <tbody>
                     @foreach($brands as $brand)
-                        <tr>
+                        <tr class="{{$brand->deleted == 1 ? "text-danger" : ""}}">
                             <td>{{ $brand->bid }}</td>
                             <td>{{ $brand->name }}</td>
-                            <td>{{ $brand->categoryCount() }}</td>
-                            <td>{{ $brand->stockCount() }}</td>
-                            <td>
-                                <button class="btn btn-secondary btn-sm" onclick="location.href = '/admin/stock/brands/{{$brand->bid}}'">Edit</button>
-                                <button class="btn btn-danger btn-sm" onclick="location.href = '/admin/stock/brands/{{$brand->bid}}/delete'">Archive</button>
-                            </td>
+                            @if ($brand->deleted == 0)
+                                <td>{{ $brand->categoryCount() }}</td>
+                                <td>{{ $brand->stockCount() }}</td>
+                                <td>
+                                    <button class="btn btn-secondary btn-sm" onclick="location.href = '/admin/stock/brands/{{$brand->bid}}'">Edit</button>
+                                    <button class="btn btn-danger btn-sm" onclick="location.href = '/admin/stock/brands/{{$brand->bid}}/delete'">Archive</button>
+                                </td>
+                            @else
+                                <td>-</td>
+                                <td>-</td>
+                                <td>Archived</td>
+                            @endif
                         </tr>
                     @endforeach
                 </tbody>
@@ -76,7 +82,9 @@
                     <button type="button" class="btn btn-secondary" onclick="hideBrandForm()">Cancel</button>
                     @error('submit')<p class="text-danger">{{ $message }}</p>@enderror
                 </form>
+                <br>
             </div>
+            <button class="btn btn-secondary" onclick="location.href = '/admin/stock/'">Back</button>
         </div>
     </div>
 </div>

@@ -45,7 +45,6 @@ Route::post('/admin/orders/api/pick', [OrderController::class, 'pick'])->middlew
 Route::post('/admin/orders/api/unpick', [OrderController::class, 'unpick'])->middleware(AdminSessionValidator::class);
 Route::post('/admin/orders/api/complete', [OrderController::class, 'complete'])->middleware(AdminSessionValidator::class);
 
-Route::get('/admin/stock/pleaseneverrunmeoutsideofseeding', [StockController::class, 'pleaseNeverRunMeOutsideOfSeeding'])->middleware(AdminSessionValidator::class);
 Route::post('/admin/stock/api/brands/create', [StockController::class, 'createBrand'])->middleware(AdminSessionValidator::class);
 Route::post('/admin/stock/api/brands/update', [StockController::class, 'updateBrand'])->middleware(AdminSessionValidator::class);
 Route::post('/admin/stock/api/brands/delete', [StockController::class, 'deleteBrand'])->middleware(AdminSessionValidator::class);
@@ -57,8 +56,9 @@ Route::post('/admin/stock/api/manage/update', [StockController::class, 'updateSt
 Route::post('/admin/stock/api/manage/delete', [StockController::class, 'deleteStock'])->middleware(AdminSessionValidator::class);
 Route::post('/admin/stock/api/manage/size/create', [StockController::class, 'createSize'])->middleware(AdminSessionValidator::class);
 Route::post('/admin/stock/api/manage/size/update', [StockController::class, 'updateSizeQuantity'])->middleware(AdminSessionValidator::class);
-Route::post('/admin/stock/api/manage/size/delete', [StockController::class, 'updateSizeQuantity'])->middleware(AdminSessionValidator::class);
+Route::post('/admin/stock/api/manage/size/delete', [StockController::class, 'deleteSize'])->middleware(AdminSessionValidator::class);
 Route::post('/admin/stock/api/manage/image/update', [StockController::class, 'updateStockImage'])->middleware(AdminSessionValidator::class);
+Route::get('/admin/stock/api/pleaseneverrunmeoutsideofseeding', [StockController::class, 'pleaseNeverRunMeOutsideOfSeeding'])->middleware(AdminSessionValidator::class);
 
 // HTML routes
 Route::get('/', function() {
@@ -156,10 +156,10 @@ Route::get('/account', function() {
 // Shop
 
 Route::get('/shop', function(Request $request) {
-    $stockList = Stock::where('quantity', '>', '0');
+    $stockList = Stock::where('quantity', '>', '0')->where('deleted', '=', '0');
     $shopTitle = "All Products";
 
-    $brands = Brand::all();
+    $brands = Brand::where('deleted', '=', '0')->get();
 
     $searchQuery = $request->query('search');
     if ($searchQuery != null) {
@@ -175,10 +175,10 @@ Route::get('/shop/brand/{id}', function(string $id) {
     if (!is_numeric($id))
         abort('404');
 
-    $brands = Brand::all();
+    $brands = Brand::where('deleted', '=', '0')->get();
 
     $brand = Brand::where('bid', '=', $id)->first();
-    if ($brand == null)
+    if ($brand == null || $brand->deleted == 1)
         abort('404');
 
     $shopTitle = $brand->name;
@@ -198,10 +198,10 @@ Route::get('/shop/{id}', function(string $id) {
         abort('404');
 
     $stock = Stock::where('id', '=', $id)->first();
-    if ($stock == null)
+    if ($stock == null || $stock->deleted == 1)
         abort('404');
 
-    $sizes = Size::where('stocks_id', '=', $id)->get();
+    $sizes = Size::where('stocks_id', '=', $id)->where('deleted', '=', '0')->get();
 
     $reviews = Review::where('sid', '=', $id);
     if (!session('isAdmin'))
@@ -306,7 +306,7 @@ Route::get('/admin/stock/brands/{id}', function(string $id) {
         abort('404');
 
     $brand = Brand::where('bid', '=', $id)->first();
-    if ($brand == null)
+    if ($brand == null || $brand->deleted == 1)
         abort('404');
 
     return view ('admin/stock/brands/view')->with('brand', $brand);
@@ -317,17 +317,17 @@ Route::get('/admin/stock/brands/{id}/delete', function(string $id) {
         abort('404');
 
     $brand = Brand::where('bid', '=', $id)->first();
-    if ($brand == null)
+    if ($brand == null || $brand->deleted == 1)
         abort('404');
 
-    $categories = Category::where('brand_id', '=', $brand->bid)->get();
+    $categories = Category::where('brand_id', '=', $brand->bid)->where('deleted', '=', '0')->get();
 
     return view ('admin/stock/brands/delete')->with('brand', $brand)->with('categories', $categories);
 })->middleware(AdminSessionValidator::class);
 
 Route::get('/admin/stock/categories', function() {
     $categories = Category::all();
-    $brands = Brand::all();
+    $brands = Brand::where('deleted', '=', '0')->get();
 
     return view('admin/stock/categories/home')->with('categories', $categories)->with('brands', $brands);
 })->middleware(AdminSessionValidator::class);
@@ -337,17 +337,28 @@ Route::get('/admin/stock/categories/{id}', function(string $id) {
         abort('404');
 
     $category = Category::where('cid', '=', $id)->first();
-    if ($category == null)
+    if ($category == null || $category->deleted == 1)
         abort('404');
 
-    $brands = Brand::all();
+    $brands = Brand::where('deleted', '=', '0')->get();
 
     return view ('admin/stock/categories/view')->with('category', $category)->with('brands', $brands);
 })->middleware(AdminSessionValidator::class);
 
+Route::get('/admin/stock/categories/{id}/delete', function(string $id) {
+    if (!is_numeric($id))
+        abort('404');
+
+    $category = Category::where('cid', '=', $id)->first();
+    if ($category == null || $category->deleted == 1)
+        abort('404');
+
+    return view ('admin/stock/categories/delete')->with('category', $category);
+})->middleware(AdminSessionValidator::class);
+
 Route::get('/admin/stock/manage', function() {
     $stocks = Stock::all();
-    $categories = Category::all();
+    $categories = Category::where('deleted', '=', '0')->get();
 
     return view('admin/stock/manage/home')->with('stocks', $stocks)->with('categories', $categories);
 })->middleware(AdminSessionValidator::class);
@@ -357,13 +368,24 @@ Route::get('/admin/stock/manage/{id}', function(string $id) {
         abort('404');
 
     $stock = Stock::where('id', '=', $id)->first();
-    if ($stock == null)
+    if ($stock == null || $stock->deleted == 1)
         abort('404');
 
-    $categories = Category::all();
+    $categories = Category::where('deleted', '=', '0')->get();
     $sizes = Size::where('stocks_id', '=', $id)->get();
 
     return view ('admin/stock/manage/view')->with('stock', $stock)->with('categories', $categories)->with('sizes', $sizes);
+})->middleware(AdminSessionValidator::class);
+
+Route::get('/admin/stock/manage/{id}/delete', function(string $id) {
+    if (!is_numeric($id))
+        abort('404');
+
+    $stock = Stock::where('id', '=', $id)->first();
+    if ($stock == null || $stock->deleted == 1)
+        abort('404');
+
+    return view ('admin/stock/manage/delete')->with('stock', $stock);
 })->middleware(AdminSessionValidator::class);
 
 Route::get('/admin/stock/manage/size/{id}', function(string $id) {
@@ -371,7 +393,7 @@ Route::get('/admin/stock/manage/size/{id}', function(string $id) {
         abort('404');
 
     $size = Size::where('id', '=', $id)->first();
-    if ($size == null)
+    if ($size == null || $size->deleted == 1)
         abort('404');
 
     return view ('admin/stock/manage/size/view')->with('size', $size);

@@ -51,6 +51,7 @@
 
         <br>
         <h3 class="mb-4">Other Actions</h3>
+        <button class="btn btn-danger" onclick="location.href = '/admin/stock/brands/{{$brand->bid}}/delete'">Archive</button>
         <button class="btn btn-secondary" onclick="location.href = '/admin/stock/brands'">Back</button>
     </div>
 

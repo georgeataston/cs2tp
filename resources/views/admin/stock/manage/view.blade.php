@@ -20,6 +20,12 @@
             document.getElementById("createSizeButton").style.display = "block";
             document.getElementById("sizeCreator").style.display = "none";
         }
+
+        function archive(id) {
+            console.log(id);
+            document.getElementById("archiveSize-" + id).style.display = "none";
+            document.getElementById("confirmArchiveSize-" + id).style.display = "inline-block";
+        }
     </script>
 
 </head>
@@ -111,14 +117,25 @@
                     </thead>
                     <tbody>
                     @foreach($sizes as $size)
-                        <tr>
+                        <tr class="{{$size->deleted == 1 ? "text-danger" : ""}}">
                             <td>{{ $size->id }}</td>
                             <td>{{ $size->size }}</td>
-                            <td>{{ $size->quantity }}</td>
-                            <td>
-                                <button class="btn btn-secondary btn-sm" onclick="location.href = '/admin/stock/manage/size/{{$size->id}}'">Edit</button>
-                                <button class="btn btn-danger btn-sm">Archive</button>
-                            </td>
+                            @if ($size->deleted == 0)
+                                <td>{{ $size->quantity }}</td>
+                                <td>
+                                    <form method="post" action="/admin/stock/api/manage/size/delete">
+                                        @csrf
+                                        <input hidden type="number" name="size_id" value="{{$size->id}}"/>
+                                        <input hidden type="number" name="stock_id" value="{{$stock->id}}"/>
+                                        <button type="button" class="btn btn-secondary btn-sm" onclick="location.href = '/admin/stock/manage/size/{{$size->id}}'">Edit</button>
+                                        <button type="button" id="archiveSize-{{$size->id}}" class="btn btn-danger btn-sm" onclick="archive({{$size->id}})">Archive</button>
+                                        <button type="submit" id="confirmArchiveSize-{{$size->id}}" class="btn btn-danger btn-sm" style="display: none">Are you sure?</button>
+                                    </form>
+                                </td>
+                            @else
+                                <td>-</td>
+                                <td>Archived</td>
+                            @endif
                         </tr>
                     @endforeach
                     </tbody>
@@ -164,6 +181,7 @@
 
         <br>
         <h3 class="mb-4">Other Actions</h3>
+        <button class="btn btn-danger" onclick="location.href = '/admin/stock/manage/{{$stock->id}}/delete'">Archive</button>
         <button class="btn btn-secondary" onclick="location.href = '/admin/stock/manage'">Back</button>
         <br><br>
     </div>
