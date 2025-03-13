@@ -433,225 +433,83 @@
         min-height: 20px;/*minimum height*/
         line-height: 1; /*adjust line height for proper centring*/
         }
-        
-        /* styling for help pa */
-
-        /* General Styles */
         body {
         font-family: Arial, sans-serif;
-        line-height: 1.6;
         margin: 0;
         padding: 0;
-        background-color: #f4f4f4;
-        }
-
-        a { 
-        color: #333;
-        text-decoration: none;
-        }
-
-        a:hover {
-        color: #007bff;
-        }
-
-        /* Container to centralize content */
-        .container {
-        width: 80%;
-        margin: 0 auto;
-        padding: 20px;
-        }
-
-        /* Header and Footer styles */
-        header, footer {
-        background-color: #333;
+        background: linear-gradient(to left, #1f1f1f, #262626); 
         color: #fff;
-        padding: 15px 0;
-        text-align: center;
+       }
+
+       /* Help Section */
+       .help {
+       text-align: center;
+       padding: 40px 20px;
+       line-height: 1.6;
+       }
+
+       .container {
+       max-width: 800px;
+       margin: 0 auto;
+       }
+
+       /* Diamond Layout */
+       .diamond-layout {
+       display: grid;
+       grid-template-columns: 1fr 1fr;
+       grid-template-rows: auto auto;
+       gap: 20px;
+       justify-items: center;
+       align-items: center;
+       position: relative;
+       }
+
+       #account-box {
+       grid-column: 1;
+       grid-row: 1;
+       transform: translateY(50px);
+       }
+
+       #shipping-box {
+       grid-column: 2;
+       grid-row: 1;
+       transform: translateY(50px);
+       }
+
+       #returns-box {
+       grid-column: span 2;
+       grid-row: 2;
+       }
+
+       /* Topic Box Styling */
+       .topic-box {
+       background: white;
+       border-radius: 10px;
+       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+       padding: 20px;
+       text-align: center;
+       width: 300px;
+       transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        header h1, footer h1 {
-        margin: 0;
-        font-size: 2em;
-        }
+       /* Contact Us Section */
+      .contact-us {
+      text-align: center;
+      margin-top: 40px;
+      padding: 20px;
+       }
 
-        /* Help Section */
-        .help {
-        background-color: #fff;
-        padding: 40px 0;
-        }
+     .contact-link {
+     color: #007bff;
+     text-decoration: none;
+     font-weight: bold;
+      }
 
-        .help h2 {
-        font-size: 2.5em;
-        text-align: center;
-        margin-bottom: 40px;
-        }
-
-        /* Row and Column Layout for Topic Index */
-        .row {
-        display: flex;
-        justify-content: space-between;
-        gap: 20px;
-        flex-wrap: wrap; /* Allows the columns to stack on smaller screens */
-        }
-
-        .column {
-        flex: 1;
-        min-width: 300px; /* Ensures columns don’t shrink too much */
-        }
-
-        /* Topic Index Styling */
-        .topic-index {
-        background-color: #f9f9f9;
-        padding: 20px;
-        margin-bottom: 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-
-        .topic-index h3 {
-        font-size: 1.6em;
-        margin-bottom: 10px;
-        }
-
-        .topic-index p {
-        font-size: 1em;
-        margin-bottom: 10px;
-        color: #666;
-        }
-
-        .topic-index ul {
-        list-style-type: none;
-        padding-left: 0;
-        }
-
-        .topic-index ul li {
-        margin-bottom: 8px;
-        font-size: 1em;
-        }
-
-        .topic-index ul li a {
-        color: #007bff;
-        transition: color 0.3s ease;
-        }
-
-        .topic-index ul li a:hover {
-        color: #0056b3;
-        }
-
-        /* stlying for help page */ 
-
-        /* General Styles */
-        /* General Styles */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(to left, #1f1f1f, #262626); /* Dark gradient */
-            color: #fff;
-        }
+    /* Hidden Content */
+    .hidden {
+     display: none;
+      }
         
-        /* Help Section */
-        .help {
-            text-align: center;
-            padding: 60px 20px; /* Increased padding for better spacing */
-            line-height: 1.6;
-        }
-        
-        .container {
-            max-width: 900px; /* Slightly wider for better content spacing */
-            margin: 0 auto;
-        }
-        
-        /* Diamond Layout */
-        .diamond-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            grid-template-rows: auto auto;
-            gap: 30px; /* Increased gap for better spacing */
-            justify-items: center;
-            align-items: center;
-            position: relative;
-        }
-        
-        /* Adjust positioning of each topic box */
-        #account-box {
-            grid-column: 1;
-            grid-row: 1;
-            transform: translateY(60px);
-        }
-        
-        #shipping-box {
-            grid-column: 2;
-            grid-row: 1;
-            transform: translateY(60px);
-        }
-        
-        #returns-box {
-            grid-column: span 2;
-            grid-row: 2;
-        }
-        
-        /* Topic Box Styling */
-        .topic-box {
-            background: rgba(253, 254, 255, 0.1); /* Light transparent greyish-white */
-            border-radius: 12px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Stronger shadow for contrast */
-            padding: 25px;
-            text-align: center;
-            width: 350px; /* Slightly bigger for better spacing */
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        
-        /* Hover effect for interactive feel */
-        .topic-box:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
-        }
-        
-        /* Topic Titles */
-        .topic-box h3 a {
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 1.2em;
-            font-weight: bold;
-        }
-        
-        .topic-box h3 a:hover {
-            text-decoration: underline;
-        }
-        
-        /* Contact Us Section */
-        .contact-us {
-            text-align: center;
-            margin-top: 50px;
-            padding: 20px;
-        }
-        
-        .contact-link {
-            color: #007bff;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        
-        .contact-link:hover {
-            text-decoration: underline;
-        }
-        
-        /* Hidden Content */
-        .hidden {
-            display: none;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .diamond-layout {
-                grid-template-columns: 1fr; /* Single column for mobile */
-            }
-        
-            .topic-box {
-                width: 100%; /* Full width for smaller screens */
-            }
-        }
 
 
 
