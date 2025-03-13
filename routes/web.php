@@ -46,6 +46,19 @@ Route::post('/admin/orders/api/unpick', [OrderController::class, 'unpick'])->mid
 Route::post('/admin/orders/api/complete', [OrderController::class, 'complete'])->middleware(AdminSessionValidator::class);
 
 Route::get('/admin/stock/pleaseneverrunmeoutsideofseeding', [StockController::class, 'pleaseNeverRunMeOutsideOfSeeding'])->middleware(AdminSessionValidator::class);
+Route::post('/admin/stock/api/brands/create', [StockController::class, 'createBrand'])->middleware(AdminSessionValidator::class);
+Route::post('/admin/stock/api/brands/update', [StockController::class, 'updateBrand'])->middleware(AdminSessionValidator::class);
+Route::post('/admin/stock/api/brands/delete', [StockController::class, 'deleteBrand'])->middleware(AdminSessionValidator::class);
+Route::post('/admin/stock/api/categories/create', [StockController::class, 'createCategory'])->middleware(AdminSessionValidator::class);
+Route::post('/admin/stock/api/categories/update', [StockController::class, 'updateCategory'])->middleware(AdminSessionValidator::class);
+Route::post('/admin/stock/api/categories/delete', [StockController::class, 'deleteCategory'])->middleware(AdminSessionValidator::class);
+Route::post('/admin/stock/api/manage/create', [StockController::class, 'createStock'])->middleware(AdminSessionValidator::class);
+Route::post('/admin/stock/api/manage/update', [StockController::class, 'updateStock'])->middleware(AdminSessionValidator::class);
+Route::post('/admin/stock/api/manage/delete', [StockController::class, 'deleteStock'])->middleware(AdminSessionValidator::class);
+Route::post('/admin/stock/api/manage/size/create', [StockController::class, 'createSize'])->middleware(AdminSessionValidator::class);
+Route::post('/admin/stock/api/manage/size/update', [StockController::class, 'updateSizeQuantity'])->middleware(AdminSessionValidator::class);
+Route::post('/admin/stock/api/manage/size/delete', [StockController::class, 'updateSizeQuantity'])->middleware(AdminSessionValidator::class);
+Route::post('/admin/stock/api/manage/image/update', [StockController::class, 'updateStockImage'])->middleware(AdminSessionValidator::class);
 
 // HTML routes
 Route::get('/', function() {
@@ -301,8 +314,9 @@ Route::get('/admin/stock/brands/{id}', function(string $id) {
 
 Route::get('/admin/stock/categories', function() {
     $categories = Category::all();
+    $brands = Brand::all();
 
-    return view('admin/stock/categories/home')->with('categories', $categories);
+    return view('admin/stock/categories/home')->with('categories', $categories)->with('brands', $brands);
 })->middleware(AdminSessionValidator::class);
 
 Route::get('/admin/stock/categories/{id}', function(string $id) {
@@ -320,8 +334,9 @@ Route::get('/admin/stock/categories/{id}', function(string $id) {
 
 Route::get('/admin/stock/manage', function() {
     $stocks = Stock::all();
+    $categories = Category::all();
 
-    return view('admin/stock/manage/home')->with('stocks', $stocks);
+    return view('admin/stock/manage/home')->with('stocks', $stocks)->with('categories', $categories);
 })->middleware(AdminSessionValidator::class);
 
 Route::get('/admin/stock/manage/{id}', function(string $id) {

@@ -27,6 +27,9 @@
     @include('admin/header')
     <div class="container page-container">
         <h2 class="text-center mb-4">Size #{{ $size->id }}: {{ $size->size }} ({{ $size->stock->category->brand->name . ' ' . $size->stock->category->name }} {{ $size->stock->name }})</h2>
+        @if(session('success'))
+            <p class="text-center text-success">{{ session('success') }}</p>
+        @endif
         <h3 class="mb-3">Details</h3>
         <table class="table table-striped table-bordered" id="ordersTable">
             <thead class="thead-dark">
@@ -49,10 +52,12 @@
             @csrf
             <div class="form-group">
                 <label for="quantity">Quantity</label>
-                <input type="number" class="form-control" id="quantity" placeholder="Enter product name" value="{{ old('quantity') ? old('quantity') : $size->quantity }}">
+                <input type="number" class="form-control" id="quantity" name="quantity" placeholder="Enter product name" value="{{ old('quantity') ? old('quantity') : $size->quantity }}">
+                @error('quantity')<p class="text-danger">{{ $message }}</p>@enderror
             </div>
             <input hidden type="number" name="size_id" value="{{$size->id}}"/>
             <button type="submit" class="btn btn-primary">Update Quantity</button>
+            @error('submit')<p class="text-danger">{{ $message }}</p>@enderror
         </form>
 
         <br>

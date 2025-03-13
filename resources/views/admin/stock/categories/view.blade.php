@@ -14,6 +14,9 @@
     @include('admin/header')
     <div class="container page-container">
         <h2 class="text-center mb-4">Category #{{ $category->cid }}: ({{ $category->brand->name }}) {{ $category->name }}</h2>
+        @if(session('success'))
+            <p class="text-center text-success">{{ session('success') }}</p>
+        @endif
         <h3 class="mb-3">Details</h3>
         <table class="table table-striped table-bordered" id="ordersTable">
             <thead class="thead-dark">
@@ -38,19 +41,22 @@
             @csrf
             <div class="form-group">
                 <label for="brand">Parent Brand</label>
-                <select class="form-control" id="brand">
+                <select class="form-control" id="brand" name="brand_id">
                     @foreach($brands as $brand)
                         <option {{ $category->brand->bid == $brand->bid ? "selected" : "" }} value="{{ $brand->bid }}">{{ $brand->name }}</option>
                     @endforeach
                 </select>
+                @error('brand')<p class="text-danger">{{ $message }}</p>@enderror
             </div>
 
             <div class="form-group">
                 <label for="name">Category Name</label>
-                <input type="text" class="form-control" id="name" placeholder="Enter brand name" value="{{ old('name') ? old('name') : $category->name }}">
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter brand name" value="{{ old('name') ? old('name') : $category->name }}">
+                @error('name')<p class="text-danger">{{ $message }}</p>@enderror
             </div>
             <input hidden type="number" name="category_id" value="{{$category->cid}}"/>
             <button type="submit" class="btn btn-primary">Update Details</button>
+            @error('submit')<p class="text-danger">{{ $message }}</p>@enderror
         </form>
 
         <br>

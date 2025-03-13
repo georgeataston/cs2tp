@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Image;
 use App\Models\Size;
 use App\Models\Stock;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\OrderItem;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Routing\Controller;
@@ -14,136 +16,237 @@ use Illuminate\Support\Facades\DB;
 
 class StockController extends Controller
 {
-    public function createBrand(Request $request)
+    public function createBrand(Request $request): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required|string|unique:brands,name'
+        $input = $request->validate([
+            'name' => 'required|string'
         ]);
 
-        $brand = Brand::create(['name' => $request->name]);
+        $brand = new Brand;
+        $brand->name = $input['name'];
+        $brand->save();
 
-        return response()->json(['message' => 'Brand created successfully', 'brand' => $brand], 201);
+        return redirect('/admin/stock/brands')->with('success', 'Brand created successfully.');
     }
 
-    public function updateBrand(Request $request, $id)
+    public function updateBrand(Request $request): RedirectResponse
     {
-        $brand = Brand::findOrFail($id);
-        $request->validate([
-            'name' => 'required|string|unique:brands,name'
-        ]);
-
-        $brand->update(['name' => $request->name]);
-
-        return response()->json(['message' => 'Brand updated successfully', 'brand' => $brand]);
-    }
-
-    public function deleteBrand($id)
-    {
-        $brand = Brand::findOrFail($id);
-        $brand->update(['deleted' => 1]);
-
-        return response()->json(['message' => 'Brand deleted successfully']);
-    }
-
-    public function createCategory(Request $request)
-    {
-        $request->validate([
-            'name' => 'required|string|unique:categories,name',
-            'brand_id' => 'required|exists:brands,bid'
-        ]);
-
-        $category = Category::create([
-            'name' => $request->name,
-            'brand_id' => $request->brand_id
-        ]);
-
-        return response()->json(['message' => 'Category created successfully', 'category' => $category], 201);
-    }
-
-    public function updateCategory(Request $request, $id)
-    {
-        $category = Category::findOrFail($id);
-        $request->validate([
+        $input = $request->validate([
             'name' => 'required|string',
-            'brand_id' => 'required|exists:brands,bid'
+            'brand_id' => 'required|integer'
         ]);
 
-        $category->update([
-            'name' => $request->name,
-            'brand_id' => $request->brand_id
+        $brand = Brand::where('bid', '=', $input['brand_id'])->first();
+        if (!$brand)
+            return back()->withInput()->withErrors(['submit' => 'An internal error occurred. Please try again later. (BID' . $input['brand_id'] . ')']);
+
+        $brand->name = $input['name'];
+        $brand->save();
+
+        return redirect('/admin/stock/brands/' . $brand->bid)->with('success', 'Brand updated successfully.');
+    }
+
+    public function deleteBrand(Request $request): RedirectResponse
+    {
+        $input = $request->validate([
+            'brand_id' => 'required|integer'
         ]);
 
-        return response()->json(['message' => 'Category updated successfully', 'category' => $category]);
+        $brand = Brand::where('bid', '=', $input['brand_id'])->first();
+        if (!$brand)
+            return back()->withInput()->withErrors(['submit' => 'An internal error occurred. Please try again later. (BID' . $input['brand_id'] . ')']);
+
+        $brand->deleted = 1;
+        $brand->save();
+
+        return redirect('/admin/stock/brands/')->with('success', 'Brand \'' . $brand->name . '\' archived successfully.');
     }
 
-    public function deleteCategory($id)
+    public function createCategory(Request $request): RedirectResponse
     {
-        $category = Category::findOrFail($id);
-        $category->update(['deleted' => 1]);
+        $input = $request->validate([
+            'name' => 'required|string',
+            'brand_id' => 'required|integer'
+        ]);
 
-        return response()->json(['message' => 'Category deleted successfully']);
+        $brand = Brand::where('bid', '=', $input['brand_id'])->first();
+        if (!$brand)
+            return back()->withInput()->withErrors(['submit' => 'An internal error occurred. Please try again later. (BID' . $input['brand_id'] . ')']);
+
+        $category = new Category;
+        $category->brand_id = $brand->bid;
+        $category->name = $input['name'];
+        $category->save();
+
+        return redirect('/admin/stock/categories')->with('success', 'Category created successfully.');
     }
 
-    public function createStock(Request $request)
+    public function updateCategory(Request $request): RedirectResponse
     {
-        $request->validate([
+        $input = $request->validate([
+            'brand_id' => 'required|integer',
+            'name' => 'required|string',
+            'category_id' => 'required|integer'
+        ]);
+
+        $category = Category::where('cid', '=', $input['category_id'])->first();
+        if (!$category)
+            return back()->withInput()->withErrors(['submit' => 'An internal error occurred. Please try again later. (CID' . $input['category_id'] . ')']);
+
+        $brand = Brand::where('bid', '=', $input['brand_id'])->first();
+        if (!$brand)
+            return back()->withInput()->withErrors(['submit' => 'An internal error occurred. Please try again later. (BID' . $input['brand_id'] . ')']);
+
+        $category->brand_id = $brand->bid;
+        $category->name = $input['name'];
+        $category->save();
+
+        return redirect('/admin/stock/categories/' . $category->cid)->with('success', 'Category updated successfully.');
+    }
+
+    public function deleteCategory(Request $request): RedirectResponse
+    {
+        $input = $request->validate([
+            'category_id' => 'required|integer'
+        ]);
+
+        $category = Category::where('cid', '=', $input['category_id'])->first();
+        if (!$category)
+            return back()->withInput()->withErrors(['submit' => 'An internal error occurred. Please try again later. (CID' . $input['category_id'] . ')']);
+
+        $category->deleted = 1;
+        $category->save();
+
+        return redirect('/admin/stock/categories/')->with('success', 'Category \'' . $category->name . '\' archived successfully.');
+    }
+
+    public function createStock(Request $request): RedirectResponse
+    {
+        $input = $request->validate([
+            'category_id' => 'required|integer',
             'name' => 'required|string|unique:stocks,name',
+            'price' => 'required|numeric|min:0',
+            'image' => 'required|string',
             'description' => 'nullable|string',
-            'category_id' => 'required|exists:categories,cid',
-            'quantity' => 'required|integer|min:0',
-            'price' => 'required|numeric|min:0'
         ]);
 
-        $stock = Stock::create($request->all());
+        $stock = new Stock;
+        $stock->name = $input['name'];
+        $stock->description = $input['description'];
+        $stock->category_id = $input['category_id'];
+        $stock->quantity = 0;
+        $stock->price = $input['price'];
+        $stock->save();
 
-        return response()->json(['message' => 'Stock item created successfully', 'stock' => $stock], 201);
+        $image = new Image;
+        $image->stock_id = $stock->id;
+        $image->image_path = $input['image'];
+        $image->save();
+
+        return redirect('/admin/stock/manage/' . $stock->id)->with('success', 'Stock create successfully.');
     }
 
-    public function updateStock(Request $request, $id)
+    public function updateStock(Request $request): RedirectResponse
     {
-        $stock = Stock::findOrFail($id);
-        $request->validate([
-            'name' => 'required|string|unique:stocks,name,' . $id,
+        $input = $request->validate([
+            'category_id' => 'required|integer',
+            'name' => 'required|string',
             'description' => 'nullable|string',
-            'category_id' => 'required|exists:categories,cid',
-            'quantity' => 'required|integer|min:0',
-            'price' => 'required|numeric|min:0'
+            'price' => 'required|numeric|min:0',
+            'stock_id' => 'required|integer'
         ]);
 
-        $stock->update($request->all());
+        $stock = Stock::where('id', '=', $input['stock_id'])->first();
+        if (!$stock)
+            return back()->withInput()->withErrors(['submit' => 'An internal error occurred. Please try again later. (SID' . $input['stock_id'] . ')']);
 
-        return response()->json(['message' => 'Stock item updated successfully', 'stock' => $stock]);
+        $category = Category::where('cid', '=', $input['category_id'])->first();
+        if (!$category)
+            return back()->withInput()->withErrors(['submit' => 'An internal error occurred. Please try again later. (CID' . $input['category_id'] . ')']);
+
+        $stock->category_id = $input['category_id'];
+        $stock->name = $input['name'];
+        $stock->description = $input['description'];
+        $stock->price = $input['price'];
+        $stock->save();
+
+        return redirect('/admin/stock/manage/' . $stock->id)->with('success', 'Stock updated successfully.');
     }
 
-    public function deleteStock($id)
+    public function deleteStock(Request $request): RedirectResponse
     {
-        $stock = Stock::findOrFail($id);
-        $stock->update(['deleted' => 1]);
+        $input = $request->validate([
+            'stock_id' => 'required|integer'
+        ]);
 
-        return response()->json(['message' => 'Stock item deleted successfully']);
+        $stock = Stock::where('id', '=', $input['stock_id'])->first();
+        if (!$stock)
+            return back()->withInput()->withErrors(['submit' => 'An internal error occurred. Please try again later. (SID' . $input['stock_id'] . ')']);
+
+        $stock->deleted = 1;
+        $stock->save();
+
+        return redirect('/admin/stock/manage/')->with('success', 'Stock \'' . $stock->name . '\' archived successfully.');
     }
 
-    public function updateSizeQuantity(Request $request, $product_id)
+    public function updateStockImage(Request $request): RedirectResponse
     {
-        $request->validate([
+        $input = $request->validate([
+            'image' => 'required|string',
+            'image_id' => 'required|integer',
+            'stock_id' => 'required|integer'
+        ]);
+
+        $image = Image::where('id', '=', $input['image_id'])->first();
+        if (!$image)
+            return back()->withInput()->withErrors(['submit' => 'An internal error occurred. Please try again later. (IMGID' . $input['image_id'] . ')']);
+
+        $image->image_path = $input['image'];
+        $image->save();
+
+        return redirect('/admin/stock/manage/' . $input['stock_id'])->with('success', 'Image updated successfully.');
+    }
+
+    public function createSize(Request $request): RedirectResponse
+    {
+        $input = $request->validate([
             'size' => 'required|string',
-            'quantity' => 'required|integer|min:0'
+            'stock_id' => 'required|integer'
         ]);
 
-        $orderItem = OrderItem::where('product_id', $product_id)
-            ->where('size', $request->size)
-            ->firstOrFail();
+        $stock = Stock::where('id', '=', $input['stock_id'])->first();
+        if (!$stock)
+            return back()->withInput()->withErrors(['submit' => 'An internal error occurred. Please try again later. (SID' . $input['stock_id'] . ')']);
 
-        $difference = $request->quantity - $orderItem->quantity;
+        $size = new Size;
+        $size->stocks_id = $stock->id;
+        $size->size = $input['size'];
+        $size->quantity = 0;
+        $size->save();
 
-        DB::transaction(function () use ($orderItem, $difference) {
-            $orderItem->update(['quantity' => $orderItem->quantity + $difference]);
+        return redirect('/admin/stock/manage/' . $stock->id)->with('success', 'Size created successfully.');
+    }
 
-            $stock = Stock::findOrFail($orderItem->product_id);
-            $stock->update(['quantity' => $stock->quantity + $difference]);
-        });
+    public function updateSizeQuantity(Request $request): RedirectResponse
+    {
+        $input = $request->validate([
+            'quantity' => 'required|integer|min:0',
+            'size_id' => 'required|integer'
+        ]);
 
-        return response()->json(['message' => 'Size quantity updated successfully']);
+        $size = Size::where('id', '=', $input['size_id'])->first();
+        if (!$size)
+            return back()->withInput()->withErrors(['submit' => 'An internal error occurred. Please try again later. (SZID' . $input['size_id'] . ')']);
+
+        $difference = (int)$size->quantity - (int)$input['quantity'];
+
+        $size->stock->quantity = $size->stock->quantity - $difference;
+        $size->stock->save();
+
+        $size->quantity = $input['quantity'];
+        $size->save();
+
+        return redirect('/admin/stock/manage/size/' . $size->id)->with('success', 'Size updated successfully.');
     }
 
     public function pleaseNeverRunMeOutsideOfSeeding(Request $request): Response
@@ -158,15 +261,15 @@ class StockController extends Controller
             $totalQuantity = 0;
             while ($amt <= 13) {
                 $rand = rand(0, 15);
-                $size = new Size();
-                $size->stock_id = $stock->id;
+                $size = new Size;
+                $size->stocks_id = $stock->id;
                 $size->size = "UK " . $amt;
                 $size->quantity = $rand;
                 $size->save();
                 $amt += 1;
                 $totalQuantity += $rand;
             }
-            
+
             $stock->quantity = $totalQuantity;
             $stock->save();
         }

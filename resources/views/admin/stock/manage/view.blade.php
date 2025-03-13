@@ -27,6 +27,9 @@
     @include('admin/header')
     <div class="container page-container">
         <h2 class="text-center mb-4">Stock #{{ $stock->id }}: ({{ $stock->category->brand->name . ' ' . $stock->category->name }}) {{ $stock->name }}</h2>
+        @if(session('success'))
+            <p class="text-center text-success">{{ session('success') }}</p>
+        @endif
         <h3 class="mb-3">Details</h3>
         <table class="table table-striped table-bordered" id="ordersTable">
             <thead class="thead-dark">
@@ -36,6 +39,7 @@
                 <th>Parent Category</th>
                 <th>Product Name</th>
                 <th>Quantity</th>
+                <th>Price</th>
             </tr>
             </thead>
             <tbody>
@@ -45,6 +49,7 @@
                 <td>{{ $stock->category->name }}</td>
                 <td>{{ $stock->name }}</td>
                 <td>{{ $stock->quantity }}</td>
+                <td>£{{ $stock->price }}</td>
             </tr>
             </tbody>
         </table>
@@ -53,20 +58,41 @@
             @csrf
             <div class="form-group">
                 <label for="category">Parent Category</label>
-                <select class="form-control" id="category">
+                <select class="form-control" id="category" name="category_id">
                     @foreach($categories as $category)
                         <option {{ $stock->category->cid == $category->cid ? "selected" : "" }} value="{{ $category->cid }}">{{ $category->name }} ({{ $category->brand->name }})</option>
                     @endforeach
                 </select>
                 <small class="form-text text-muted">The product will inherit the brand of the selected category.</small>
+                @error('category_id')<p class="text-danger">{{ $message }}</p>@enderror
             </div>
 
             <div class="form-group">
                 <label for="name">Product Name</label>
-                <input type="text" class="form-control" id="name" placeholder="Enter product name" value="{{ old('name') ? old('name') : $stock->name }}">
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter product name" value="{{ old('name') ? old('name') : $stock->name }}">
+                @error('name')<p class="text-danger">{{ $message }}</p>@enderror
             </div>
+
+            <div class="form-group">
+                <label for="description">Product Description</label>
+                <textarea type="text" class="form-control" id="description" name="description" placeholder="Enter product description" rows="4">{{ old('description') ? old('description') : $stock->description }}</textarea>
+                @error('description')<p class="text-danger">{{ $message }}</p>@enderror
+            </div>
+
+            <div class="form-group">
+                <label for="price">Price</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text">£</div>
+                    </div>
+                    <input type="number" min="0.00" step="0.01" class="form-control" id="price" name="price" placeholder="199.99" value="{{ old('price') ? old('price') : $stock->price }}">
+                    @error('price')<p class="text-danger">{{ $message }}</p>@enderror
+                </div>
+            </div>
+
             <input hidden type="number" name="stock_id" value="{{$stock->id}}"/>
             <button type="submit" class="btn btn-primary">Update Details</button>
+            @error('submit')<p class="text-danger">{{ $message }}</p>@enderror
         </form>
 
         <br>
@@ -107,11 +133,13 @@
                         @csrf
                         <div class="form-group">
                             <label for="size">Size Display Name</label>
-                            <input type="text" class="form-control" id="size" placeholder="UK 9" value="{{ old('size') ? old('size') : "" }}">
+                            <input type="text" class="form-control" id="size" name="size" placeholder="UK 9" value="{{ old('size') ? old('size') : "" }}">
+                            @error('size')<p class="text-danger">{{ $message }}</p>@enderror
                         </div>
                         <input hidden type="number" name="stock_id" value="{{$stock->id}}"/>
                         <button type="submit" class="btn btn-primary">Submit</button>
                         <button type="button" class="btn btn-secondary" onclick="hideSizeForm()">Cancel</button>
+                        @error('submit')<p class="text-danger">{{ $message }}</p>@enderror
                     </form>
                 </div>
             </div>
@@ -119,9 +147,25 @@
 
         <br>
         <h3 class="mb-4">Image Management</h3>
+        <img src="{{ $stock->images->first()->image_path }}" alt="{{ $stock->name }}" class="img-thumbnail">
+        <br><br>
+        <form method="post" action="/admin/stock/api/manage/image/update">
+            @csrf
+            <div class="form-group">
+                <label for="image">Stock Image URL</label>
+                <input type="text" class="form-control" id="image" name="image" placeholder="https://i.postimg.cc/MheiEa242" value="{{ old('image') ? old('image') : $stock->images->first()->image_path }}">
+                @error('image')<p class="text-danger">{{ $message }}</p>@enderror
+            </div>
+            <input hidden type="number" name="image_id" value="{{$stock->images->first()->id}}"/>
+            <input hidden type="number" name="stock_id" value="{{$stock->id}}"/>
+            <button type="submit" class="btn btn-primary">Update Image</button>
+            @error('submit')<p class="text-danger">{{ $message }}</p>@enderror
+        </form>
 
+        <br>
         <h3 class="mb-4">Other Actions</h3>
         <button class="btn btn-secondary" onclick="location.href = '/admin/stock/manage'">Back</button>
+        <br><br>
     </div>
 
 </body>

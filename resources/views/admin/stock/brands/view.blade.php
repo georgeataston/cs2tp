@@ -14,6 +14,9 @@
     @include('admin/header')
     <div class="container page-container">
         <h2 class="text-center mb-4">Brand #{{ $brand->bid }}: {{ $brand->name }}</h2>
+        @if(session('success'))
+            <p class="text-center text-success">{{ session('success') }}</p>
+        @endif
         <h3 class="mb-3">Details</h3>
         <table class="table table-striped table-bordered" id="ordersTable">
             <thead class="thead-dark">
@@ -38,10 +41,12 @@
             @csrf
             <div class="form-group">
                 <label for="name">Brand Name</label>
-                <input type="text" class="form-control" id="name" placeholder="Enter brand name" value="{{ old('name') ? old('name') : $brand->name }}">
+                <input type="text" class="form-control" id="name" name="name" placeholder="Enter brand name" value="{{ old('name') ? old('name') : $brand->name }}">
+                @error('name')<p class="text-danger">{{ $message }}</p>@enderror
             </div>
             <input hidden type="number" name="brand_id" value="{{$brand->bid}}"/>
             <button type="submit" class="btn btn-primary">Update Details</button>
+            @error('submit')<p class="text-danger">{{ $message }}</p>@enderror
         </form>
 
         <br>
