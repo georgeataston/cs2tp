@@ -53,7 +53,7 @@
                             <td>{{ $category->stockCount() }}</td>
                             <td>
                                 <button class="btn btn-secondary btn-sm" onclick="location.href = '/admin/stock/categories/{{$category->cid}}'">Edit</button>
-                                <button class="btn btn-danger btn-sm">Delete</button>
+                                <button class="btn btn-danger btn-sm">Archive</button>
                             </td>
                         </tr>
                     @endforeach

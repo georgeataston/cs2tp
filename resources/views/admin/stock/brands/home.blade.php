@@ -53,7 +53,7 @@
                             <td>{{ $brand->stockCount() }}</td>
                             <td>
                                 <button class="btn btn-secondary btn-sm" onclick="location.href = '/admin/stock/brands/{{$brand->bid}}'">Edit</button>
-                                <button class="btn btn-danger btn-sm">Delete</button>
+                                <button class="btn btn-danger btn-sm" onclick="location.href = '/admin/stock/brands/{{$brand->bid}}/delete'">Archive</button>
                             </td>
                         </tr>
                     @endforeach

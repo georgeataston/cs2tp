@@ -59,6 +59,21 @@ class StockController extends Controller
         $brand->deleted = 1;
         $brand->save();
 
+        foreach($brand->categories as $category) {
+            $category->deleted = 1;
+            $category->save();
+
+            foreach ($category->items as $stock) {
+                $stock->deleted = 1;
+                $stock->save();
+
+                foreach ($stock->sizes as $size) {
+                    $size->deleted = 1;
+                    $size->save();
+                }
+            }
+        }
+
         return redirect('/admin/stock/brands/')->with('success', 'Brand \'' . $brand->name . '\' archived successfully.');
     }
 

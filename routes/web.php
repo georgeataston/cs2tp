@@ -312,6 +312,19 @@ Route::get('/admin/stock/brands/{id}', function(string $id) {
     return view ('admin/stock/brands/view')->with('brand', $brand);
 })->middleware(AdminSessionValidator::class);
 
+Route::get('/admin/stock/brands/{id}/delete', function(string $id) {
+    if (!is_numeric($id))
+        abort('404');
+
+    $brand = Brand::where('bid', '=', $id)->first();
+    if ($brand == null)
+        abort('404');
+
+    $categories = Category::where('brand_id', '=', $brand->bid)->get();
+
+    return view ('admin/stock/brands/delete')->with('brand', $brand)->with('categories', $categories);
+})->middleware(AdminSessionValidator::class);
+
 Route::get('/admin/stock/categories', function() {
     $categories = Category::all();
     $brands = Brand::all();

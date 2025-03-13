@@ -54,7 +54,7 @@ class Stock extends Model
 
     public function sizes(): HasMany
     {
-        return $this->hasMany(Size::class);
+        return $this->hasMany(Size::class, 'stocks_id');
     }
 
     public function isLowStock(): bool
