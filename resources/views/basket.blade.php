@@ -48,7 +48,6 @@
                             <form action="/basket/remove" method="post">
                                 @csrf
                                 <input type="hidden" name="id" value="{{$item['id']}}" />
-                                <input type="hidden" name="size" value="{{$item['size']}}" />
                                 <button class="remove-btn">Remove</button>
                             </form>
 

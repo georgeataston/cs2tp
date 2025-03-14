@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Size;
 use App\Models\Stock;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -92,12 +93,22 @@ class OrderController extends Controller
         foreach($cart as $item) {
             $orderItem = new OrderItem;
             $orderItem->order_id = $order->id;
-            $orderItem->product_id = $item['id'];
-            $orderItem->size = $item['size'];
+            $orderItem->size_id = $item['id'];
             $orderItem->quantity = $item['quantity'];
             $orderItem->price = $item['price'];
             $orderItem->status = 0;
             $orderItem->save();
+
+            $size = Size::where('id', '=', $item['id'])->first();
+            if (!$size)
+                continue;
+
+            $size->quantity = $size->quantity - (int)$item['quantity'];
+            $size->save();
+
+            $stock = $size->stock;
+            $stock->quantity = $stock->quantity - (int)$item['quantity'];
+            $stock->save();
         }
 
         // clear basket

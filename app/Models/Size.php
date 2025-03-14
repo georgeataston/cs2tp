@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class OrderItem extends Model
+class Size extends Model
 {
     use HasFactory;
 
@@ -15,7 +15,7 @@ class OrderItem extends Model
      *
      * @var string
      */
-    protected $table = "order_items";
+    protected $table = "sizes";
 
     /**
      * The primary key associated with the table.
@@ -38,15 +38,13 @@ class OrderItem extends Model
      */
     public $timestamps = true;
 
-    public function order(): HasOne {
-        return $this->hasOne(Order::class);
+    public function stock(): BelongsTo
+    {
+        return $this->belongsTo(Stock::class, 'stocks_id');
     }
 
-    public function size(): HasOne {
-        return $this->hasOne(Size::class, 'id', 'size_id');
-    }
-
-    public function stock(): Stock {
-        return $this->size->stock;
+    public function isOutOfStock(): bool
+    {
+        return $this->quantity == 0;
     }
 }
