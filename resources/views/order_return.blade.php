@@ -194,7 +194,7 @@
                         <tr>
                             <td>ORD001</td>
                             <td>John Doe</td>
-                            <td>Nike Air Max 270</td>
+                            <td>Air Jordan Jordan 1 Retro High OG 'Chicago Lost & Found'</td>
                             <td>Pending</td>
                             <td>2024-11-20</td>
                             <td>
@@ -205,7 +205,7 @@
                         <tr>
                             <td>ORD002</td>
                             <td>Jane Smith</td>
-                            <td>Adidas Ultraboost</td>
+                            <td>Air Jordan Jordan 1 Travis Scott Retro High OG 'Mocha'</td>
                             <td>Shipped</td>
                             <td>2024-11-18</td>
                             <td>
@@ -215,7 +215,7 @@
                         <tr>
                             <td>ORD003</td>
                             <td>Mark Johnson</td>
-                            <td>Puma RS-X</td>
+                            <td>Air Jordan Jordan 1 Dior High</td>
                             <td>Delivered</td>
                             <td>2024-11-15</td>
                             <td>
@@ -225,7 +225,7 @@
                         <tr>
                             <td>ORD004</td>
                             <td>Alice Brown</td>
-                            <td>Nike Air Force 1</td>
+                            <td>Air Jordan Jordan 4 Retro 'White Thunder'</td>
                             <td>Processed</td>
                             <td>2024-11-16</td>
                             <td>
@@ -235,7 +235,7 @@
                         <tr>
                             <td>ORD005</td>
                             <td>Bob White</td>
-                            <td>Reebok Classic</td>
+                            <td>Air Jordan Jordan 4 Retro 'Military Black'</td>
                             <td>Pending</td>
                             <td>2024-11-21</td>
                             <td>
@@ -246,7 +246,7 @@
                         <tr>
                             <td>ORD006</td>
                             <td>Chris Green</td>
-                            <td>Vans Old Skool</td>
+                            <td>Air Jordan Jordan 4 Retro 'University Blue'</td>
                             <td>Canceled</td>
                             <td>2024-11-10</td>
                             <td>
@@ -256,7 +256,7 @@
                         <tr>
                             <td>ORD007</td>
                             <td>David Black</td>
-                            <td>Converse Chuck Taylor</td>
+                            <td>Air Jordan Jordan 5 Retro 'Racer Blue'</td>
                             <td>Delivered</td>
                             <td>2024-11-12</td>
                             <td>
@@ -266,7 +266,7 @@
                         <tr>
                             <td>ORD008</td>
                             <td>Eve White</td>
-                            <td>New Balance 574</td>
+                            <td>Air Jordan Jordan 5 Retro 'UNC'</td>
                             <td>Processed</td>
                             <td>2024-11-17</td>
                             <td>
@@ -276,7 +276,7 @@
                         <tr>
                             <td>ORD009</td>
                             <td>Frank Brown</td>
-                            <td>Asics Gel-Lyte</td>
+                            <td>Air Jordan Jordan 5 Retro 'Quai 54' 2021</td>
                             <td>Shipped</td>
                             <td>2024-11-19</td>
                             <td>
@@ -286,7 +286,7 @@
                         <tr>
                             <td>ORD010</td>
                             <td>Grace Red</td>
-                            <td>Jordan 1 Retro</td>
+                            <td>Nike Dunk Low 'Black White'</td>
                             <td>Pending</td>
                             <td>2024-11-22</td>
                             <td>
