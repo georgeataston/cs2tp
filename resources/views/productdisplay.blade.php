@@ -40,7 +40,7 @@
                 btn.innerHTML = "restore";
             }
         }
-    </script
+    </script>
 </head>
 <body>
     @include("header")
@@ -56,10 +56,10 @@
             @endif
             @if ($stock->isOutOfStock())
                 <br>
-                 <div class="alert out-of-stock"> Out of Stock</div>
+                 <div class="alert out-of-stock">Out of Stock</div>
                 <br>
             @elseif ($stock->isLowStock())
-                 <div class="alert low-stock"> Low in Stock: Only {{ $stock->quantity }} left!</div>
+                 <div class="alert low-stock">Low in Stock: Only {{ $stock->quantity }} left!</div>
                 <br><br>
             @endif
             @if (!$stock->isOutOfStock())
@@ -68,22 +68,19 @@
                     <label for="size">Size</label>
                     <select id="size" name="size">
                         <option>Select</option>
-                        <option>UK 4</option>
-                        <option>UK 5</option>
-                        <option>UK 6</option>
-                        <option>UK 7</option>
-                        <option>UK 8</option>
-                        <option>UK 9</option>
-                        <option>UK 10</option>
-                        <option>UK 11</option>
-                        <option>UK 12</option>
-                        <option>UK 13</option>
+                        @foreach($sizes as $size)
+                            @if($size->quantity <= 0)
+                                <option disabled value="{{ $size->id }}">{{ $size->size }} (OUT OF STOCK)</option>
+                            @else
+                                <option value="{{ $size->id }}">{{ $size->size }}</option>
+                            @endif
+
+                        @endforeach
                     </select>
-                    @error('size')<p id="form-error">{{ $message }}</p>@enderror
+                    @error('size')<p id="form-error">{{ $message }}</p><br>@enderror
                     <label for="quantity">Quantity</label>
                     <input type="number" id="quantity" name="quantity" min="1" value="{{old('quantity') ? old('quantity') : 1}}">
-                    @error('quantity')<p id="form-error">{{ $message }}</p>@enderror
-                    <input type="hidden" name="id" value="{{$stock->id}}" />
+                    @error('quantity')<p id="form-error">{{ $message }}</p><br>@enderror
                     <button type="submit" class="add-to-cart-btn">Add to Cart</button>
                     @if (session('success') == "added")
                         <p id="form-success">Item has been added to your basket!</p>
