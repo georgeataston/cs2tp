@@ -47,6 +47,8 @@ nav a, .auth-btn {
     background: rgba(255, 255, 255, 0.1); /* Consistent background */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Consistent shadow */
     transition: color 0.3s ease, background 0.3s ease, transform 0.3s ease; /* Consistent transitions */
+    margin: 5px; /* Add margin to prevent overlap */
+    display: inline-block; /* Ensure buttons behave as block elements */
 }
 
 /* Hover effects for all buttons */
@@ -478,6 +480,7 @@ nav a, .auth-btn {
     min-height: 20px; /* Minimum height */
     line-height: 1; /* Tight vertical alignment */
 }
+
 
 @media (max-width: 768px) {
     .basket {
