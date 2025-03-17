@@ -33,12 +33,6 @@ header {
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-header img {
-    height: 50px;
-}
-
-
-
 .product-header {
     padding: 20px;
     background-color: #1f1f1f;
