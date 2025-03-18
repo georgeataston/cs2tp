@@ -159,6 +159,12 @@
     font-size: 1.6rem; /*Font size of product title*/
     color: #f2f2f2;/*Text colour to grey*/
     }
+    
+    .nav-item {
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+    
     .product p {
     color: #cfcfcf; /*Text colour for description*/
     font-size: 1.1rem;/*Font size */
