@@ -185,7 +185,13 @@ Route::get('/shop/brand/{id}', function(string $id) {
     $stockList = new Collection;
     $categories = $brand->categories;
     foreach($categories as $cat) {
+        if ($cat->deleted == 1)
+            continue;
+
         foreach($cat->items as $item) {
+            if ($item->deleted == 1 || $item->isOutOfStock())
+                continue;
+
             $stockList->push($item);
         }
     }
