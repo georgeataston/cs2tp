@@ -47,6 +47,9 @@
             </thead>
             <tbody>
             @foreach($categories as $category)
+                @if($category->deleted == 1)
+                    @continue
+                @endif
                 <tr>
                     <td>{{ $category->cid }}</td>
                     <td>{{ $category->brand->name }}</td>
@@ -71,7 +74,13 @@
             </thead>
             <tbody>
             @foreach($categories as $category)
+                @if($category->deleted == 1)
+                    @continue
+                @endif
                 @foreach($category->items as $stock)
+                    @if($stock->deleted == 1)
+                        @continue
+                    @endif
                     <tr>
                         <td>{{ $stock->id }}</td>
                         <td>{{ $stock->category->brand->name }}</td>

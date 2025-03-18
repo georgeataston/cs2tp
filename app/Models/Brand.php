@@ -44,14 +44,14 @@ class Brand extends Model
     }
 
     public function categoryCount(): int {
-        return Category::where('brand_id', '=', $this->bid)->get()->count();
+        return Category::where('brand_id', '=', $this->bid)->where('deleted', '=', '0')->get()->count();
     }
 
     public function stockCount(): int {
         $amt = 0;
-        $categories = Category::where('brand_id', '=', $this->bid)->get();
+        $categories = Category::where('brand_id', '=', $this->bid)->where('deleted', '=', '0')->get();
         foreach ($categories as $category) {
-            $amt += Stock::where('category_id', '=', $category->cid)->get()->count();
+            $amt += Stock::where('category_id', '=', $category->cid)->where('deleted', '=', '0')->get()->count();
         }
 
         return $amt;
