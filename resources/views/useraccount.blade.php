@@ -23,6 +23,7 @@
     <section class="featured-products">
         <h2>Order History</h2>
         <div class="products">
+           
             <!-- Table displaying order details -->
             <table>
                 <thead>
@@ -54,6 +55,9 @@
                 @endforeach
                 </tbody>
             </table>
+           
+            <!-- New 'Start a Return' button -->
+        <button class="return-btn">Start a Return</button>
         </div>
     </section>
 
@@ -71,6 +75,8 @@
             <input type="password" id="password" name="password">
 
             <button type="submit" class="update-btn">Update Details</button>
+
+            
         </form>
     </section>
 
