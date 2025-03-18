@@ -52,6 +52,10 @@ header nav {
     margin-bottom: 10px;
 }
 
+#orange {
+    color: #ff9000;
+}
+
 .product-info-section .price {
     font-size: 1.5rem;
     color: #fff;
@@ -68,7 +72,8 @@ header nav {
 }
 
 .product-options select,
-.product-options input {
+.product-options input,
+.product-options textarea {
     width: 100%;
     padding: 8px;
     margin-bottom: 10px;
@@ -80,6 +85,28 @@ header nav {
 
 .product-options option {
     color: #000000;
+}
+
+.alert {
+    padding: 10px;
+    font-weight: bold;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 10px;
+    text-align: center;
+    width: 100%;
+}
+
+.low-stock {
+    color: #ff9000;
+    background-color: #fff3cd;
+    border: 1px solid #ff9000;
+}
+
+.out-of-stock {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #dc3545;
 }
 
 .add-to-cart-btn {
@@ -128,4 +155,12 @@ footer a:hover {
         flex-direction: column;
         padding: 20px;
     }
+}
+
+.review {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
 }

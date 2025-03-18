@@ -48,4 +48,8 @@ class Category extends Model
     {
         return $this->belongsTo(Brand::class, 'brand_id');
     }
+
+    public function stockCount(): int {
+        return Stock::where('category_id', '=', $this->cid)->get()->count();
+    }
 }

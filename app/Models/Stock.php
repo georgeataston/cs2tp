@@ -51,4 +51,20 @@ class Stock extends Model
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
+
+    public function sizes(): HasMany
+    {
+        return $this->hasMany(Size::class, 'stocks_id');
+    }
+
+    public function isLowStock(): bool
+    {
+        return $this->quantity > 0 && $this->quantity <= 5;
+    }
+
+    public function isOutOfStock(): bool
+    {
+        return $this->quantity == 0;
+    }
+
 }
