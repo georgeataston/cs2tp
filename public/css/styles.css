@@ -433,8 +433,208 @@
         min-height: 20px;/*minimum height*/
         line-height: 1; /*adjust line height for proper centring*/
         }
-        @media (max-width: 768px) { /*for smaller screens*/
-        .basket {
-        margin-left: 10px; /*reduce left margin of basket to 10px.*/
+        /* Help Section page */
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to left, #1f1f1f, #262626); 
+            color: #fff;
         }
-    }
+
+        /* Help Section */
+        .help {
+            text-align: center;
+            padding: 50px 20px;
+            line-height: 1.6;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Diamond Layout */
+        .diamond-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: auto auto;
+            gap: 39px;
+            justify-items: center;
+            align-items: center;
+            position: relative;
+        }
+
+        /* adjust the box separation and sizes */
+        #account-box,
+        #shipping-box {
+            transform: translateY(30px); 
+            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition effect fr hoverings*/
+        }
+
+        #account-box:hover,
+        #shipping-box:hover {
+            transform: translateY(11px); 
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* refunds section only moves when hovered over ike rest */
+        #returns-box {
+            grid-column: span 2;
+            grid-row: 2;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #returns-box:hover {
+            transform: translateY(-9px); /* adjust move box sizing */ 
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        /* change the color of the heading */
+        .help h2 {
+            color: #ffa500; /* sets the color to orange to meet style for other pages */
+        }
+
+        /* Topic Box Styling */
+        .topic-box {
+            background: rgba(253, 254, 255, 0.1);
+            border-radius: 15px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            text-align: center;
+            width: 350px;
+            height: 250px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            color: #fff !important;
+        }
+
+        /* ensure links inside topic box are white */
+        .topic-box a {
+            color: #fff !important;
+            text-decoration: none;
+        }
+
+        .topic-box a:hover {
+            color: #fff !important;
+        }
+
+        /* contact Us Section */
+        .contact-us {
+            text-align: center;
+            margin-top: 50px;
+            padding: 20px;
+        }
+
+        .contact-link {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .contact-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Hidden Content */
+        .hidden {
+            display: none;
+        }
+
+
+        /* help query page */
+       
+        
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to left, #1f1f1f, #262626);
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; 
+        }
+
+        /* container */
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            flex: 1; /* allows the container to grow and push the footer to the bottom of psge*/
+        }
+
+        /* Help Section */
+        .help {
+            text-align: center;
+            padding: 50px 20px;
+            line-height: 1.6;
+        }
+
+        .help h2 {
+            color: #ffa500; /* Orange color for headings */
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .help p {
+            font-size: 1.1rem;
+            color: #ddd;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Contact Us Section */
+        .contact-us {
+            text-align: center;
+            padding: 20px;
+            
+            border-radius: 10px;
+            margin-top: auto; /* Push the Contact Us section to the bottom */
+        }
+
+        .contact-us h3 {
+            color: #ffa500;
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+        }
+
+        .contact-link {
+            color: #007bff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .contact-link:hover {
+            text-decoration: underline;
+        }
+
+        /* footer Positioning */
+        footer {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .help h2 {
+                font-size: 1.5rem;
+            }
+
+            .help p {
+                font-size: 1rem;
+            }
+
+            .contact-us h3 {
+                font-size: 1.2rem;
+            }
+        }
+
+
+        @media (max-width: 768px) { /*for smaller screens*/
+            .basket {
+                margin-left: 10px; /*reduce left margin of basket to 10px.*/
+            }
+        }
