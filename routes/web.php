@@ -28,6 +28,8 @@ Route::post('/login', [AccountController::class, 'authenticate'])->middleware(Re
 Route::get('/logout', [AccountController::class, 'invalidateSession']);
 Route::post('/recovery', [AccountController::class, 'requestPasswordReset'])->middleware(ReverseSessionValidator::class);
 Route::post('/recovery/reset', [AccountController::class, 'forgottenPasswordReset'])->middleware(ReverseSessionValidator::class);
+Route::post('/account/update/details', [AccountController::class, 'updateDetails'])->middleware(SessionValidator::class);
+Route::post('/account/update/password', [AccountController::class, 'updatePassword'])->middleware(SessionValidator::class);
 
 Route::post('/contact', [ContactFormController::class, 'create']);
 

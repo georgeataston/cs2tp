@@ -80,7 +80,7 @@ class AccountController extends Controller
         $request->session()->regenerate();
         $request->session()->put('id', $user->aid);
         $request->session()->put('isAdmin', $user->isAdmin);
-      
+
         return redirect($credentials['redirect']);
     }
 
@@ -153,5 +153,60 @@ class AccountController extends Controller
         $reset->delete();
 
         return redirect('/login')->with('success', 'Password reset successfully.');
+    }
+
+    public function updateDetails(Request $request): RedirectResponse {
+        $input = $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if (!$request->session()->get('id'))
+            abort('401');
+
+        $account = Account::where('aid', '=', $request->session()->get('id'))->first();
+        if (!$account)
+            abort('400');
+
+        if (!Hash::check($input['password'], $account->password))
+            return back()->withErrors(['submit' => 'Password is incorrect.'])->withInput();
+
+        $otherEmails = Account::where('email', '=', $input['email'])->where('aid', '!=', $account->aid)->get()->count();
+        if ($otherEmails != 0)
+            return back()->withErrors(['email' => 'Email is already in use.'])->withInput();
+
+        $account->name = $input['name'];
+        $account->email = $input['email'];
+        $account->save();
+
+        return redirect('/account')->with('success', 'Details updated successfully.');
+    }
+
+    public function updatePassword(Request $request): RedirectResponse {
+        $input = $request->validate([
+            'currentPassword' => 'required',
+            'newPassword' => 'required',
+            'repeatPassword' => 'required',
+
+        ]);
+
+        if (!$request->session()->get('id'))
+            abort('401');
+
+        $account = Account::where('aid', '=', $request->session()->get('id'))->first();
+        if (!$account)
+            abort('400');
+
+        if (!Hash::check($input['currentPassword'], $account->password))
+            return back()->withErrors(['pwSubmit' => 'Password is incorrect.']);
+
+        if ($input['newPassword'] != $input['repeatPassword'])
+            return back()->withErrors(['pwSubmit' => 'Passwords do not match.']);
+
+        $account->password = Hash::make($input['newPassword']);
+        $account->save();
+
+        return redirect('/account')->with('success', 'Password updated successfully.');
     }
 }

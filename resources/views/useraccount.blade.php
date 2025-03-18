@@ -16,8 +16,11 @@
     <section class="unified-header">
         <h1>My Account</h1>
         <p>Welcome back, {{$name}}! View your order history and manage your account details.</p>
+        @if(session('success'))
+            <br>
+            <p id="form-success">{{ session('success') }}</p>
+        @endif
     </section>
-
 
     <!-- Order history section -->
     <section class="featured-products">
@@ -64,15 +67,19 @@
         <form class="update-form" action="/account/update/details" method="post">
             @csrf
             <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required value="{{$fullName}}">
+            <input type="text" id="name" name="name" value="{{ old('name') ? old('name') : $fullName }}">
+            @error('name')<p id="form-error">{{ $message }}</p><br><br>@enderror
 
             <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required value="{{$email}}">
+            <input type="text" id="email" name="email" value="{{ old('email') ? old('email') : $email }}">
+            @error('email')<p id="form-error">{{ $message }}</p><br><br>@enderror
 
             <label for="password">Current Password:</label>
             <input type="password" id="password" name="password">
+            @error('password')<p id="form-error">{{ $message }}</p><br><br>@enderror
 
             <button type="submit" class="update-btn">Update Details</button>
+            @error('submit')<p id="form-error">{{ $message }}</p><br><br>@enderror
         </form>
 
         <br><br>
@@ -81,11 +88,18 @@
             @csrf
             <label for="currentPassword">Current Password:</label>
             <input type="password" id="currentPassword" name="currentPassword">
+            @error('currentPassword')<p id="form-error">{{ $message }}</p><br><br>@enderror
 
             <label for="newPassword">New Password:</label>
             <input type="password" id="newPassword" name="newPassword">
+            @error('newPassword')<p id="form-error">{{ $message }}</p><br><br>@enderror
+
+            <label for="repeatPassword">Repeat Password:</label>
+            <input type="password" id="repeatPassword" name="repeatPassword">
+            @error('repeatPassword')<p id="form-error">{{ $message }}</p><br><br>@enderror
 
             <button type="submit" class="update-btn">Update Password</button><br>
+            @error('pwSubmit')<p id="form-error">{{ $message }}</p><br><br>@enderror
         </form>
     </section>
 
@@ -93,3 +107,13 @@
     @include('footer')
 </body>
 </html>
+
+<style>
+    #form-error {
+        color: red;
+    }
+
+    #form-success {
+        color: green;
+    }
+</style>
