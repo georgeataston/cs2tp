@@ -439,7 +439,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background: linear-gradient(to left, #1f1f1f, #262626); 
+            background: linear-gradient(to left, #1f1f1f, #262626);
             color: #fff;
         }
 
@@ -470,13 +470,13 @@
         /* adjust the box separation and sizes */
         #account-box,
         #shipping-box {
-            transform: translateY(30px); 
+            transform: translateY(30px);
             transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition effect fr hoverings*/
         }
 
         #account-box:hover,
         #shipping-box:hover {
-            transform: translateY(11px); 
+            transform: translateY(11px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         }
 
@@ -488,7 +488,7 @@
         }
 
         #returns-box:hover {
-            transform: translateY(-9px); /* adjust move box sizing */ 
+            transform: translateY(-9px); /* adjust move box sizing */
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
         }
 
@@ -508,16 +508,18 @@
             height: 250px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             color: #fff !important;
+            list-style-type: none;
         }
 
         /* ensure links inside topic box are white */
         .topic-box a {
             color: #fff !important;
-            text-decoration: none;
+            text-decoration: underline;
         }
 
         .topic-box a:hover {
             color: #fff !important;
+            text-decoration: wavy underline;
         }
 
         /* contact Us Section */
@@ -544,8 +546,8 @@
 
 
         /* help query page */
-       
-        
+
+
         /* General Styles */
         body {
             font-family: Arial, sans-serif;
@@ -555,7 +557,7 @@
             color: #fff;
             display: flex;
             flex-direction: column;
-            min-height: 100vh; 
+            min-height: 100vh;
         }
 
         /* container */
@@ -590,7 +592,7 @@
         .contact-us {
             text-align: center;
             padding: 20px;
-            
+
             border-radius: 10px;
             margin-top: auto; /* Push the Contact Us section to the bottom */
         }
