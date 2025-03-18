@@ -12,7 +12,7 @@
 <body>
     @include('header')
 
-    <div class="returns-container">
+    <div class="return-container">
     <h2>Return Your Order</h2>
     <form>
       <label for="order-number">Order Number</label>
