@@ -72,6 +72,15 @@ Route::get('/', function() {
 
 Route::get('/about', function() { return view('about'); });
 Route::get('/contact', function() { return view('contact'); });
+Route::get('/help', function() { return view('help'); });
+Route::get('/account-create', function () { return view('account-create'); });
+Route::get('/shipping-countries', function () { return view('shipping-countries'); });
+Route::get('/shipping-tax', function () { return view('shipping-tax'); });
+Route::get('/shipping-delivery', function () { return view('shipping-delivery'); });
+Route::get('/shipping-price', function () { return view('shipping-price'); });
+Route::get('/returns-charges', function () { return view('returns-charges'); });
+Route::get('/returns-processing', function () { return view('returns-processing'); });
+Route::get('/returns-policy', function () { return view('returns-policy'); });
 Route::get('/login', function() { return view('login'); })->middleware(ReverseSessionValidator::class);
 Route::get('/signup', function() { return view('signup'); })->middleware(ReverseSessionValidator::class);
 
