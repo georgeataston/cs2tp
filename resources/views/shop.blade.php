@@ -118,7 +118,7 @@
                             <div class="product-image-container">
                                 <img src="{{$stock->images->first()->image_path}}" alt="{{$stock->category->name}} {{$stock->name}}" class="product-image">
                             </div>
-                            <h3 class="product-name">{{$stock->category->brand->name}} {{$stock->category->name}}</h3>
+                            <h3 class="product-brand">{{$stock->category->brand->name}} {{$stock->category->name}}</h3>
                             <h3 class="product-name">{{$stock->name}}</h3>
                             <p class="product-price">£{{$stock->price}}</p>
                         </a>

@@ -173,8 +173,14 @@ label {
     object-fit: contain; /* Ensures image maintains aspect ratio */
 }
 
+.product-item h3.product-brand {
+    margin: 5px 0;
+}
+
+
 .product-item h3.product-name {
     margin: 5px 0;
+    color: white;
 }
 
 .product-item p.product-price {

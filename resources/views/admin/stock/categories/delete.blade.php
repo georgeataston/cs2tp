@@ -49,6 +49,9 @@
             </thead>
             <tbody>
                 @foreach($category->items as $stock)
+                    @if($stock->deleted == 1)
+                        @continue
+                    @endif
                     <tr>
                         <td>{{ $stock->id }}</td>
                         <td>{{ $stock->category->brand->name }}</td>
