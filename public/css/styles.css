@@ -372,21 +372,29 @@
             text-decoration: none;
         }
         nav a {
-        position: relative;
-        color: #ddd; /*Text colour*/
-        font-size: 1.2rem;/*Font size*/
-        text-transform: uppercase;/*into uppercase*/
-        font-weight: 600;/*font weight*/
-        text-decoration: none;
-        padding: 10px 20px; /*10 padding to top and bottom and 20 to left and right*/
-        border-radius: 10px; /*round corners*/
-        overflow: hidden; /*hide overflow content*/
-        transition: color 0.3s ease; /*transition text colour over 0.3s when it changes*/
-            background: rgba(255, 255, 255, 0.1); /*background with 10% opacity*/
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /*shadow around link*/
+            position: relative;
+            color: #ddd; /* Text colour */
+            font-size: 1.2rem; /* Font size */
+            text-transform: uppercase; /* Into uppercase */
+            font-weight: 600; /* Font weight */
+            text-decoration: none;
+            padding: 10px 20px; /* 10 padding to top and bottom and 20 to left and right */
+            border-radius: 10px; /* Round corners */
+            overflow: hidden; /* Hide overflow content */
+            transition: color 0.3s ease, background 0.3s ease; /* Transition for color and background */
+            background: rgba(255, 255, 255, 0.1); /* Background with 10% opacity */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow around link */
         }
+        
         nav a:hover {
-        color: #fff; /*white text colour when hovered*/
+            color: #fff; /* White text colour when hovered */
+            background: rgba(255, 255, 255, 0.2); /* Slightly darker background on hover */
+        }
+        
+        nav a.active {
+            color: #ffa500; /* Text colour to orange */
+            background: rgba(254, 164, 1, 0.15); /* Background with light orange shade */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Slightly stronger shadow for active state */
         }
         .auth-buttons {
         display: flex; /*flexbox layput*/
