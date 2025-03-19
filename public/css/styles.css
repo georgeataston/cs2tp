@@ -633,6 +633,76 @@
                 font-size: 1.2rem;
             }
         }
+        /* policy Page css mannnn */
+        .policy {
+            padding: 50px 20px;
+            line-height: 1.6;
+            text-align: center;
+            color: #fff; /* colour white for texttx */
+        }
+
+        .policy .container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center; /* center-align all paras */
+        }
+
+        /* yellow headings */
+        .policy h1, .policy h2, .policy h3 {
+            color: #ffcc00; 
+            margin-bottom: 20px;
+            text-align: center; /* center-align for headings too */
+        }
+
+        .policy h1 { font-size: 2rem; }
+        .policy h2 { font-size: 1.5rem; margin-top: 30px; }
+        .policy h3 { font-size: 1.3rem; margin-top: 20px; }
+
+        /* text and list styling for pagee */
+        .policy p, .policy ul {
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            text-align: center; /* Center-align paragraphs and lists */
+        }
+
+        .policy ul {
+            padding: 0; 
+            display: inline-block; /* Keep list centered */
+            text-align: left; /* align list items wit the centered block */
+        }
+
+        /* links */
+        .policy a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .policy a:hover {
+            text-decoration: underline;
+        }
+
+        /* sections */
+        .policy .rights, .policy .security {
+            background: #1f1f1f;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 30px auto; 
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            max-width: 800px; /* kkeep sections aligned with the container */
+        }
+
+        /* Responsive adjustments */
+        @media screen and (max-width: 768px) {
+            .policy .container {
+                padding: 0 15px;
+            }
+            
+            .policy h1 { font-size: 1.8rem; }
+            .policy h2 { font-size: 1.3rem; }
+            .policy p, .policy li { font-size: 0.85rem; }
+        }
+
+
 
 
         @media (max-width: 768px) { /*for smaller screens*/
