@@ -28,6 +28,16 @@
             <div class="col-md-4 mb-4">
                 <div class="card">
                     <div class="card-body">
+                        <h5 class="card-title">Returns Manager</h5>
+                        <p class="card-text">Manage and action customer returns.</p>
+                        <a href="/admin/returns" class="btn btn-primary">Continue</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
                         <h5 class="card-title">Stock Management</h5>
                         <p class="card-text">Manage the current stock. Including categories, brands and images.</p>
                         <a href="/admin/stock" class="btn btn-primary">Continue</a>
