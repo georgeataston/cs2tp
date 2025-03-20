@@ -418,3 +418,10 @@ Route::get('/admin/stock/manage/size/{id}', function(string $id) {
 
     return view ('admin/stock/manage/size/view')->with('size', $size);
 })->middleware(AdminSessionValidator::class);
+
+// Accounts
+Route::get('/admin/accounts', function() {
+    $accounts = Account::all();
+
+    return view('admin/accounts/home')->with('accounts', $accounts);
+})->middleware(AdminSessionValidator::class);
