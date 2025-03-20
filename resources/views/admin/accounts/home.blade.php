@@ -38,12 +38,12 @@
                 <tbody>
                     @foreach($accounts as $account)
                         <tr>
-                            <td>{{ $account->aid }}</td>
+                            <td>#{{ $account->aid }}</td>
                             <td>{{ $account->name }}</td>
                             <td>{{ $account->email }}</td>
                             <td>{{ $account->created_at }}</td>
                             <td>{{ $account->isAdmin == 1 ? "Yes" : "No" }}</td>
-                            <td>-</td>
+                            <td>{{ $account->orderCount() }}</td>
                             <td>
                                 <button class="btn btn-secondary btn-sm" onclick="location.href = '/admin/accounts/{{$account->aid}}'">View Details</button>
                             </td>

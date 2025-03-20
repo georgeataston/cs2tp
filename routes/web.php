@@ -62,6 +62,9 @@ Route::post('/admin/stock/api/manage/size/delete', [StockController::class, 'del
 Route::post('/admin/stock/api/manage/image/update', [StockController::class, 'updateStockImage'])->middleware(AdminSessionValidator::class);
 Route::get('/admin/stock/api/pleaseneverrunmeoutsideofseeding', [StockController::class, 'pleaseNeverRunMeOutsideOfSeeding'])->middleware(AdminSessionValidator::class);
 
+Route::post('/admin/accounts/api/update', [AccountController::class, 'adminUpdateDetails'])->middleware(AdminSessionValidator::class);
+Route::post('/admin/accounts/api/passwordreset', [AccountController::class, 'adminPasswordReset'])->middleware(AdminSessionValidator::class);
+
 // HTML routes
 Route::get('/', function() {
     $featuresRaw = Feature::all();
@@ -424,4 +427,17 @@ Route::get('/admin/accounts', function() {
     $accounts = Account::all();
 
     return view('admin/accounts/home')->with('accounts', $accounts);
+})->middleware(AdminSessionValidator::class);
+
+Route::get('/admin/accounts/{id}', function(string $id) {
+    if (!is_numeric($id))
+        abort('404');
+
+    $account = Account::where('aid', '=', $id)->first();
+    if (!$account)
+        abort('404');
+
+    $orders = Order::where('user_id', '=', $id)->get();
+
+    return view('admin/accounts/view')->with('account', $account)->with('orders', $orders);
 })->middleware(AdminSessionValidator::class);

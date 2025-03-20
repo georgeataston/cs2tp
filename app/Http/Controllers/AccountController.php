@@ -209,4 +209,57 @@ class AccountController extends Controller
 
         return redirect('/account')->with('success', 'Password updated successfully.');
     }
+
+    public function adminUpdateDetails(Request $request): RedirectResponse {
+        $input = $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'account_id' => 'required',
+        ]);
+
+
+        $account = Account::where('aid', '=', $input['account_id'])->first();
+        if (!$account)
+            abort('400');
+
+        $otherEmails = Account::where('email', '=', $input['email'])->where('aid', '!=', $account->aid)->get()->count();
+        if ($otherEmails != 0)
+            return back()->withErrors(['email' => 'Email is already in use.'])->withInput();
+
+        $account->name = $input['name'];
+        $account->email = $input['email'];
+        $account->save();
+
+        return redirect('/admin/accounts/' . $account->aid)->with('success', 'Details updated successfully.');
+    }
+
+    public function adminPasswordReset(Request $request): RedirectResponse {
+        $input = $request->validate([
+            'account_id' => 'required',
+        ]);
+
+        $user = Account::where('aid', '=', $input['account_id'])->first();
+        if (!$user)
+            abort('400');
+
+        $previousReset = PasswordReset::where('aid', '=', $user->aid)->first();
+        if ($previousReset) {
+            if (time() < $previousReset->allow_new_request) {
+                return redirect('/admin/accounts/' . $user->aid)->with("success", "There is already an active request. Please allow up to 3 minutes to receive the e-mail.");
+            }
+            $previousReset->delete();
+        }
+
+
+        $reset = new PasswordReset;
+        $reset->aid = $user->aid;
+        $reset->token = bin2hex(random_bytes(64 / 2));
+        $reset->expiry = strtotime("+30 minutes", time());
+        $reset->allow_new_request = strtotime("+3 minutes", time());
+        $reset->save();
+
+        Mail::to($user->email)->send(new \App\Mail\PasswordReset($user, $reset));
+
+        return redirect('/admin/accounts/' . $user->aid)->with("success", "Password reset email has been dispatched to " . $user->email . '.');
+    }
 }
