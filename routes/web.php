@@ -184,11 +184,22 @@ Route::get('/shop', function(Request $request) {
         $shopTitle = "Search Results for $searchQuery";
     }
 
+    $sortBy = $request->query('sort');
+    if ($sortBy != null) {
+        if ($sortBy == 'price-asc') // price: low to high
+            $stockList = $stockList->orderBy('price', 'ASC');
+        else if ($sortBy == 'price-desc') // price: high to low
+            $stockList = $stockList->orderBy('price', 'DESC');
+        else if ($sortBy == 'new-arrivals') // new arrivals
+            $stockList = $stockList->latest();
+    }
+
     $stockList = $stockList->get();
-    return view('shop')->with('stockList', $stockList)->with("shopTitle", $shopTitle)->with('brands', $brands);
+
+    return view('shop')->with('stockList', $stockList)->with("shopTitle", $shopTitle)->with('brands', $brands)->with('sortBy', $sortBy);
 });
 
-Route::get('/shop/brand/{id}', function(string $id) {
+Route::get('/shop/brand/{id}', function(string $id, Request $request) {
     if (!is_numeric($id))
         abort('404');
 
@@ -213,7 +224,18 @@ Route::get('/shop/brand/{id}', function(string $id) {
         }
     }
 
-    return view('shop')->with('stockList', $stockList)->with('shopTitle', $shopTitle)->with('brands', $brands);
+    $sortBy = $request->query('sort');
+    if ($sortBy != null) {
+        if ($sortBy == 'price-asc') // price: low to high
+            $stockList = $stockList->sortBy('price');
+        else if ($sortBy == 'price-desc') // price: high to low
+            $stockList = $stockList->sortByDesc('price');
+        else if ($sortBy == 'new-arrivals') // new arrivals
+            $stockList = $stockList->sortByDesc('created_at');
+    }
+
+
+    return view('shop')->with('stockList', $stockList)->with('shopTitle', $shopTitle)->with('brands', $brands)->with('sortBy', $sortBy);
 });
 
 Route::get('/shop/{id}', function(string $id) {
