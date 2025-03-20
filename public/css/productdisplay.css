@@ -22,15 +22,16 @@ header nav {
 }
 
 .reviews-container {
-    max-width: 1200px; /* Keeps the reviews container from growing too wide */
-    margin: auto; /* Centers the reviews section */
+    width: 943.2px; /* set the width to the specified value */
+    height: 165.6px; /* set the height to the specified value */
+    margin: auto; /* xxenters the reviews section */
     padding: 40px;
 }
 
-/* Reviews section specific styling */
+/* rviews section specific styling */
 .reviews-container .product-info-section {
-    width: 70%; /* Adjust the width as needed */
-    max-width: 800px; /* Optional: Limits the maximum width */
+    width: 100%; 
+    max-width: 100%; 
 }
 .product-image-section {
     flex: 1;
