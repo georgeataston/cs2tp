@@ -15,6 +15,21 @@
                 urlParams.set("sort", selectedValue);
                 window.location.search = urlParams.toString();
             });
+
+            const minOut = document.querySelector("#min-value");
+            const minIn = document.querySelector("#min");
+            minOut.textContent = minIn.value;
+            minIn.addEventListener("input", (event) => {
+                minOut.textContent = event.target.value;
+            });
+
+            const maxOut = document.querySelector("#max-value");
+            const maxIn = document.querySelector("#max");
+            maxOut.textContent = maxIn.value;
+            maxIn.addEventListener("input", (event) => {
+                maxOut.textContent = event.target.value;
+            });
+
         }, false);
     </script>
 </head>
@@ -61,58 +76,27 @@
     </ul>
 
     <h3>Filter by</h3>
-    <form id="filter-form">
-{{--        <!-- Product Type -->
-        <div>
-            <h4>Product Type</h4>
-            <label><input type="checkbox" name="type" value="jordans"> Air Jordans</label><br>
-            <label><input type="checkbox" name="type" value="nike"> Nike</label><br>
-            <label><input type="checkbox" name="type" value="yeezy"> Yeezy</label>
-        </div>
-
-        <!-- Subcategory -->
-        <div>
-            <h4>Model</h4>
-            <label><input type="checkbox" name="model" value="jordan1"> Jordan 1</label><br>
-            <label><input type="checkbox" name="model" value="jordan4"> Jordan 4</label><br>
-            <label><input type="checkbox" name="model" value="jordan5"> Jordan 5</label><br>
-            <label><input type="checkbox" name="model" value="dunk"> Dunk</label><br>
-            <label><input type="checkbox" name="model" value="airmax95"> Air Max 95</label><br>
-            <label><input type="checkbox" name="model" value="airmax1"> Air Max 1</label><br>
-            <label><input type="checkbox" name="model" value="yeezy350"> Yeezy 350</label><br>
-            <label><input type="checkbox" name="model" value="yeezy380"> Yeezy 380</label><br>
-            <label><input type="checkbox" name="model" value="yeezy450"> Yeezy 450</label>
-        </div>--}}
-
+    <form id="filter-form" action="{{ $submitToBrand ? "/shop/brand/$brandId" : "/shop" }}">
         <!-- Price -->
         <div>
             <h4>Price</h4>
-            <label><input type="checkbox" name="price" value="low"> £0 - £50</label><br>
-            <label><input type="checkbox" name="price" value="medium"> £51 - £100</label><br>
-            <label><input type="checkbox" name="price" value="high"> £101-250</label><br>
-            <label><input type="checkbox" name="price" value="higher"> £251-500 </label>
+            <label for="min">Minimum: £<output id="min-value"></output></label>
+            <input name="min" id="min" type="range" min="0" max="{{ $mostExpensive }}" step="10" value="{{ $minQuery ? $minQuery : 0 }}" />
+
+            <label for="max">Maximum: £<output id="max-value"></output></label>
+            <input name="max" id="max" type="range" min="0" max="{{ $mostExpensive }}" step="10" value="{{ $maxQuery ? $maxQuery : $mostExpensive }}" />
         </div>
 
         <!-- Size -->
-<div>
-    <h4>Size</h4>
-    <label for="shoe-size">Select Shoe Size:</label>
-    <select id="shoe-size" name="size">
-        <option value="">--Select Size--</option>
-        <option value="4">UK Size 4</option>
-        <option value="5">UK Size 5</option>
-        <option value="6">UK Size 6</option>
-        <option value="7">UK Size 7</option>
-        <option value="8">UK Size 8</option>
-        <option value="9">UK Size 9</option>
-        <option value="10">UK Size 10</option>
-        <option value="11">UK Size 11</option>
-        <option value="12">UK Size 12</option>
-        <option value="13">UK Size 13</option>
-    </select>
-</div>
-
-
+        <div>
+            <h4>Size</h4>
+            <select id="shoe-size" name="size">
+                <option value="">No Preference</option>
+                @foreach($sizes as $size)
+                    <option {{ $sizeQuery ? $size == $sizeQuery ? "selected" : "" : "" }}>{{ $size }}</option>
+                @endforeach
+            </select>
+        </div>
 
         <button type="submit" class="filter-btn">Apply Filters</button>
     </form>
@@ -120,7 +104,7 @@
 
         <section class="product-grid" id="product-grid">
             @if($stockList->isEmpty())
-                <p>There are no items listed right now. Please check back later.</p>
+                <p>There are no items listed right now. Please check back later or edit your search parameters.</p>
             @else
                 @foreach($stockList as $stock)
                     <div class="product-wrapper">

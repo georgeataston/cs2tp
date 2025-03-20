@@ -188,14 +188,34 @@ Route::get('/account/order/{id}', function(string $id) {
 Route::get('/shop', function(Request $request) {
     $stockList = Stock::where('quantity', '>', '0')->where('deleted', '=', '0');
     $shopTitle = "All Products";
+    $mostExpensive = Stock::where('quantity', '>', '0')->where('deleted', '=', '0')->orderBy('price', 'DESC')->first()->price;
+    $mostExpensive = ceil($mostExpensive / 10) * 10;
+
+    $allSizes = Size::where('quantity', '>', '0')->where('deleted', '=', '0')->orderBy('size', 'ASC')->get();
+    $sizes = [];
+    foreach ($allSizes as $s) {
+        if (!in_array($s->size, $sizes))
+            $sizes[] = $s->size;
+    }
 
     $brands = Brand::where('deleted', '=', '0')->get();
 
     $searchQuery = $request->query('search');
     if ($searchQuery != null) {
         $stockList = $stockList->where('name', 'LIKE', '%'.$searchQuery.'%');
+        $mostExpensive = Stock::where('quantity', '>', '0')->where('deleted', '=', '0')->where('name', 'LIKE', '%'.$searchQuery.'%')->orderBy('price', 'DESC')->first()->price;
         $shopTitle = "Search Results for $searchQuery";
     }
+
+    $minQuery = $request->query('min');
+    $maxQuery = $request->query('max');
+    $sizeQuery = $request->query('size');
+
+    if ($minQuery && is_numeric($minQuery))
+        $stockList = $stockList->where('price', '>=', $minQuery);
+
+    if ($maxQuery && is_numeric($maxQuery))
+        $stockList = $stockList->where('price', '<=', $maxQuery);
 
     $sortBy = $request->query('sort');
     if ($sortBy != null) {
@@ -208,8 +228,28 @@ Route::get('/shop', function(Request $request) {
     }
 
     $stockList = $stockList->get();
+    $finalStockList = new Collection;
 
-    return view('shop')->with('stockList', $stockList)->with("shopTitle", $shopTitle)->with('brands', $brands)->with('sortBy', $sortBy);
+    if ($sizeQuery) {
+        foreach($stockList as $stock) {
+            if ($stock->hasSize($sizeQuery))
+                $finalStockList->push($stock);
+        }
+    } else {
+        $finalStockList = $stockList;
+    }
+
+    return view('shop')->with('stockList', $finalStockList)
+        ->with("shopTitle", $shopTitle)
+        ->with('brands', $brands)
+        ->with('sortBy', $sortBy)
+        ->with('mostExpensive', $mostExpensive)
+        ->with('sizes', $sizes)
+        ->with('minQuery', $minQuery)
+        ->with('maxQuery', $maxQuery)
+        ->with('sizeQuery', $sizeQuery)
+        ->with('submitToBrand', false)
+        ->with('brandId', '0');
 });
 
 Route::get('/shop/brand/{id}', function(string $id, Request $request) {
@@ -222,9 +262,21 @@ Route::get('/shop/brand/{id}', function(string $id, Request $request) {
     if ($brand == null || $brand->deleted == 1)
         abort('404');
 
+    $allSizes = Size::where('quantity', '>', '0')->where('deleted', '=', '0')->orderBy('size', 'ASC')->get();
+    $sizes = [];
+    foreach ($allSizes as $s) {
+        if (!in_array($s->size, $sizes))
+            $sizes[] = $s->size;
+    }
+
+    $minQuery = $request->query('min');
+    $maxQuery = $request->query('max');
+    $sizeQuery = $request->query('size');
+
     $shopTitle = $brand->name;
     $stockList = new Collection;
     $categories = $brand->categories;
+    $mostExpensive = 0;
     foreach($categories as $cat) {
         if ($cat->deleted == 1)
             continue;
@@ -233,9 +285,26 @@ Route::get('/shop/brand/{id}', function(string $id, Request $request) {
             if ($item->deleted == 1 || $item->isOutOfStock())
                 continue;
 
+            if ($item->price > $mostExpensive)
+                $mostExpensive = $item->price;
+
+            if ($minQuery && is_numeric($minQuery)) {
+                if ($item->price < $minQuery) continue;
+            }
+
+            if ($maxQuery && is_numeric($maxQuery)) {
+                if ($item->price > $maxQuery) continue;
+            }
+
+            if ($sizeQuery) {
+                if (!$item->hasSize($sizeQuery)) continue;
+            }
+
             $stockList->push($item);
         }
     }
+
+    $mostExpensive = ceil($mostExpensive / 10) * 10;
 
     $sortBy = $request->query('sort');
     if ($sortBy != null) {
@@ -248,7 +317,17 @@ Route::get('/shop/brand/{id}', function(string $id, Request $request) {
     }
 
 
-    return view('shop')->with('stockList', $stockList)->with('shopTitle', $shopTitle)->with('brands', $brands)->with('sortBy', $sortBy);
+    return view('shop')->with('stockList', $stockList)
+        ->with('shopTitle', $shopTitle)
+        ->with('brands', $brands)
+        ->with('sortBy', $sortBy)
+        ->with('mostExpensive', $mostExpensive)
+        ->with('sizes', $sizes)
+        ->with('minQuery', $minQuery)
+        ->with('maxQuery', $maxQuery)
+        ->with('sizeQuery', $sizeQuery)
+        ->with('submitToBrand', true)
+        ->with('brandId', $id);
 });
 
 Route::get('/shop/{id}', function(string $id) {
