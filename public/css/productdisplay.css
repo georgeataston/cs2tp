@@ -21,6 +21,12 @@ header nav {
     margin: auto;
     
 }
+.product-display-review
+    display: flex;
+    gap: 20px;
+    padding: 40px;
+    max-width: 1200px;
+    margin: auto;
 
 .product-image-section {
     flex: 1;
