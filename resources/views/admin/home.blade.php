@@ -29,7 +29,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">Returns Manager</h5>
-                        <p class="card-text">Manage and action customer returns</p>
+                        <p class="card-text">Manage and action customer returns.</p>
                         <a href="/admin/returns" class="btn btn-primary">Continue</a>
                     </div>
                 </div>
