@@ -21,11 +21,17 @@ header nav {
     margin: auto;
 }
 
-.product-display .product-info-section:nth-child(2) {
+.reviews-container {
+    max-width: 1200px; /* Keeps the reviews container from growing too wide */
+    margin: auto; /* Centers the reviews section */
+    padding: 40px;
+}
+
+/* Reviews section specific styling */
+.reviews-container .product-info-section {
     width: 70%; /* Adjust the width as needed */
     max-width: 800px; /* Optional: Limits the maximum width */
 }
-
 .product-image-section {
     flex: 1;
     display: flex;
