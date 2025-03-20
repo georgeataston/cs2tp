@@ -162,7 +162,7 @@ Route::get('/account', function() {
     $fullName = $account->name;
     $email = $account->email;
 
-    $orders = Order::where('user_id', '=', session('id'))->get();
+    $orders = Order::where('user_id', '=', session('id'))->latest()->get();
     if ($orders == null)
         $orders = array();
 
