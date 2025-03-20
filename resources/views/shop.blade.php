@@ -6,6 +6,17 @@
     <title>Products - Crep Culture</title>
     <link rel="stylesheet" href="{{asset('css/shop.css')}}">
     <link rel="stylesheet" href="{{asset('css/styles.css')}}">
+
+    <script>
+        window.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("sort-by").addEventListener("change", function() {
+                const selectedValue = this.value;
+                const urlParams = new URLSearchParams(window.location.search);
+                urlParams.set("sort", selectedValue);
+                window.location.search = urlParams.toString();
+            });
+        }, false);
+    </script>
 </head>
 <body>
     @include("header")
@@ -27,11 +38,10 @@
        <section class="sort-by-section">
             <label for="sort-by">Sort by:</label>
             <select id="sort-by">
-                <option value="default">Default</option>
-                <option value="price-asc">Price: Low to High</option>
-                <option value="price-desc">Price: High to Low</option>
-                <option value="popularity">Popularity</option>
-                <option value="new-arrivals">New Arrivals</option>
+                <option value="default" {{ $sortBy == 'default' ? "selected" : "" }}>Default</option>
+                <option value="price-asc" {{ $sortBy == 'price-asc' ? "selected" : "" }}>Price: Low to High</option>
+                <option value="price-desc" {{ $sortBy == 'price-desc' ? "selected" : "" }}>Price: High to Low</option>
+                <option value="new-arrivals" {{ $sortBy == 'new-arrivals' ? "selected" : "" }}>New Arrivals</option>
             </select>
            <div>
                 <p>| {{ $stockList->count() }} products found</p>
