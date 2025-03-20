@@ -67,4 +67,11 @@ class Stock extends Model
         return $this->quantity == 0;
     }
 
+    public function hasSize(string $size): bool
+    {
+        $sizes = Size::where('stocks_id', '=', $this->id)->where('deleted', '=', '0')->where('quantity','>', '0')->where('size', '=', $size)->get();
+
+        return $sizes->count() > 0;
+    }
+
 }
