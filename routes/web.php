@@ -169,6 +169,19 @@ Route::get('/account', function() {
     return view('useraccount')->with('name', $name)->with('email', $email)->with('fullName', $fullName)->with('orders', $orders);
 })->middleware(SessionValidator::class);
 
+Route::get('/account/order/{id}', function(string $id) {
+    $account = Account::where('aid', '=', session('id'))->first();
+
+    $order = Order::where('id', '=', $id)->first();
+    if (!$order)
+        abort('404');
+
+    if ($order->user_id != $account->aid)
+        abort('404');
+
+    return view('userorder')->with('order', $order);
+})->middleware(SessionValidator::class);
+
 
 // Shop
 
