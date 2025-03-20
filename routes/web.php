@@ -162,11 +162,24 @@ Route::get('/account', function() {
     $fullName = $account->name;
     $email = $account->email;
 
-    $orders = Order::where('user_id', '=', session('id'))->get();
+    $orders = Order::where('user_id', '=', session('id'))->latest()->get();
     if ($orders == null)
         $orders = array();
 
     return view('useraccount')->with('name', $name)->with('email', $email)->with('fullName', $fullName)->with('orders', $orders);
+})->middleware(SessionValidator::class);
+
+Route::get('/account/order/{id}', function(string $id) {
+    $account = Account::where('aid', '=', session('id'))->first();
+
+    $order = Order::where('id', '=', $id)->first();
+    if (!$order)
+        abort('404');
+
+    if ($order->user_id != $account->aid)
+        abort('404');
+
+    return view('userorder')->with('order', $order);
 })->middleware(SessionValidator::class);
 
 

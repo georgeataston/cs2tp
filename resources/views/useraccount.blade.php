@@ -34,6 +34,7 @@
                     <th>Date</th>
                     <th>Status</th>
                     <th>Total</th>
+                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -53,6 +54,7 @@
                             @endif
                         </td>
                         <td>£{{$order->total_price}}</td>
+                        <td><a id="white-link" href="/account/order/{{ $order->id }}">View Order</a></td>
                     </tr>
                 @endforeach
                 </tbody>
@@ -115,5 +117,20 @@
 
     #form-success {
         color: green;
+    }
+
+    #white-link {
+        color: white;
+        text-decoration: underline;
+    }
+
+    #white-link:visited {
+        color: white;
+        text-decoration: underline;
+    }
+
+    #white-link:hover {
+        color: white;
+        text-decoration: wavy underline;
     }
 </style>
