@@ -274,8 +274,9 @@ Route::get('/shop/{id}', function(string $id) {
         if (!$reviewLeft) {
             $orders = Order::where('user_id', '=', session('id'))->get();
             foreach($orders as $order) {
-                foreach($order->items as $item) {
-                    if ($item->product_id == $stock->id && $item->status == 1 && $order->status == 3) {
+                foreach($order->items as $listItem) {
+                    $item = $listItem->size->stock;
+                    if ($item->id == $stock->id && $listItem->status == 1 && $order->status == 3) {
                         $canLeaveReview = true;
                         break;
                     }
