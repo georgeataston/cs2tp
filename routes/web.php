@@ -169,6 +169,8 @@ Route::get('/account', function() {
     return view('useraccount')->with('name', $name)->with('email', $email)->with('fullName', $fullName)->with('orders', $orders);
 })->middleware(SessionValidator::class);
 
+Route::get('/account/return', function () { return view ('userreturns');})->middleware(SessionValidator::class);
+
 Route::get('/account/order/{id}', function(string $id) {
     $account = Account::where('aid', '=', session('id'))->first();
 
