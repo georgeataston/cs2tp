@@ -22,10 +22,11 @@ header nav {
 }
 
 .reviews-container {
-    width: 943.2px; /* set the width to the specified value */
+    width: 1203px; /* set the width to the specified value */
     height: 165.6px; /* set the height to the specified value */
     margin: auto; /* xxenters the reviews section */
     padding: 40px;
+    margin-bottom: 109px;
 }
 
 /* rviews section specific styling */
@@ -175,4 +176,5 @@ footer a:hover {
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    padding-bottom: 20px;
 }
