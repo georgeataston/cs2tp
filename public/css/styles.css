@@ -701,6 +701,11 @@
             .policy h2 { font-size: 1.3rem; }
             .policy p, .policy li { font-size: 0.85rem; }
         }
+        .product-info-section {
+            width: 80%; 
+            max-width: 1200px;  /*quick test */ 
+        }
+
 
 
 
