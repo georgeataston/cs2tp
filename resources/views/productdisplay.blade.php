@@ -91,7 +91,7 @@
             <p class="description">{{$stock->description}}</p>
         </div>
     </div>
-    <div class="product-display">
+    <div class="reviews-container">
         <div class="product-info-section">
             <h2 id="orange">Reviews</h2>
             @if($reviews->count() == 0)
