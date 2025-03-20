@@ -15,7 +15,7 @@
     <div class="return-container">
     <h2>Return Your Order</h2>
     <br>
-    <form>
+    <form class="return-form">
       <label for="order-number">Order Number</label>
       <input type="text" id="order-number" name="order_number" placeholder=" Please enter your order number" required>
 
