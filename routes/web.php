@@ -562,3 +562,10 @@ Route::get('/admin/accounts/{id}', function(string $id) {
 
     return view('admin/accounts/view')->with('account', $account)->with('orders', $orders);
 })->middleware(AdminSessionValidator::class);
+
+// Returns
+Route::get('/admin/returns', function() {
+    $returns = \App\Models\Returns::where('status', '=', '0')->get();
+
+    return view('admin/returns/home')->with('returns', $returns);
+})->middleware(AdminSessionValidator::class);

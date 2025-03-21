@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Models\ReturnItem;
+use App\Models\Returns;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -53,8 +55,21 @@ class ReturnController extends Controller
 
         if ($toReturn->count() == 0)
             return redirect('/returns')->with('continue', 'continue')->with('items', $items)->with('order', $input['order'])->with('email', $input['email'])->withInput()->withErrors(['submit' => 'Please select item(s) to return.']);
-        
 
-        return redirect('/');
+        $return = new Returns;
+        $return->order_id = $order->id;
+        $return->status = 0;
+        $return->save();
+
+        foreach ($toReturn as $item) {
+            $returnItem = new ReturnItem;
+            $returnItem->return_id = $return->id;
+            $returnItem->order_item_id = $item->id;
+            $returnItem->quantity = 1; //for now
+            $returnItem->status = 0;
+            $returnItem->save();
+        }
+
+        return redirect('/returns')->with('success', 'Your return request has been submitted for review successfully. Your reference number is #' . $return->id . '.');
     }
 }

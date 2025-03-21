@@ -40,10 +40,10 @@ class Returns extends Model
     public $timestamps = true;
 
     public function items(): HasMany {
-        return $this->hasMany(ReturnItem::class, "return_id");
+        return $this->hasMany(ReturnItem::class, 'return_id');
     }
 
     public function order(): HasOne {
-        return $this->hasOne(Order::class);
+        return $this->hasOne(Order::class, 'id', 'order_id');
     }
 }

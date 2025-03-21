@@ -43,7 +43,7 @@ class ReturnItem extends Model
     }
 
     public function orderItem(): HasOne {
-        return $this->hasOne(ReturnItem::class);
+        return $this->hasOne(OrderItem::class, 'id', 'order_item_id');
     }
 
 }
