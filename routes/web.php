@@ -192,8 +192,14 @@ Route::get('/account/order/{id}', function(string $id) {
 Route::get('/shop', function(Request $request) {
     $stockList = Stock::where('quantity', '>', '0')->where('deleted', '=', '0');
     $shopTitle = "All Products";
-    $mostExpensive = Stock::where('quantity', '>', '0')->where('deleted', '=', '0')->orderBy('price', 'DESC')->first()->price;
-    $mostExpensive = ceil($mostExpensive / 10) * 10;
+    $mostExpensive = Stock::where('quantity', '>', '0')->where('deleted', '=', '0')->orderBy('price', 'DESC')->first();
+    if (!$mostExpensive)
+        $mostExpensive = 0;
+    else {
+        $mostExpensive = $mostExpensive->price;
+        $mostExpensive = ceil($mostExpensive / 10) * 10;
+    }
+
 
     $allSizes = Size::where('quantity', '>', '0')->where('deleted', '=', '0')->orderBy('size', 'ASC')->get();
     $sizes = [];
@@ -207,7 +213,13 @@ Route::get('/shop', function(Request $request) {
     $searchQuery = $request->query('search');
     if ($searchQuery != null) {
         $stockList = $stockList->where('name', 'LIKE', '%'.$searchQuery.'%');
-        $mostExpensive = Stock::where('quantity', '>', '0')->where('deleted', '=', '0')->where('name', 'LIKE', '%'.$searchQuery.'%')->orderBy('price', 'DESC')->first()->price;
+        $mostExpensive = Stock::where('quantity', '>', '0')->where('deleted', '=', '0')->where('name', 'LIKE', '%'.$searchQuery.'%')->orderBy('price', 'DESC')->first();
+        if (!$mostExpensive)
+            $mostExpensive = 0;
+        else {
+            $mostExpensive = $mostExpensive->price;
+            $mostExpensive = ceil($mostExpensive / 10) * 10;
+        }
         $shopTitle = "Search Results for $searchQuery";
     }
 

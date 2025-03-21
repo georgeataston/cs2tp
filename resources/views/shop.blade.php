@@ -59,7 +59,7 @@
                 <option value="new-arrivals" {{ $sortBy == 'new-arrivals' ? "selected" : "" }}>New Arrivals</option>
             </select>
            <div>
-                <p>| {{ $stockList->count() }} products found</p>
+                <p>| {{ $stockList->count() }} product{{ $stockList->count() != 1 ? "s" : "" }} found</p>
            </div>
         </section>
 
