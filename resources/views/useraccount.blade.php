@@ -26,7 +26,7 @@
     <section class="featured-products">
         <h2>Order History</h2>
         <div class="products">
-           
+
             <!-- Table displaying order details -->
             <table>
                 <thead>
@@ -60,9 +60,9 @@
                 @endforeach
                 </tbody>
             </table>
-           
+
             <!-- New 'Start a Return' button -->
-        <button class="return-btn">Start a Return</button>
+        <button class="return-btn" onclick="window.location.href = '/returns'">Start a Return</button>
         </div>
     </section>
 

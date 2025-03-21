@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\BasketController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ReturnController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\StockController;
 use App\Models\Brand;
@@ -37,6 +38,9 @@ Route::post('/basket/add', [BasketController::class, 'add']);
 Route::post('/basket/remove', [BasketController::class, 'remove']);
 
 Route::post('/orders/checkout', [OrderController::class, 'checkout']);
+
+Route::post('/returns/start', [ReturnController::class, 'startReturn']);
+Route::post('/returns/finish', [ReturnController::class, 'finishReturn']);
 
 Route::post('/reviews/create', [ReviewController::class, 'create'])->middleware(SessionValidator::class);
 Route::post('/admin/reviews/edit', [ReviewController::class, 'edit'])->middleware(AdminSessionValidator::class);
@@ -169,7 +173,7 @@ Route::get('/account', function() {
     return view('useraccount')->with('name', $name)->with('email', $email)->with('fullName', $fullName)->with('orders', $orders);
 })->middleware(SessionValidator::class);
 
-Route::get('/account/return', function () { return view ('userreturns');})->middleware(SessionValidator::class);
+Route::get('/returns', function () { return view ('userreturns');});
 
 Route::get('/account/order/{id}', function(string $id) {
     $account = Account::where('aid', '=', session('id'))->first();
