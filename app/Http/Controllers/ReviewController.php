@@ -64,8 +64,9 @@ class ReviewController extends Controller
 
         $orders = Order::where('user_id', '=', $userId)->get();
         foreach($orders as $order) {
-            foreach($order->items as $item) {
-                if ($item->product_id == $stock->id && $item->status == 1 && $order->status == 3) {
+            foreach($order->items as $listItem) {
+                $item = $listItem->size->stock;
+                if ($item->id == $stock->id && $listItem->status == 1 && $order->status == 3) {
                     $hasBoughtItem = true;
                     break;
                 }

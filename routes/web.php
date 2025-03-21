@@ -28,6 +28,8 @@ Route::post('/login', [AccountController::class, 'authenticate'])->middleware(Re
 Route::get('/logout', [AccountController::class, 'invalidateSession']);
 Route::post('/recovery', [AccountController::class, 'requestPasswordReset'])->middleware(ReverseSessionValidator::class);
 Route::post('/recovery/reset', [AccountController::class, 'forgottenPasswordReset'])->middleware(ReverseSessionValidator::class);
+Route::post('/account/update/details', [AccountController::class, 'updateDetails'])->middleware(SessionValidator::class);
+Route::post('/account/update/password', [AccountController::class, 'updatePassword'])->middleware(SessionValidator::class);
 
 Route::post('/contact', [ContactFormController::class, 'create']);
 
@@ -60,6 +62,9 @@ Route::post('/admin/stock/api/manage/size/delete', [StockController::class, 'del
 Route::post('/admin/stock/api/manage/image/update', [StockController::class, 'updateStockImage'])->middleware(AdminSessionValidator::class);
 Route::get('/admin/stock/api/pleaseneverrunmeoutsideofseeding', [StockController::class, 'pleaseNeverRunMeOutsideOfSeeding'])->middleware(AdminSessionValidator::class);
 
+Route::post('/admin/accounts/api/update', [AccountController::class, 'adminUpdateDetails'])->middleware(AdminSessionValidator::class);
+Route::post('/admin/accounts/api/passwordreset', [AccountController::class, 'adminPasswordReset'])->middleware(AdminSessionValidator::class);
+
 // HTML routes
 Route::get('/', function() {
     $featuresRaw = Feature::all();
@@ -72,6 +77,18 @@ Route::get('/', function() {
 
 Route::get('/about', function() { return view('about'); });
 Route::get('/contact', function() { return view('contact'); });
+Route::get('/help', function() { return view('help'); });
+Route::get('/help/account-create', function () { return view('account-create'); });
+Route::get('/help/shipping-countries', function () { return view('shipping-countries'); });
+Route::get('/help/shipping-tax', function () { return view('shipping-tax'); });
+Route::get('/help/shipping-delivery', function () { return view('shipping-delivery'); });
+Route::get('/help/shipping-price', function () { return view('shipping-price'); });
+Route::get('/help/returns-charges', function () { return view('returns-charges'); });
+Route::get('/help/returns-processing', function () { return view('returns-processing'); });
+Route::get('/help/returns-policy', function () { return view('returns-policy'); });
+Route::get('/footer/privacy-policy', function () { return view('privacy-policy'); });
+
+
 Route::get('/login', function() { return view('login'); })->middleware(ReverseSessionValidator::class);
 Route::get('/signup', function() { return view('signup'); })->middleware(ReverseSessionValidator::class);
 
@@ -145,11 +162,26 @@ Route::get('/account', function() {
     $fullName = $account->name;
     $email = $account->email;
 
-    $orders = Order::where('user_id', '=', session('id'))->get();
+    $orders = Order::where('user_id', '=', session('id'))->latest()->get();
     if ($orders == null)
         $orders = array();
 
     return view('useraccount')->with('name', $name)->with('email', $email)->with('fullName', $fullName)->with('orders', $orders);
+})->middleware(SessionValidator::class);
+
+Route::get('/account/return', function () { return view ('userreturns');})->middleware(SessionValidator::class);
+
+Route::get('/account/order/{id}', function(string $id) {
+    $account = Account::where('aid', '=', session('id'))->first();
+
+    $order = Order::where('id', '=', $id)->first();
+    if (!$order)
+        abort('404');
+
+    if ($order->user_id != $account->aid)
+        abort('404');
+
+    return view('userorder')->with('order', $order);
 })->middleware(SessionValidator::class);
 
 
@@ -158,20 +190,71 @@ Route::get('/account', function() {
 Route::get('/shop', function(Request $request) {
     $stockList = Stock::where('quantity', '>', '0')->where('deleted', '=', '0');
     $shopTitle = "All Products";
+    $mostExpensive = Stock::where('quantity', '>', '0')->where('deleted', '=', '0')->orderBy('price', 'DESC')->first()->price;
+    $mostExpensive = ceil($mostExpensive / 10) * 10;
+
+    $allSizes = Size::where('quantity', '>', '0')->where('deleted', '=', '0')->orderBy('size', 'ASC')->get();
+    $sizes = [];
+    foreach ($allSizes as $s) {
+        if (!in_array($s->size, $sizes))
+            $sizes[] = $s->size;
+    }
 
     $brands = Brand::where('deleted', '=', '0')->get();
 
     $searchQuery = $request->query('search');
     if ($searchQuery != null) {
         $stockList = $stockList->where('name', 'LIKE', '%'.$searchQuery.'%');
+        $mostExpensive = Stock::where('quantity', '>', '0')->where('deleted', '=', '0')->where('name', 'LIKE', '%'.$searchQuery.'%')->orderBy('price', 'DESC')->first()->price;
         $shopTitle = "Search Results for $searchQuery";
     }
 
+    $minQuery = $request->query('min');
+    $maxQuery = $request->query('max');
+    $sizeQuery = $request->query('size');
+
+    if ($minQuery && is_numeric($minQuery))
+        $stockList = $stockList->where('price', '>=', $minQuery);
+
+    if ($maxQuery && is_numeric($maxQuery))
+        $stockList = $stockList->where('price', '<=', $maxQuery);
+
+    $sortBy = $request->query('sort');
+    if ($sortBy != null) {
+        if ($sortBy == 'price-asc') // price: low to high
+            $stockList = $stockList->orderBy('price', 'ASC');
+        else if ($sortBy == 'price-desc') // price: high to low
+            $stockList = $stockList->orderBy('price', 'DESC');
+        else if ($sortBy == 'new-arrivals') // new arrivals
+            $stockList = $stockList->latest();
+    }
+
     $stockList = $stockList->get();
-    return view('shop')->with('stockList', $stockList)->with("shopTitle", $shopTitle)->with('brands', $brands);
+    $finalStockList = new Collection;
+
+    if ($sizeQuery) {
+        foreach($stockList as $stock) {
+            if ($stock->hasSize($sizeQuery))
+                $finalStockList->push($stock);
+        }
+    } else {
+        $finalStockList = $stockList;
+    }
+
+    return view('shop')->with('stockList', $finalStockList)
+        ->with("shopTitle", $shopTitle)
+        ->with('brands', $brands)
+        ->with('sortBy', $sortBy)
+        ->with('mostExpensive', $mostExpensive)
+        ->with('sizes', $sizes)
+        ->with('minQuery', $minQuery)
+        ->with('maxQuery', $maxQuery)
+        ->with('sizeQuery', $sizeQuery)
+        ->with('submitToBrand', false)
+        ->with('brandId', '0');
 });
 
-Route::get('/shop/brand/{id}', function(string $id) {
+Route::get('/shop/brand/{id}', function(string $id, Request $request) {
     if (!is_numeric($id))
         abort('404');
 
@@ -181,16 +264,72 @@ Route::get('/shop/brand/{id}', function(string $id) {
     if ($brand == null || $brand->deleted == 1)
         abort('404');
 
+    $allSizes = Size::where('quantity', '>', '0')->where('deleted', '=', '0')->orderBy('size', 'ASC')->get();
+    $sizes = [];
+    foreach ($allSizes as $s) {
+        if (!in_array($s->size, $sizes))
+            $sizes[] = $s->size;
+    }
+
+    $minQuery = $request->query('min');
+    $maxQuery = $request->query('max');
+    $sizeQuery = $request->query('size');
+
     $shopTitle = $brand->name;
     $stockList = new Collection;
     $categories = $brand->categories;
+    $mostExpensive = 0;
     foreach($categories as $cat) {
+        if ($cat->deleted == 1)
+            continue;
+
         foreach($cat->items as $item) {
+            if ($item->deleted == 1 || $item->isOutOfStock())
+                continue;
+
+            if ($item->price > $mostExpensive)
+                $mostExpensive = $item->price;
+
+            if ($minQuery && is_numeric($minQuery)) {
+                if ($item->price < $minQuery) continue;
+            }
+
+            if ($maxQuery && is_numeric($maxQuery)) {
+                if ($item->price > $maxQuery) continue;
+            }
+
+            if ($sizeQuery) {
+                if (!$item->hasSize($sizeQuery)) continue;
+            }
+
             $stockList->push($item);
         }
     }
 
-    return view('shop')->with('stockList', $stockList)->with('shopTitle', $shopTitle)->with('brands', $brands);
+    $mostExpensive = ceil($mostExpensive / 10) * 10;
+
+    $sortBy = $request->query('sort');
+    if ($sortBy != null) {
+        if ($sortBy == 'price-asc') // price: low to high
+            $stockList = $stockList->sortBy('price');
+        else if ($sortBy == 'price-desc') // price: high to low
+            $stockList = $stockList->sortByDesc('price');
+        else if ($sortBy == 'new-arrivals') // new arrivals
+            $stockList = $stockList->sortByDesc('created_at');
+    }
+
+
+    return view('shop')->with('stockList', $stockList)
+        ->with('shopTitle', $shopTitle)
+        ->with('brands', $brands)
+        ->with('sortBy', $sortBy)
+        ->with('mostExpensive', $mostExpensive)
+        ->with('sizes', $sizes)
+        ->with('minQuery', $minQuery)
+        ->with('maxQuery', $maxQuery)
+        ->with('sizeQuery', $sizeQuery)
+        ->with('submitToBrand', true)
+        ->with('brandId', $id);
 });
 
 Route::get('/shop/{id}', function(string $id) {
@@ -216,8 +355,9 @@ Route::get('/shop/{id}', function(string $id) {
         if (!$reviewLeft) {
             $orders = Order::where('user_id', '=', session('id'))->get();
             foreach($orders as $order) {
-                foreach($order->items as $item) {
-                    if ($item->product_id == $stock->id && $item->status == 1 && $order->status == 3) {
+                foreach($order->items as $listItem) {
+                    $item = $listItem->size->stock;
+                    if ($item->id == $stock->id && $listItem->status == 1 && $order->status == 3) {
                         $canLeaveReview = true;
                         break;
                     }
@@ -397,4 +537,24 @@ Route::get('/admin/stock/manage/size/{id}', function(string $id) {
         abort('404');
 
     return view ('admin/stock/manage/size/view')->with('size', $size);
+})->middleware(AdminSessionValidator::class);
+
+// Accounts
+Route::get('/admin/accounts', function() {
+    $accounts = Account::all();
+
+    return view('admin/accounts/home')->with('accounts', $accounts);
+})->middleware(AdminSessionValidator::class);
+
+Route::get('/admin/accounts/{id}', function(string $id) {
+    if (!is_numeric($id))
+        abort('404');
+
+    $account = Account::where('aid', '=', $id)->first();
+    if (!$account)
+        abort('404');
+
+    $orders = Order::where('user_id', '=', $id)->get();
+
+    return view('admin/accounts/view')->with('account', $account)->with('orders', $orders);
 })->middleware(AdminSessionValidator::class);

@@ -80,7 +80,7 @@ class AccountController extends Controller
         $request->session()->regenerate();
         $request->session()->put('id', $user->aid);
         $request->session()->put('isAdmin', $user->isAdmin);
-      
+
         return redirect($credentials['redirect']);
     }
 
@@ -153,5 +153,113 @@ class AccountController extends Controller
         $reset->delete();
 
         return redirect('/login')->with('success', 'Password reset successfully.');
+    }
+
+    public function updateDetails(Request $request): RedirectResponse {
+        $input = $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if (!$request->session()->get('id'))
+            abort('401');
+
+        $account = Account::where('aid', '=', $request->session()->get('id'))->first();
+        if (!$account)
+            abort('400');
+
+        if (!Hash::check($input['password'], $account->password))
+            return back()->withErrors(['submit' => 'Password is incorrect.'])->withInput();
+
+        $otherEmails = Account::where('email', '=', $input['email'])->where('aid', '!=', $account->aid)->get()->count();
+        if ($otherEmails != 0)
+            return back()->withErrors(['email' => 'Email is already in use.'])->withInput();
+
+        $account->name = $input['name'];
+        $account->email = $input['email'];
+        $account->save();
+
+        return redirect('/account')->with('success', 'Details updated successfully.');
+    }
+
+    public function updatePassword(Request $request): RedirectResponse {
+        $input = $request->validate([
+            'currentPassword' => 'required',
+            'newPassword' => 'required',
+            'repeatPassword' => 'required',
+
+        ]);
+
+        if (!$request->session()->get('id'))
+            abort('401');
+
+        $account = Account::where('aid', '=', $request->session()->get('id'))->first();
+        if (!$account)
+            abort('400');
+
+        if (!Hash::check($input['currentPassword'], $account->password))
+            return back()->withErrors(['pwSubmit' => 'Password is incorrect.']);
+
+        if ($input['newPassword'] != $input['repeatPassword'])
+            return back()->withErrors(['pwSubmit' => 'Passwords do not match.']);
+
+        $account->password = Hash::make($input['newPassword']);
+        $account->save();
+
+        return redirect('/account')->with('success', 'Password updated successfully.');
+    }
+
+    public function adminUpdateDetails(Request $request): RedirectResponse {
+        $input = $request->validate([
+            'name' => 'required',
+            'email' => 'required|email',
+            'account_id' => 'required',
+        ]);
+
+
+        $account = Account::where('aid', '=', $input['account_id'])->first();
+        if (!$account)
+            abort('400');
+
+        $otherEmails = Account::where('email', '=', $input['email'])->where('aid', '!=', $account->aid)->get()->count();
+        if ($otherEmails != 0)
+            return back()->withErrors(['email' => 'Email is already in use.'])->withInput();
+
+        $account->name = $input['name'];
+        $account->email = $input['email'];
+        $account->save();
+
+        return redirect('/admin/accounts/' . $account->aid)->with('success', 'Details updated successfully.');
+    }
+
+    public function adminPasswordReset(Request $request): RedirectResponse {
+        $input = $request->validate([
+            'account_id' => 'required',
+        ]);
+
+        $user = Account::where('aid', '=', $input['account_id'])->first();
+        if (!$user)
+            abort('400');
+
+        $previousReset = PasswordReset::where('aid', '=', $user->aid)->first();
+        if ($previousReset) {
+            if (time() < $previousReset->allow_new_request) {
+                return redirect('/admin/accounts/' . $user->aid)->with("success", "There is already an active request. Please allow up to 3 minutes to receive the e-mail.");
+            }
+            $previousReset->delete();
+        }
+
+
+        $reset = new PasswordReset;
+        $reset->aid = $user->aid;
+        $reset->token = bin2hex(random_bytes(64 / 2));
+        $reset->expiry = strtotime("+30 minutes", time());
+        $reset->allow_new_request = strtotime("+3 minutes", time());
+        $reset->save();
+
+        Mail::to($user->email)->send(new \App\Mail\PasswordReset($user, $reset));
+
+        return redirect('/admin/accounts/' . $user->aid)->with("success", "Password reset email has been dispatched to " . $user->email . '.');
     }
 }

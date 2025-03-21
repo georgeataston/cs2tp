@@ -50,6 +50,6 @@ class Category extends Model
     }
 
     public function stockCount(): int {
-        return Stock::where('category_id', '=', $this->cid)->get()->count();
+        return Stock::where('category_id', '=', $this->cid)->where('deleted', '=', '0')->get()->count();
     }
 }
