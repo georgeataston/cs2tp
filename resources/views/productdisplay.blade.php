@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{$stock->category->brand->name}} {{$stock->category->name}} {{$stock->name}} - Crep Culture</title>
-    <link rel="stylesheet" href="{{asset('css/productdisplay.css')}}">
     <link rel="stylesheet" href="{{asset('css/styles.css')}}">
+    <link rel="stylesheet" href="{{asset('css/productdisplay.css')}}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/charts.css/dist/charts.min.css">
     <style>
         .price-history-container {
@@ -18,6 +18,9 @@
             margin: 0 auto;
             display: flex;
             align-items: center;
+            position: relative;
+            height: 300px; /* Set a height for the line graph */
+            background-color: white;
         }
         .y-axis {
             display: flex;
@@ -28,9 +31,20 @@
             font-size: 14px;
             text-align: right;
         }
-        .charts-css.area tbody tr td {
-            background-color: #4A90E2;
-            opacity: 0.8;
+        .charts-css.line {
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            background: none;
+            display: flex;
+            justify-content: flex-start;
+        }
+        .charts-css.line > .line {
+            display: block;
+            width: 100%;
+            height: 2px; /* Thickness of the line */
+            background-color: #007BFF; /* Clean blue color */
+            position: absolute;
         }
         .months-labels {
             display: flex;
@@ -42,6 +56,57 @@
             gap: 10px;
         }
     </style>
+</head>
+<body>
+    @include("header")
+    <main class="product-display">
+        <div class="product-image-section">
+            <img src="{{$stock->images->first()->image_path}}" alt="{{$stock->category->name}} {{$stock->name}}">
+        </div>
+        <div class="product-info-section">
+            <h1>{{$stock->category->brand->name}} {{$stock->category->name}}</h1>
+            <h2>{{$stock->name}}</h2>
+            <p class="price">£{{$stock->price}}</p>
+            <form class="product-options" action="/basket/add" method="post">
+                @csrf
+                <label for="size">Size</label>
+                <select id="size" name="size">
+                    <option>Select</option>
+                    <option>UK 4</option>
+                    <option>UK 5</option>
+                    <option>UK 6</option>
+                    <option>UK 7</option>
+                    <option>UK 8</option>
+                    <option>UK 9</option>
+                    <option>UK 10</option>
+                    <option>UK 11</option>
+                    <option>UK 12</option>
+                    <option>UK 13</option>
+                </select>
+                @error('size')<p id="form-error">{{ $message }}</p>@enderror
+                <label for="quantity">Quantity</label>
+                <input type="number" id="quantity" name="quantity" value="1" min="1">
+                <input type="hidden" name="id" value="{{$stock->id}}" />
+                <button type="submit" class="add-to-cart-btn">Add to Cart</button>
+                @if (session('success') == "added")
+                    <p id="form-success">Item has been added to your basket!</p>
+                    <br>
+                @endif
+            </form>
+            <p class="description">{{$stock->description}}</p>
+            
+            <div class="price-history-container">
+                <h3>Price History</h3>
+                <div id="my-chart">
+                    <div class="y-axis" id="y-axis"></div>
+                    <div class="charts-css line" id="price-history"></div>
+                </div>
+                <div class="months-labels" id="months-labels"></div>
+            </div>
+        </div>
+    </main>
+    @include('footer')
+
     <script>
         function generateRandomData(points, lastPrice) {
             let prices = [];
@@ -67,16 +132,26 @@
 
         function populateChart(lastPrice) {
             const prices = generateRandomData(12, lastPrice);
-            const tableBody = document.querySelector("#price-history tbody");
-            tableBody.innerHTML = "";
-            for (let i = 0; i < prices.length - 1; i++) {
-                let row = document.createElement("tr");
-                let cell = document.createElement("td");
-                cell.style.setProperty("--start", prices[i] / lastPrice);
-                cell.style.setProperty("--end", prices[i + 1] / lastPrice);
-                row.appendChild(cell);
-                tableBody.appendChild(row);
+            const chartContainer = document.getElementById("price-history");
+            chartContainer.innerHTML = "";
+            let pathData = "";
+            const step = 100 / (prices.length - 1);
+            for (let i = 0; i < prices.length; i++) {
+                const x = step * i;
+                const y = ((prices[i] / lastPrice) * 100).toFixed(2);
+                pathData += (i === 0 ? `M ${x} ${y}` : ` L ${x} ${y}`);
             }
+            const line = document.createElement("svg");
+            line.setAttribute("viewBox", "0 0 100 100");
+            line.setAttribute("width", "100%");
+            line.setAttribute("height", "100%");
+            const linePath = document.createElement("path");
+            linePath.setAttribute("d", pathData);
+            linePath.setAttribute("stroke", "#007BFF"); /* Clean blue color */
+            linePath.setAttribute("stroke-width", "2");
+            linePath.setAttribute("fill", "none");
+            line.appendChild(linePath);
+            chartContainer.appendChild(line);
             updateYAxis(lastPrice);
         }
 
@@ -97,67 +172,5 @@
             populateChart(lastPrice);
         });
     </script>
-</head>
-<body>
-    @include("header")
-    <div class="product-display">
-        <div class="product-image-section">
-            <img src="{{$stock->images->first()->image_path}}" alt="{{$stock->category->name}} {{$stock->name}}">
-        </div>
-        <div class="product-info-section">
-            <h1>{{$stock->category->brand->name}} {{$stock->category->name}}</h1>
-            <h2>{{$stock->name}}</h2>
-            @if(!$stock->isOutOfStock())
-                <p class="price">£{{$stock->price}}</p>
-            @endif
-            @if ($stock->isOutOfStock())
-                <br>
-                <div class="alert out-of-stock">Out of Stock</div>
-                <br>
-            @elseif ($stock->isLowStock())
-                <div class="alert low-stock">Low in Stock: Only {{ $stock->quantity }} left!</div>
-                <br><br>
-            @endif
-            @if (!$stock->isOutOfStock())
-                <form class="product-options" action="/basket/add" method="post">
-                    @csrf
-                    <label for="size">Size</label>
-                    <select id="size" name="size">
-                        <option>Select</option>
-                        @foreach($sizes as $size)
-                            @if($size->quantity <= 0)
-                                <option disabled value="{{ $size->id }}">{{ $size->size }} (OUT OF STOCK)</option>
-                            @else
-                                <option value="{{ $size->id }}">{{ $size->size }}</option>
-                            @endif
-                        @endforeach
-                    </select>
-                    @error('size')<p id="form-error">{{ $message }}</p><br>@enderror
-                    <label for="quantity">Quantity</label>
-                    <input type="number" id="quantity" name="quantity" min="1" value="{{old('quantity') ? old('quantity') : 1}}">
-                    @error('quantity')<p id="form-error">{{ $message }}</p><br>@enderror
-                    <button type="submit" class="add-to-cart-btn">Add to Cart</button>
-                    @if (session('success') == "added")
-                        <p id="form-success">Item has been added to your basket!</p>
-                        <br>
-                    @endif
-                </form>
-            @endif
-            <p class="description">{{$stock->description}}</p>
-            
-            <!-- Price History Section -->
-            <div class="price-history-container">
-                <h3>Price History</h3>
-                <div id="my-chart">
-                    <div class="y-axis" id="y-axis"></div>
-                    <table class="charts-css area show-heading" id="price-history">
-                        <tbody></tbody>
-                    </table>
-                </div>
-                <div class="months-labels" id="months-labels"></div>
-            </div>
-        </div>
-    </div>
-    @include('footer')
 </body>
 </html>
