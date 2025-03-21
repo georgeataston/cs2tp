@@ -72,4 +72,42 @@ class ReturnController extends Controller
 
         return redirect('/returns')->with('success', 'Your return request has been submitted for review successfully. Your reference number is #' . $return->id . '.');
     }
+
+    
+    public function updateReturnItemStatus(Request $request): RedirectResponse
+    {
+        $input = $request->validate([
+            'return_item_id' => 'required|integer',
+            'status' => 'required|integer|in:1,2,3,4,5',
+        ]);
+
+        $returnItem = ReturnItem::where('id', $input['return_item_id'])->first();
+        if (!$returnItem) {
+            return back()->withInput()->withErrors(['submit' => 'Return item not found.']);
+        }
+
+        $returnItem->status = $input['status'];
+        $returnItem->save();
+
+        return back()->with('success', 'Return item status updated successfully.');
+    }
+
+    
+    public function updateReturnStatus(Request $request): RedirectResponse
+    {
+        $input = $request->validate([
+            'return_id' => 'required|integer',
+            'status' => 'required|integer|in:1,2,3,4,5',
+        ]);
+
+        $return = Returns::where('id', $input['return_id'])->first();
+        if (!$return) {
+            return back()->withInput()->withErrors(['submit' => 'Return request not found.']);
+        }
+
+        $return->status = $input['status'];
+        $return->save();
+
+        return back()->with('success', 'Return request status updated successfully.');
+    }
 }
