@@ -11,6 +11,7 @@ use App\Models\Category;
 use App\Models\Feature;
 use App\Models\Order;
 use App\Models\PasswordReset;
+use App\Models\Returns;
 use App\Models\Review;
 use App\Models\Size;
 use App\Models\Stock;
@@ -565,7 +566,18 @@ Route::get('/admin/accounts/{id}', function(string $id) {
 
 // Returns
 Route::get('/admin/returns', function() {
-    $returns = \App\Models\Returns::where('status', '=', '0')->get();
+    $returns = Returns::where('status', '=', '0')->get();
 
     return view('admin/returns/home')->with('returns', $returns);
+})->middleware(AdminSessionValidator::class);
+
+Route::get('/admin/returns/{id}', function(string $id) {
+    if (!is_numeric($id))
+        abort('404');
+
+    $return = Returns::where('id', '=', $id)->first();
+    if (!$return)
+        abort('404');
+
+    return view('admin/returns/view')->with('return', $return);
 })->middleware(AdminSessionValidator::class);

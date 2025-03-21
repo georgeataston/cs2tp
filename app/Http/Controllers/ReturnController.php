@@ -58,6 +58,7 @@ class ReturnController extends Controller
 
         $return = new Returns;
         $return->order_id = $order->id;
+        $return->reason = $input['reason'];
         $return->status = 0;
         $return->save();
 
@@ -73,7 +74,7 @@ class ReturnController extends Controller
         return redirect('/returns')->with('success', 'Your return request has been submitted for review successfully. Your reference number is #' . $return->id . '.');
     }
 
-    
+
     public function updateReturnItemStatus(Request $request): RedirectResponse
     {
         $input = $request->validate([
@@ -92,7 +93,7 @@ class ReturnController extends Controller
         return back()->with('success', 'Return item status updated successfully.');
     }
 
-    
+
     public function updateReturnStatus(Request $request): RedirectResponse
     {
         $input = $request->validate([

@@ -45,7 +45,7 @@
                                     ({{ $item->orderItem->size->size }}) (Qty: {{ $item->orderItem->quantity }})<br>
                                 @endforeach
                             </td>
-                            <td>{{ $ret->status }}</td>
+                            <td>{{ $ret->statusText() }}</td>
                             <td>{{ $ret->created_at }}</td>
                             <td>
                                 <button class="btn btn-secondary btn-sm" onclick="location.href = '/admin/returns/{{$ret->id}}'">View Details</button>

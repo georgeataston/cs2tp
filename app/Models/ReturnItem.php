@@ -46,4 +46,21 @@ class ReturnItem extends Model
         return $this->hasOne(OrderItem::class, 'id', 'order_item_id');
     }
 
+    public function statusText(): string {
+        if ($this->status == 0)
+            return "New";
+        else if ($this->status == 1)
+            return "Denied";
+        else if ($this->status == 2)
+            return "Approved";
+        else if ($this->status == 3)
+            return "Received";
+        else if ($this->status == 4)
+            return "Refunded";
+        else if ($this->status == 5)
+            return "Denied (returned to customer)";
+        else
+            return "Unknown";
+    }
+
 }

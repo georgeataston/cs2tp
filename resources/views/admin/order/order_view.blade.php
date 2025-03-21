@@ -132,10 +132,12 @@
             <form method="post" action="/admin/orders/api/complete">
                 @csrf
                 <input hidden type="number" name="order_id" value="{{$order->id}}"/>
-                <button class="btn btn-success">Mark as Shipped</button>
+                <button type="submit" class="btn btn-success">Mark as Shipped</button>
+                <button type="button" class="btn btn-secondary" onclick="location.href = '/admin/orders'">Back</button>
             </form>
+        @else
+            <button class="btn btn-secondary" onclick="location.href = '/admin/orders'">Back</button>
         @endif
-        <button class="btn btn-secondary" onclick="location.href = '/admin/orders'">Back</button>
     </div>
 
 </body>

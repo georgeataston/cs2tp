@@ -46,4 +46,21 @@ class Returns extends Model
     public function order(): HasOne {
         return $this->hasOne(Order::class, 'id', 'order_id');
     }
+
+    public function statusText(): string {
+        if ($this->status == 0)
+            return "New";
+        else if ($this->status == 1)
+            return "Denied";
+        else if ($this->status == 2)
+            return "Partially Approved";
+        else if ($this->status == 3)
+            return "Approved";
+        else if ($this->status == 4)
+            return "Refunded";
+        else if ($this->status == 5)
+            return "Denied (returned to customer)";
+        else
+            return "Unknown";
+    }
 }
