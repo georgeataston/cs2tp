@@ -9,6 +9,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Feature;
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\PasswordReset;
 use App\Models\Review;
 use App\Models\Size;
@@ -18,6 +19,7 @@ use App\Http\Middleware\AdminSessionValidator;
 use App\Http\Middleware\ReverseSessionValidator;
 use App\Http\Middleware\SessionValidator;
 use App\Models\Account;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -432,7 +434,10 @@ Route::get('/admin/orders/{id}', function(string $id) {
 
 // Stock
 Route::get('/admin/stock', function() {
-   return view('admin/stock/home');
+    $oosSizeCount = Size::where('quantity', '=', '0')->get()->count();
+    $oosStockCount = Stock::where('quantity', '=', '0')->get()->count();
+
+   return view('admin/stock/home')->with('oosSizeCount', $oosSizeCount)->with('oosStockCount', $oosStockCount);
 })->middleware(AdminSessionValidator::class);
 
 Route::get('/admin/stock/brands', function() {
@@ -557,4 +562,49 @@ Route::get('/admin/accounts/{id}', function(string $id) {
     $orders = Order::where('user_id', '=', $id)->get();
 
     return view('admin/accounts/view')->with('account', $account)->with('orders', $orders);
+})->middleware(AdminSessionValidator::class);
+
+// Reports
+Route::get('/admin/reports', function() {
+    $today = Carbon::today();
+
+    // Sales data
+    $salesToday = Order::whereDate('created_at', $today)->sum('total_price');
+    $salesWeek = Order::whereBetween('created_at', [$today->copy()->startOfWeek(), $today->copy()->endOfWeek()])->sum('total_price');
+    $salesMonth = Order::whereBetween('created_at', [$today->copy()->startOfMonth(), $today->copy()->endOfMonth()])->sum('total_price');
+    $salesYear = Order::whereBetween('created_at', [$today->copy()->startOfYear(), $today->copy()->endOfYear()])->sum('total_price');
+    $salesTotal = Order::sum('total_price');
+
+    // Item movement data
+    $movementToday = OrderItem::whereDate('created_at', $today)->sum('quantity');
+    $movementWeek = OrderItem::whereBetween('created_at', [$today->copy()->startOfWeek(), $today->copy()->endOfWeek()])->sum('quantity');
+    $movementMonth = OrderItem::whereBetween('created_at', [$today->copy()->startOfMonth(), $today->copy()->endOfMonth()])->sum('quantity');
+    $movementYear = OrderItem::whereBetween('created_at', [$today->copy()->startOfYear(), $today->copy()->endOfYear()])->sum('quantity');
+    $movementTotal = OrderItem::sum('quantity');
+
+    // Outstanding customer activity
+    $outstandingOrders = Order::where('status', '!=', '3')->get()->count();
+    $outstandingReturns = 0;
+    //$outstandingReturns = Returns::where('status', '!=', '?')->get()->count();
+
+    // Out of stock items
+    $oosSizes = Size::where('quantity', '=', '0')->get();
+
+    return view('admin/reports/home')
+        ->with('salesToday', $salesToday)
+        ->with('salesWeek', $salesWeek)
+        ->with('salesMonth', $salesMonth)
+        ->with('salesYear', $salesYear)
+        ->with('salesTotal', $salesTotal)
+
+        ->with('movementToday', $movementToday)
+        ->with('movementWeek', $movementWeek)
+        ->with('movementMonth', $movementMonth)
+        ->with('movementYear', $movementYear)
+        ->with('movementTotal', $movementTotal)
+
+        ->with('outstandingOrders', $outstandingOrders)
+        ->with('outstandingReturns', $outstandingReturns)
+
+        ->with('oosSizes', $oosSizes);
 })->middleware(AdminSessionValidator::class);
