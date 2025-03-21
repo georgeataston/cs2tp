@@ -47,4 +47,12 @@ class Account extends Model
     {
         return $this->hasMany(PasswordReset::class);
     }
+
+    public function orders(): HasMany {
+        return $this->hasMany(Order::class);
+    }
+
+    public function orderCount(): int {
+        return Order::where('user_id', '=', $this->aid)->get()->count();
+    }
 }
