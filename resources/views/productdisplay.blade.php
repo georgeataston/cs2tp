@@ -162,7 +162,7 @@
                         <option>Select</option>
                         @foreach($sizes as $size)
                             @if($size->quantity <= 0)
-                                <option disabled value="{{ $size->id }}">{{ $size->size }} (OUT OF STOCK)</option>
+                                <option disabled value="{{ $size->id }}" style="color: darkgrey">{{ $size->size }} (OUT OF STOCK)</option>
                             @else
                                 <option value="{{ $size->id }}">{{ $size->size }}</option>
                             @endif
@@ -404,5 +404,4 @@
         text-align: center;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     }
-
 </style>
