@@ -690,6 +690,67 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
             max-width: 800px; /* kkeep sections aligned with the container */
         }
+        /* policy pges */
+        .policy {
+            padding: 50px 20px;
+            line-height: 1.6;
+            text-align: center; /* ceter-align all text */
+        }
+
+        .policy .container {
+            max-width: 800px; /*naower container for better readability */
+            margin: 0 auto;
+        }
+
+        .policy h1 {
+            color: #ffa500; /*ornge color for the main heading */
+            font-size: 2rem; /* Smaller font size */
+            margin-bottom: 20px;
+        }
+
+        .policy h2 {
+            color: #ffa500; /* ornge color for subheadings */
+            font-size: 1.5rem; /* Smaller font size */
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .policy h3 {
+            color: #ffa500; /* ornge color for sub-subheadings */
+            font-size: 1.3rem; /* Smaller font size */
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .policy p {
+            font-size: 0.9rem; /* saller font size */
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+
+        .policy ul {
+            margin-bottom: 20px;
+            padding-left: 20px;
+            list-style-position: inside; /* aign bullet points with centered text */
+            text-align: left; /* lft-align list items */
+            display: inline-block; /* cnter the list itself */
+        }
+
+        .policy ul li {
+            font-size: 0.9rem; /*smaller font size */
+            color: #ddd;
+            margin-bottom: 10px;
+        }
+
+        .policy a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        .policy a:hover {
+            text-decoration: underline;
+        }
+
 
         /* Responsive adjustments */
         @media screen and (max-width: 768px) {
