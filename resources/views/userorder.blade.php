@@ -51,7 +51,7 @@
                     @if($order->status == 3)
                         <p>Item arrived not as you expected? Please visit our help page for more information!</p>
                         <br>
-                        <p>If you're not happy with this item, you can start a return here.</p>
+                        <p>If you're not happy with this item, <a id="white-link" href="/returns">you can start a return here.</a></p>
                     @else
                         <p>Thank you for your order. We are preparing your order.</p>
                     @endif
@@ -86,5 +86,20 @@
 
     #form-success {
         color: green;
+    }
+
+    #white-link {
+        color: white;
+        text-decoration: underline;
+    }
+
+    #white-link:visited {
+        color: white;
+        text-decoration: underline;
+    }
+
+    #white-link:hover {
+        color: white;
+        text-decoration: wavy underline;
     }
 </style>

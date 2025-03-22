@@ -40,8 +40,8 @@
                     <h3>Returns</h3>
                     <p>3 articles in this topic</p>
                     <ul>
+                        <li><a href="/help/returns-processing">How do I request a refund or check its status?</a></li>
                         <li><a href="/help/returns-charges">When will I receive my refund?</a></li>
-                        <li><a href="/help/returns-processing">How long do orders take to be processed?</a></li>
                         <li><a href="/help/returns-policy">What’s the return policy for online purchases?</a></li>
                     </ul>
                 </div>

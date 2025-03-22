@@ -42,6 +42,7 @@ Route::post('/orders/checkout', [OrderController::class, 'checkout']);
 
 Route::post('/returns/start', [ReturnController::class, 'startReturn']);
 Route::post('/returns/finish', [ReturnController::class, 'finishReturn']);
+Route::post('/returns/check', [ReturnController::class, 'checkReturn']);
 
 Route::post('/reviews/create', [ReviewController::class, 'create'])->middleware(SessionValidator::class);
 Route::post('/admin/reviews/edit', [ReviewController::class, 'edit'])->middleware(AdminSessionValidator::class);
@@ -69,6 +70,9 @@ Route::get('/admin/stock/api/pleaseneverrunmeoutsideofseeding', [StockController
 
 Route::post('/admin/accounts/api/update', [AccountController::class, 'adminUpdateDetails'])->middleware(AdminSessionValidator::class);
 Route::post('/admin/accounts/api/passwordreset', [AccountController::class, 'adminPasswordReset'])->middleware(AdminSessionValidator::class);
+
+Route::post('/admin/returns/api/signoff', [ReturnController::class, 'signOff'])->middleware(AdminSessionValidator::class);
+Route::post('/admin/returns/api/item/update', [ReturnController::class, 'updateReturnItemStatus'])->middleware(AdminSessionValidator::class);
 
 // HTML routes
 Route::get('/', function() {
@@ -566,9 +570,15 @@ Route::get('/admin/accounts/{id}', function(string $id) {
 
 // Returns
 Route::get('/admin/returns', function() {
-    $returns = Returns::where('status', '=', '0')->get();
+    $returns = Returns::where('status', '=', '0')->orWhere('status', '=', '1')->get();
 
-    return view('admin/returns/home')->with('returns', $returns);
+    return view('admin/returns/home')->with('returns', $returns)->with('all', false);
+})->middleware(AdminSessionValidator::class);
+
+Route::get('/admin/returns/all', function() {
+    $returns = Returns::orderBy("id", "desc")->get();
+
+    return view('admin/returns/home')->with('returns', $returns)->with('all', true);
 })->middleware(AdminSessionValidator::class);
 
 Route::get('/admin/returns/{id}', function(string $id) {

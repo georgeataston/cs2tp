@@ -11,8 +11,8 @@
 
     <section class="help">
         <div class="container">
-            <h2>How long do orders take to be processed?</h2>
-            <p>Orders are typically processed within 24 hours.</p>
+            <h2>How do I request a refund or check its status?</h2>
+            <p><a id="white-link" href="/returns">Please visit the returns centre here.</a></p>
         </div>
     </section>
 
@@ -27,3 +27,28 @@
     @include("footer")
 </body>
 </html>
+
+<style>
+    #form-error {
+        color: red;
+    }
+
+    #form-success {
+        color: green;
+    }
+
+    #white-link {
+        color: white;
+        text-decoration: underline;
+    }
+
+    #white-link:visited {
+        color: white;
+        text-decoration: underline;
+    }
+
+    #white-link:hover {
+        color: white;
+        text-decoration: wavy underline;
+    }
+</style>

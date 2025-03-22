@@ -39,7 +39,7 @@ class ReturnItem extends Model
     public $timestamps = true;
 
     public function return(): HasOne {
-        return $this->hasOne(Returns::class);
+        return $this->hasOne(Returns::class, 'id', 'return_id');
     }
 
     public function orderItem(): HasOne {
@@ -63,4 +63,12 @@ class ReturnItem extends Model
             return "Unknown";
     }
 
+    public function buttonStatusText(): string {
+        if ($this->status == 1)
+            return "Denial";
+        else if ($this->status == 2)
+            return "Approval";
+        else
+            return "Action";
+    }
 }

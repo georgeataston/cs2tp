@@ -25,9 +25,49 @@ class ReturnController extends Controller
         if ($order->email != $input['email'])
             return back()->withInput()->withErrors(['submit' => 'We are unable to locate your order. Please check your input. Need more help? Contact us quoting "R2".']);
 
-        $items = $order->items;
+        if ($order->status != 3)
+            return back()->withInput()->withErrors(['submit' => 'This is order is still processing, therefore you cannot start a return right now. Need more help? Please contact us.']);
+
+        $items = new Collection;
+        foreach($order->items as $item) {
+            $returnItem = ReturnItem::where('order_item_id', '=', $item->id)->first();
+            if (!$returnItem)
+                $items->push($item);
+        }
+
+        if ($items->count() == 0)
+            return back()->withInput()->withErrors(['submit' => 'You do not have any items on this order eligible for a refund. This may be because you have not received the items yet or you have already requested a refund.']);
 
         return redirect('/returns')->with('continue', 'continue')->with('items', $items)->with('order', $input['order'])->with('email', $input['email']);
+    }
+
+    public function checkReturn(Request $request): RedirectResponse {
+        $input = $request->validate([
+            'reference' => 'required|integer',
+            'email' => 'required|email',
+        ]);
+
+        $return = Returns::where('id', '=', $input['reference'])->first();
+        if (!$return)
+            return back()->withInput()->withErrors(['status-submit' => 'We are unable to locate your return. Please check your input. Need more help? Contact us quoting "R3".']);
+
+        if ($return->order->email != $input['email'])
+            return back()->withInput()->withErrors(['status-submit' => 'We are unable to locate your order. Please check your input. Need more help? Contact us quoting "R4".']);
+
+        $items = $return->items;
+        $message = "";
+        if ($return->status == 0)
+            $message = "Thank you for your request. We will process it shortly.";
+        else if ($return->status == 1 || $return->status == 6)
+            $message = "Thank you for your request. Unfortunately we are unable to approve your refund. If you sent any items back to us, please get in touch to arrange a re-delivery.";
+        else if ($return->status == 7)
+            $message = "Thank you for your request. Unfortunately, we were only able to approve some of your return items. If you sent any items back to us, please get in touch to arrange a re-delivery.";
+        else if ($return->status == 5)
+            $message = "Thank you for your request. We have approved your refund. Your return will be credited back to your payment card.";
+        else
+            $message = "Thank you for your request. Something has gone wrong, and we cannot confirm your return status right now. Please try again later or contact us.";
+
+        return redirect('/returns')->with('check', 'check')->with('items', $items)->with('checkMessage', $message);
     }
 
     public function finishReturn(Request $request): RedirectResponse {
@@ -79,36 +119,57 @@ class ReturnController extends Controller
     {
         $input = $request->validate([
             'return_item_id' => 'required|integer',
-            'status' => 'required|integer|in:1,2,3,4,5',
+            'status' => 'required|integer',
         ]);
 
         $returnItem = ReturnItem::where('id', $input['return_item_id'])->first();
         if (!$returnItem) {
-            return back()->withInput()->withErrors(['submit' => 'Return item not found.']);
+            return back()->with('error', 'Return item not found.');
         }
 
         $returnItem->status = $input['status'];
         $returnItem->save();
 
-        return back()->with('success', 'Return item status updated successfully.');
+        $returnItem->return->status = 1;
+        $returnItem->return->save();
+
+        return back();
     }
 
 
-    public function updateReturnStatus(Request $request): RedirectResponse
+    public function signOff(Request $request): RedirectResponse
     {
         $input = $request->validate([
             'return_id' => 'required|integer',
-            'status' => 'required|integer|in:1,2,3,4,5',
         ]);
 
         $return = Returns::where('id', $input['return_id'])->first();
         if (!$return) {
-            return back()->withInput()->withErrors(['submit' => 'Return request not found.']);
+            return back()->with('error', 'Return request not found.');
         }
 
-        $return->status = $input['status'];
+        $approveCount = 0;
+        $declineCount = 0;
+        foreach($return->items as $item) {
+            if ($item->status == 1 || $item->status == 5)
+                $declineCount++;
+            else if ($item->status == 4)
+                $approveCount++;
+            else
+                return back()->with('error', 'Return is not in a state to sign off.');
+        }
+
+        if ($approveCount != 0 && $declineCount != 0) // partial refund
+            $return->status = 7;
+        else if ($approveCount > 0 && $declineCount == 0)
+            $return->status = 5;
+        else if ($approveCount == 0 && $declineCount > 0)
+            $return->status = 6;
+        else
+            return back()->with('error', 'Something went wrong. Please try again later. (Error code ' . $approveCount . '-' . $declineCount . ')');
+
         $return->save();
 
-        return back()->with('success', 'Return request status updated successfully.');
+        return redirect('/admin/returns')->with('success', 'Return #' . $return->id . ' signed off successfully.');
     }
 }

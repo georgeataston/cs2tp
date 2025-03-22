@@ -16,7 +16,12 @@
 
 <!-- Page Content -->
 <div class="container page-container">
-    <h2 class="text-center mb-4">Returns Manager</h2>
+    @if($all)
+        <h2 class="text-center mb-4">All Returns</h2>
+        <p class="text-center">All Crep Culture returns.</p>
+    @else
+        <h2 class="text-center mb-4">Returns Manager</h2>
+    @endif
     @if(session('success'))
         <p class="text-center text-success">{{ session('success') }}</p>
     @endif

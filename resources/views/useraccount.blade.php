@@ -62,7 +62,7 @@
             </table>
 
             <!-- New 'Start a Return' button -->
-        <button class="return-btn" onclick="window.location.href = '/returns'">Start a Return</button>
+        <button class="return-btn" onclick="window.location.href = '/returns'">Problem with an item? Start a return</button>
         </div>
     </section>
 

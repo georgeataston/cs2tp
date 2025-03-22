@@ -51,16 +51,34 @@ class Returns extends Model
         if ($this->status == 0)
             return "New";
         else if ($this->status == 1)
-            return "Denied";
+            return "Pending";
         else if ($this->status == 2)
-            return "Partially Approved";
+            return "Denied";
         else if ($this->status == 3)
-            return "Approved";
+            return "Partially Approved";
         else if ($this->status == 4)
-            return "Refunded";
+            return "Approved";
         else if ($this->status == 5)
+            return "Refunded";
+        else if ($this->status == 6)
             return "Denied (returned to customer)";
+        else if ($this->status == 7)
+            return "Partially Refunded";
         else
             return "Unknown";
+    }
+
+    public function canSignOff(): bool {
+        if ($this->status != 1)
+            return false;
+
+        $can = true;
+        foreach($this->items as $item) {
+            if ($item->status != 1 && $item->status != 4 && $item->status != 5) {
+                $can = false;
+            }
+        }
+
+        return $can;
     }
 }

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Start a Return - Crep Culture</title>
+    <title>Returns Centre - Crep Culture</title>
     <!-- Link to CSS file  -->
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 </head>
@@ -12,7 +12,7 @@
 
     <section class="auth-form">
         <div class="auth-form-content">
-            <h2>Start a Return</h2>
+            <h2>Returns Centre</h2>
             @if (session('success'))
                 <p id="form-success">{{session('success')}}</p>
                 <br>
@@ -38,6 +38,16 @@
                     <button type="submit" class="submit-btn">Submit Return</button>
                     @error('submit')<p id="form-error">{{ $message }}</p>@enderror
                 </form>
+            @elseif(session('check'))
+                <p>{{ session('checkMessage') }}</p>
+                <br>
+                <p>Your request contains the following items:</p>
+                @foreach(session('items') as $item)
+                    <input type="checkbox" id="{{$item->id}}" name="item-{{$item->id}}" disabled>
+                    <label for="item-{{$item->id}}">{{ $item->orderItem->stock()->category->brand->name . ' ' . $item->orderItem->stock()->category->name . ' ' . $item->orderItem->stock()->name . ' (' . $item->orderItem->size->size . ') - ' . $item->statusText() }}</label><br>
+                @endforeach
+                <br>
+                <button class="submit-btn" onclick="location.href = '/returns'">Back</button>
             @else
                 <form action="/returns/start" method="post">
                     @csrf
@@ -53,35 +63,25 @@
                     <button type="submit" class="submit-btn">Find Order</button>
                     @error('submit')<p id="form-error">{{ $message }}</p>@enderror
                 </form>
+                <br>
+                <p>Already submitted a request? Check your return status:</p>
+                <br>
+                <form action="/returns/check" method="post">
+                    @csrf
+                    <p class="credentials">Enter reference number</p>
+                    <input type="text" placeholder="Enter reference number" name="reference">
+                    @error('reference')<p id="form-error">{{ $message }}</p>@enderror
+
+                    <p class="credentials">Enter email</p>
+                    <input type="text" placeholder="Enter email" name="email">
+                    @error('email')<p id="form-error">{{ $message }}</p>@enderror
+
+                    <button type="submit" class="submit-btn">Check Status</button>
+                    @error('status-submit')<p id="form-error">{{ $message }}</p>@enderror
+                </form>
             @endif
         </div>
     </section>
-
-{{--    <div class="return-container">
-    <h2>Return Your Order</h2>
-    <br>
-    <form class="return-form">
-      <label for="order-number">Order Number</label>
-      <input type="text" id="order-number" name="order_number" placeholder="Enter order number">
-
-        <label for="order-address">Email Address</label>
-        <input type="text" id="order-address" name="order_address" placeholder="Enter email address">
-
-      <label for="return-reason">Return Reason</label>
-      <select id="return-reason" name="return_reason" required>
-        <option value="">Select a reason</option>
-        <option value="damaged">Damaged Item</option>
-        <option value="wrong_item">Wrong Item Received</option>
-        <option value="size_issue">Size/Fit Issue</option>
-        <option value="other">Other</option>
-      </select>
-      <br>
-
-      <button type="submit" class="return-btn">Submit Return Request</button>
-    </form>
-  </div>--}}
-
-
     @include('footer')
 </body>
 </html>
@@ -103,5 +103,20 @@
         border-radius: 5px;
         background: rgba(255, 255, 255, 0.1);
         color: #fff;
+    }
+
+    #white-link {
+        color: white;
+        text-decoration: underline;
+    }
+
+    #white-link:visited {
+        color: white;
+        text-decoration: underline;
+    }
+
+    #white-link:hover {
+        color: white;
+        text-decoration: wavy underline;
     }
 </style>
