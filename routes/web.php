@@ -3,6 +3,7 @@
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\BasketController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ReturnController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\StockController;
 use App\Models\Brand;
@@ -11,6 +12,7 @@ use App\Models\Feature;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\PasswordReset;
+use App\Models\Returns;
 use App\Models\Review;
 use App\Models\Size;
 use App\Models\Stock;
@@ -40,6 +42,10 @@ Route::post('/basket/remove', [BasketController::class, 'remove']);
 
 Route::post('/orders/checkout', [OrderController::class, 'checkout']);
 
+Route::post('/returns/start', [ReturnController::class, 'startReturn']);
+Route::post('/returns/finish', [ReturnController::class, 'finishReturn']);
+Route::post('/returns/check', [ReturnController::class, 'checkReturn']);
+
 Route::post('/reviews/create', [ReviewController::class, 'create'])->middleware(SessionValidator::class);
 Route::post('/admin/reviews/edit', [ReviewController::class, 'edit'])->middleware(AdminSessionValidator::class);
 Route::post('/admin/reviews/delete', [ReviewController::class, 'delete'])->middleware(AdminSessionValidator::class);
@@ -66,6 +72,9 @@ Route::get('/admin/stock/api/pleaseneverrunmeoutsideofseeding', [StockController
 
 Route::post('/admin/accounts/api/update', [AccountController::class, 'adminUpdateDetails'])->middleware(AdminSessionValidator::class);
 Route::post('/admin/accounts/api/passwordreset', [AccountController::class, 'adminPasswordReset'])->middleware(AdminSessionValidator::class);
+
+Route::post('/admin/returns/api/signoff', [ReturnController::class, 'signOff'])->middleware(AdminSessionValidator::class);
+Route::post('/admin/returns/api/item/update', [ReturnController::class, 'updateReturnItemStatus'])->middleware(AdminSessionValidator::class);
 
 // HTML routes
 Route::get('/', function() {
@@ -173,7 +182,7 @@ Route::get('/account', function() {
     return view('useraccount')->with('name', $name)->with('email', $email)->with('fullName', $fullName)->with('orders', $orders);
 })->middleware(SessionValidator::class);
 
-Route::get('/account/return', function () { return view ('userreturns');})->middleware(SessionValidator::class);
+Route::get('/returns', function () { return view ('userreturns');});
 
 Route::get('/account/order/{id}', function(string $id) {
     $account = Account::where('aid', '=', session('id'))->first();
@@ -578,6 +587,30 @@ Route::get('/admin/accounts/{id}', function(string $id) {
     return view('admin/accounts/view')->with('account', $account)->with('orders', $orders);
 })->middleware(AdminSessionValidator::class);
 
+// Returns
+Route::get('/admin/returns', function() {
+    $returns = Returns::where('status', '=', '0')->orWhere('status', '=', '1')->get();
+
+    return view('admin/returns/home')->with('returns', $returns)->with('all', false);
+})->middleware(AdminSessionValidator::class);
+
+Route::get('/admin/returns/all', function() {
+    $returns = Returns::orderBy("id", "desc")->get();
+
+    return view('admin/returns/home')->with('returns', $returns)->with('all', true);
+})->middleware(AdminSessionValidator::class);
+
+Route::get('/admin/returns/{id}', function(string $id) {
+    if (!is_numeric($id))
+        abort('404');
+
+    $return = Returns::where('id', '=', $id)->first();
+    if (!$return)
+        abort('404');
+
+    return view('admin/returns/view')->with('return', $return);
+})->middleware(AdminSessionValidator::class);
+
 // Reports
 Route::get('/admin/reports', function() {
     $today = Carbon::today();
@@ -598,8 +631,7 @@ Route::get('/admin/reports', function() {
 
     // Outstanding customer activity
     $outstandingOrders = Order::where('status', '!=', '3')->get()->count();
-    $outstandingReturns = 0;
-    //$outstandingReturns = Returns::where('status', '!=', '?')->get()->count();
+    $outstandingReturns = Returns::where('status', '=', '0')->orWhere('status', '=', '1')->get()->count();
 
     // Out of stock items
     $oosSizes = Size::where('quantity', '=', '0')->get();

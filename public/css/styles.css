@@ -315,6 +315,15 @@
         border: 1px solid #525252; /* border with 1px solid line in grey colour*/
         color: #f2f2f2;/*Text colour inside input*/
         }
+        .auth-form input[type=checkbox] {
+        width: auto;
+        padding: 12px; /*add padding*/
+        border-radius: 5px; /*round corners*/
+        margin-bottom: 20px; /*add bottom margin to create space below*/
+        background: #303030; /*background colour of input to grey*/
+        border: 1px solid #525252; /* border with 1px solid line in grey colour*/
+        color: #f2f2f2;/*Text colour inside input*/
+        }
         .auth-form button {
         padding: 12px; /*Padding for spaces*/
         background: linear-gradient(to right, #f39c12, #f1c40f); /*Background from orange to yellow*/
@@ -669,7 +678,7 @@
 
         /* yellow headings */
         .policy h1, .policy h2, .policy h3 {
-            color: #ffcc00; 
+            color: #ffcc00;
             margin-bottom: 20px;
             text-align: center; /* center-align for headings too */
         }
@@ -686,7 +695,7 @@
         }
 
         .policy ul {
-            padding: 0; 
+            padding: 0;
             display: inline-block; /* Keep list centered */
             text-align: left; /* align list items wit the centered block */
         }
@@ -706,7 +715,7 @@
             background: #1f1f1f;
             border-radius: 8px;
             padding: 25px;
-            margin: 30px auto; 
+            margin: 30px auto;
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
             max-width: 800px; /* kkeep sections aligned with the container */
         }
@@ -777,7 +786,7 @@
             .policy .container {
                 padding: 0 15px;
             }
-            
+
             .policy h1 { font-size: 1.8rem; }
             .policy h2 { font-size: 1.3rem; }
             .policy p, .policy li { font-size: 0.85rem; }
