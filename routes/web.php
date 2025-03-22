@@ -89,6 +89,8 @@ Route::get('/help/returns-charges', function () { return view('returns-charges')
 Route::get('/help/returns-processing', function () { return view('returns-processing'); });
 Route::get('/help/returns-policy', function () { return view('returns-policy'); });
 Route::get('/footer/privacy-policy', function () { return view('privacy-policy'); });
+Route::get('/footer/terms-of-service', function () { return view('terms-of-service'); });
+
 
 
 Route::get('/login', function() { return view('login'); })->middleware(ReverseSessionValidator::class);
