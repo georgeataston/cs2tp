@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Stock extends Model
 {
@@ -55,6 +56,11 @@ class Stock extends Model
     public function sizes(): HasMany
     {
         return $this->hasMany(Size::class, 'stocks_id');
+    }
+
+    public function curatedOutfit(): HasOne
+    {
+        return $this->hasOne(CuratedOutfit::class);
     }
 
     public function isLowStock(): bool

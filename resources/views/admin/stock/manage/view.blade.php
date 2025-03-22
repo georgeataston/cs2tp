@@ -180,6 +180,39 @@
         </form>
 
         <br>
+        <h3 class="mb-4">Curated Outfit</h3>
+        @if($stock->curatedOutfit == null)
+            <p class="text-center">This product does not have a curated outfit.</p>
+            <button class="btn btn-primary" id="createOutfitButton" onclick="showOutfitForm()">Create Outfit</button>
+            <div id="outfitCreator" style="display: none">
+                <h3 class="mb-2">Create Outfit</h3>
+                <form method="post" action="/admin/stock/api/manage/outfit/create">
+                    @csrf
+                    <div class="form-group">
+                        <label for="image">Stock Image URL</label>
+                        <input type="text" class="form-control" id="image" name="image" placeholder="https://i.postimg.cc/MheiEa242" value="{{ old('image') ? old('image') : "" }}">
+                        @error('image')<p class="text-danger">{{ $message }}</p>@enderror
+                    </div>
+
+                    
+                </form>
+            </div>
+        @else
+        @endif
+        <form method="post" action="/admin/stock/api/manage/outfit/update">
+            @csrf
+            <div class="form-group">
+                <label for="image">Stock Image URL</label>
+                <input type="text" class="form-control" id="image" name="image" placeholder="https://i.postimg.cc/MheiEa242" value="{{ old('image') ? old('image') : $stock->images->first()->image_path }}">
+                @error('image')<p class="text-danger">{{ $message }}</p>@enderror
+            </div>
+            <input hidden type="number" name="image_id" value="{{$stock->images->first()->id}}"/>
+            <input hidden type="number" name="stock_id" value="{{$stock->id}}"/>
+            <button type="submit" class="btn btn-primary">Update Image</button>
+            @error('submit')<p class="text-danger">{{ $message }}</p>@enderror
+        </form>
+
+        <br>
         <h3 class="mb-4">Other Actions</h3>
         <button class="btn btn-danger" onclick="location.href = '/admin/stock/manage/{{$stock->id}}/delete'">Archive</button>
         <button class="btn btn-secondary" onclick="location.href = '/admin/stock/manage'">Back</button>

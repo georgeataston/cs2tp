@@ -47,6 +47,9 @@
     <div class="product-display">
         <div class="product-image-section">
             <img src="{{$stock->images->first()->image_path}}" alt="{{$stock->category->name}} {{$stock->name}}">
+            @if($stock->curatedOutfit != null)
+                <div class="curated-badge">CURATED OUTFIT</div>
+            @endif
         </div>
         <div class="product-info-section">
             <h1>{{$stock->category->brand->name}} {{$stock->category->name}}</h1>
@@ -91,6 +94,23 @@
             <p class="description">{{$stock->description}}</p>
         </div>
     </div>
+
+    @if($stock->curatedOutfit != null)
+        <div class="reviews-container product-info-section">
+            <h2 id="orange">Curated Outfit</h2>
+            <div class="product-display">
+                <div class="product-image-section" style="flex-direction: column">
+                    <img src="{{$stock->curatedOutfit->image_url}}" alt="Curated outfit for {{$stock->name}}">
+                    <p style="padding-top: 10px">© {{$stock->curatedOutfit->copyright}}</p>
+                </div>
+                <div class="product-info-section">
+                    <h2>Style your shoes right</h2>
+                    <p class="description">{{$stock->curatedOutfit->description}}</p>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <div class="reviews-container">
         <div class="product-info-section">
             <h2 id="orange">Reviews</h2>
@@ -261,6 +281,29 @@
 
     .delete-box {
         display: none;
+    }
+
+    .product-image-section {
+         position: relative;
+    }
+
+    .curated-badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background-color: #ffa500;
+        color: white;
+        font-size: 12px;
+        font-weight: bold;
+        padding: 5px 10px;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
     }
 
 </style>

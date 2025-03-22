@@ -111,6 +111,9 @@
                         <a href="/shop/{{$stock->id}}" class="product-item">
                             <div class="product-image-container">
                                 <img src="{{$stock->images->first()->image_path}}" alt="{{$stock->category->name}} {{$stock->name}}" class="product-image">
+                                @if($stock->curatedOutfit != null)
+                                    <div class="curated-badge">CURATED OUTFIT</div>
+                                @endif
                             </div>
                             <h3 class="product-brand">{{$stock->category->brand->name}} {{$stock->category->name}}</h3>
                             <h3 class="product-name">{{$stock->name}}</h3>
@@ -125,3 +128,29 @@
     @include("footer")
 </body>
 </html>
+
+<style>
+    .product-image-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .curated-badge {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background-color: #ffa500;
+        color: white;
+        font-size: 12px;
+        font-weight: bold;
+        padding: 5px 10px;
+        border-radius: 50%;
+        width: 60px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+</style>
