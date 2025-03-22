@@ -609,7 +609,7 @@ Route::get('/admin/returns/{id}', function(string $id) {
         abort('404');
 
     return view('admin/returns/view')->with('return', $return);
-})->middleware(AdminSessionValidator::class);  
+})->middleware(AdminSessionValidator::class);
 
 // Reports
 Route::get('/admin/reports', function() {
@@ -631,8 +631,7 @@ Route::get('/admin/reports', function() {
 
     // Outstanding customer activity
     $outstandingOrders = Order::where('status', '!=', '3')->get()->count();
-    $outstandingReturns = 0;
-    //$outstandingReturns = Returns::where('status', '!=', '?')->get()->count();
+    $outstandingReturns = Returns::where('status', '=', '0')->orWhere('status', '=', '1')->get()->count();
 
     // Out of stock items
     $oosSizes = Size::where('quantity', '=', '0')->get();
