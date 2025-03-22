@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AccountController;
 use App\Http\Controllers\BasketController;
+use App\Http\Controllers\CuratedOutfitController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReturnController;
 use App\Http\Controllers\ReviewController;
@@ -68,6 +69,9 @@ Route::post('/admin/stock/api/manage/size/create', [StockController::class, 'cre
 Route::post('/admin/stock/api/manage/size/update', [StockController::class, 'updateSizeQuantity'])->middleware(AdminSessionValidator::class);
 Route::post('/admin/stock/api/manage/size/delete', [StockController::class, 'deleteSize'])->middleware(AdminSessionValidator::class);
 Route::post('/admin/stock/api/manage/image/update', [StockController::class, 'updateStockImage'])->middleware(AdminSessionValidator::class);
+Route::post('/admin/stock/api/manage/outfit/create', [CuratedOutfitController::class, 'createOutfit'])->middleware(AdminSessionValidator::class);
+Route::post('/admin/stock/api/manage/outfit/update', [CuratedOutfitController::class, 'updateOutfit'])->middleware(AdminSessionValidator::class);
+Route::post('/admin/stock/api/manage/outfit/delete', [CuratedOutfitController::class, 'deleteOutfit'])->middleware(AdminSessionValidator::class);
 Route::get('/admin/stock/api/pleaseneverrunmeoutsideofseeding', [StockController::class, 'pleaseNeverRunMeOutsideOfSeeding'])->middleware(AdminSessionValidator::class);
 
 Route::post('/admin/accounts/api/update', [AccountController::class, 'adminUpdateDetails'])->middleware(AdminSessionValidator::class);

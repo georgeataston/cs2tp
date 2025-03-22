@@ -26,6 +26,28 @@
             document.getElementById("archiveSize-" + id).style.display = "none";
             document.getElementById("confirmArchiveSize-" + id).style.display = "inline-block";
         }
+
+        function showOutfitForm() {
+            document.getElementById("createOutfitButton").style.display = "none";
+            document.getElementById("outfitCreator").style.display = "block";
+        }
+
+        function hideOutfitForm() {
+            document.getElementById("createOutfitButton").style.display = "block";
+            document.getElementById("outfitCreator").style.display = "none";
+        }
+
+        function updateOutfit() {
+            var form = document.getElementById("outfitUpdateForm");
+            form.action = "/admin/stock/api/manage/outfit/update";
+            return false;
+        }
+
+        function deleteOutfit() {
+            var form = document.getElementById("outfitUpdateForm");
+            form.action = "/admin/stock/api/manage/outfit/delete";
+            return true;
+        }
     </script>
 
 </head>
@@ -182,7 +204,7 @@
         <br>
         <h3 class="mb-4">Curated Outfit</h3>
         @if($stock->curatedOutfit == null)
-            <p class="text-center">This product does not have a curated outfit.</p>
+            <p>This product does not have a curated outfit.</p>
             <button class="btn btn-primary" id="createOutfitButton" onclick="showOutfitForm()">Create Outfit</button>
             <div id="outfitCreator" style="display: none">
                 <h3 class="mb-2">Create Outfit</h3>
@@ -194,25 +216,55 @@
                         @error('image')<p class="text-danger">{{ $message }}</p>@enderror
                     </div>
 
-                    
+                    <div class="form-group">
+                        <label for="description">Description</label>
+                        <textarea type="text" class="form-control" id="description" name="description" placeholder="Enter description" rows="4">{{ old('description') ? old('description') : ''}}</textarea>
+                        @error('description')<p class="text-danger">{{ $message }}</p>@enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="copyright">Copyright Acknowledgements</label>
+                        <input type="text" class="form-control" id="copyright" name="copyright" placeholder="Nike 2024" value="{{ old('copyright') ? old('copyright') : "" }}">
+                        @error('copyright')<p class="text-danger">{{ $message }}</p>@enderror
+                    </div>
+
+                    <input hidden type="number" name="stock_id" value="{{$stock->id}}"/>
+                    <button type="submit" class="btn btn-primary">Create</button>
+                    <button type="button" class="btn btn-secondary" onclick="hideOutfitForm()">Cancel</button>
+                    @error('submit')<p class="text-danger">{{ $message }}</p>@enderror
+                    <br><br>
                 </form>
             </div>
         @else
-        @endif
-        <form method="post" action="/admin/stock/api/manage/outfit/update">
-            @csrf
-            <div class="form-group">
-                <label for="image">Stock Image URL</label>
-                <input type="text" class="form-control" id="image" name="image" placeholder="https://i.postimg.cc/MheiEa242" value="{{ old('image') ? old('image') : $stock->images->first()->image_path }}">
-                @error('image')<p class="text-danger">{{ $message }}</p>@enderror
-            </div>
-            <input hidden type="number" name="image_id" value="{{$stock->images->first()->id}}"/>
-            <input hidden type="number" name="stock_id" value="{{$stock->id}}"/>
-            <button type="submit" class="btn btn-primary">Update Image</button>
-            @error('submit')<p class="text-danger">{{ $message }}</p>@enderror
-        </form>
+            <form method="post" id="outfitUpdateForm">
+                @csrf
+                <div class="form-group">
+                    <label for="image">Stock Image URL</label>
+                    <input type="text" class="form-control" id="image" name="image" placeholder="https://i.postimg.cc/MheiEa242" value="{{ old('image') ? old('image') : $stock->curatedOutfit->image_url }}">
+                    @error('image')<p class="text-danger">{{ $message }}</p>@enderror
+                </div>
 
-        <br>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    <textarea type="text" class="form-control" id="description" name="description" placeholder="Enter description" rows="4">{{ old('description') ? old('description') : $stock->curatedOutfit->description }}</textarea>
+                    @error('description')<p class="text-danger">{{ $message }}</p>@enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="copyright">Copyright Acknowledgements</label>
+                    <input type="text" class="form-control" id="copyright" name="copyright" placeholder="Nike 2024" value="{{ old('copyright') ? old('copyright') : $stock->curatedOutfit->copyright }}">
+                    @error('copyright')<p class="text-danger">{{ $message }}</p>@enderror
+                </div>
+
+                <input hidden type="number" name="outfit_id" value="{{$stock->curatedOutfit->id}}"/>
+                <button type="submit" class="btn btn-primary" onclick="updateOutfit()">Update</button>
+                <button type="submit" class="btn btn-danger" onclick="deleteOutfit()">Delete</button>
+                @error('submit')<p class="text-danger">{{ $message }}</p>@enderror
+                <br><br>
+            </form>
+        @endif
+
+        <br><br>
         <h3 class="mb-4">Other Actions</h3>
         <button class="btn btn-danger" onclick="location.href = '/admin/stock/manage/{{$stock->id}}/delete'">Archive</button>
         <button class="btn btn-secondary" onclick="location.href = '/admin/stock/manage'">Back</button>
