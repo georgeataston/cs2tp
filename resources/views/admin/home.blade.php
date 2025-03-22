@@ -54,6 +54,16 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Reports Overview</h5>
+                        <p class="card-text">View an overview of the store's KPIs.</p>
+                        <a href="/admin/reports" class="btn btn-primary">Continue</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

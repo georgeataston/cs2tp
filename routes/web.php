@@ -10,6 +10,7 @@ use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Feature;
 use App\Models\Order;
+use App\Models\OrderItem;
 use App\Models\PasswordReset;
 use App\Models\Returns;
 use App\Models\Review;
@@ -20,6 +21,7 @@ use App\Http\Middleware\AdminSessionValidator;
 use App\Http\Middleware\ReverseSessionValidator;
 use App\Http\Middleware\SessionValidator;
 use App\Models\Account;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -96,6 +98,8 @@ Route::get('/help/returns-charges', function () { return view('returns-charges')
 Route::get('/help/returns-processing', function () { return view('returns-processing'); });
 Route::get('/help/returns-policy', function () { return view('returns-policy'); });
 Route::get('/footer/privacy-policy', function () { return view('privacy-policy'); });
+Route::get('/footer/terms-of-service', function () { return view('terms-of-service'); });
+
 
 
 Route::get('/login', function() { return view('login'); })->middleware(ReverseSessionValidator::class);
@@ -199,8 +203,14 @@ Route::get('/account/order/{id}', function(string $id) {
 Route::get('/shop', function(Request $request) {
     $stockList = Stock::where('quantity', '>', '0')->where('deleted', '=', '0');
     $shopTitle = "All Products";
-    $mostExpensive = Stock::where('quantity', '>', '0')->where('deleted', '=', '0')->orderBy('price', 'DESC')->first()->price;
-    $mostExpensive = ceil($mostExpensive / 10) * 10;
+    $mostExpensive = Stock::where('quantity', '>', '0')->where('deleted', '=', '0')->orderBy('price', 'DESC')->first();
+    if (!$mostExpensive)
+        $mostExpensive = 0;
+    else {
+        $mostExpensive = $mostExpensive->price;
+        $mostExpensive = ceil($mostExpensive / 10) * 10;
+    }
+
 
     $allSizes = Size::where('quantity', '>', '0')->where('deleted', '=', '0')->orderBy('size', 'ASC')->get();
     $sizes = [];
@@ -214,7 +224,13 @@ Route::get('/shop', function(Request $request) {
     $searchQuery = $request->query('search');
     if ($searchQuery != null) {
         $stockList = $stockList->where('name', 'LIKE', '%'.$searchQuery.'%');
-        $mostExpensive = Stock::where('quantity', '>', '0')->where('deleted', '=', '0')->where('name', 'LIKE', '%'.$searchQuery.'%')->orderBy('price', 'DESC')->first()->price;
+        $mostExpensive = Stock::where('quantity', '>', '0')->where('deleted', '=', '0')->where('name', 'LIKE', '%'.$searchQuery.'%')->orderBy('price', 'DESC')->first();
+        if (!$mostExpensive)
+            $mostExpensive = 0;
+        else {
+            $mostExpensive = $mostExpensive->price;
+            $mostExpensive = ceil($mostExpensive / 10) * 10;
+        }
         $shopTitle = "Search Results for $searchQuery";
     }
 
@@ -441,7 +457,10 @@ Route::get('/admin/orders/{id}', function(string $id) {
 
 // Stock
 Route::get('/admin/stock', function() {
-   return view('admin/stock/home');
+    $oosSizeCount = Size::where('quantity', '=', '0')->get()->count();
+    $oosStockCount = Stock::where('quantity', '=', '0')->get()->count();
+
+   return view('admin/stock/home')->with('oosSizeCount', $oosSizeCount)->with('oosStockCount', $oosStockCount);
 })->middleware(AdminSessionValidator::class);
 
 Route::get('/admin/stock/brands', function() {
@@ -590,4 +609,49 @@ Route::get('/admin/returns/{id}', function(string $id) {
         abort('404');
 
     return view('admin/returns/view')->with('return', $return);
+})->middleware(AdminSessionValidator::class);  
+
+// Reports
+Route::get('/admin/reports', function() {
+    $today = Carbon::today();
+
+    // Sales data
+    $salesToday = Order::whereDate('created_at', $today)->sum('total_price');
+    $salesWeek = Order::whereBetween('created_at', [$today->copy()->startOfWeek(), $today->copy()->endOfWeek()])->sum('total_price');
+    $salesMonth = Order::whereBetween('created_at', [$today->copy()->startOfMonth(), $today->copy()->endOfMonth()])->sum('total_price');
+    $salesYear = Order::whereBetween('created_at', [$today->copy()->startOfYear(), $today->copy()->endOfYear()])->sum('total_price');
+    $salesTotal = Order::sum('total_price');
+
+    // Item movement data
+    $movementToday = OrderItem::whereDate('created_at', $today)->sum('quantity');
+    $movementWeek = OrderItem::whereBetween('created_at', [$today->copy()->startOfWeek(), $today->copy()->endOfWeek()])->sum('quantity');
+    $movementMonth = OrderItem::whereBetween('created_at', [$today->copy()->startOfMonth(), $today->copy()->endOfMonth()])->sum('quantity');
+    $movementYear = OrderItem::whereBetween('created_at', [$today->copy()->startOfYear(), $today->copy()->endOfYear()])->sum('quantity');
+    $movementTotal = OrderItem::sum('quantity');
+
+    // Outstanding customer activity
+    $outstandingOrders = Order::where('status', '!=', '3')->get()->count();
+    $outstandingReturns = 0;
+    //$outstandingReturns = Returns::where('status', '!=', '?')->get()->count();
+
+    // Out of stock items
+    $oosSizes = Size::where('quantity', '=', '0')->get();
+
+    return view('admin/reports/home')
+        ->with('salesToday', $salesToday)
+        ->with('salesWeek', $salesWeek)
+        ->with('salesMonth', $salesMonth)
+        ->with('salesYear', $salesYear)
+        ->with('salesTotal', $salesTotal)
+
+        ->with('movementToday', $movementToday)
+        ->with('movementWeek', $movementWeek)
+        ->with('movementMonth', $movementMonth)
+        ->with('movementYear', $movementYear)
+        ->with('movementTotal', $movementTotal)
+
+        ->with('outstandingOrders', $outstandingOrders)
+        ->with('outstandingReturns', $outstandingReturns)
+
+        ->with('oosSizes', $oosSizes);
 })->middleware(AdminSessionValidator::class);

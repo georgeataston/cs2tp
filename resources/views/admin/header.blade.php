@@ -21,7 +21,10 @@
             <li class="nav-item">
                 <a class="nav-link" href="/admin/accounts">Accounts</a>
             </li>
-
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/admin/reports">Reports</a>
+            </li>
             <li class="nav-item">
                 <a class="nav-link" href="/">Exit Admin</a>
             </li>

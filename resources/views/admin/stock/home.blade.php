@@ -15,6 +15,11 @@
     <!-- Page Content -->
     <div class="container page-container">
         <h2 class="text-center mb-4">Stock Management</h2>
+
+        @if ($oosSizeCount == 0 || $oosStockCount == 0)
+            <p class="text-center text-danger"><b>OUT OF STOCK ALERT</b><br>There are currently {{ $oosSizeCount }} sizes out of stock, and {{ $oosStockCount }} items fully out of stock.<br>Visit the reports section for more details.</p>
+        @endif
+
         <p class="text-center">Please select an option.</p>
         <div class="row">
             <div class="col-md-4 mb-4">
