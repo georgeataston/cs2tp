@@ -181,6 +181,16 @@
                 </form>
             @endif
             <p class="description">{{$stock->description}}</p>
+            <div class="price-history-container">
+                <h3>Price History</h3>
+                <div id="my-chart">
+                    <div class="y-axis" id="y-axis"></div>
+                    <table class="charts-css area show-heading" id="price-history">
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <div class="months-labels" id="months-labels"></div>
+            </div>
         </div>
     </div>
 
@@ -199,17 +209,7 @@
             </div>
         </div>
     @endif
-                                
-    <div class="price-history-container">
-    <h3>Price History</h3>
-    <div id="my-chart">
-        <div class="y-axis" id="y-axis"></div>
-        <table class="charts-css area show-heading" id="price-history">
-            <tbody></tbody>
-        </table>
-    </div>
-    <div class="months-labels" id="months-labels"></div>
-</div>
+
     <div class="reviews-container">
         <div class="product-info-section">
             <h2 id="orange">Reviews</h2>
