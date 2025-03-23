@@ -87,31 +87,30 @@ Route::get('/', function() {
     foreach($featuresRaw as $feat) {
         $features->push($feat->item);
     }
-    return view('index')->with('features', $features);
+    return view('core/index')->with('features', $features);
 });
 
-Route::get('/about', function() { return view('about'); });
-Route::get('/contact', function() { return view('contact'); });
-Route::get('/help', function() { return view('help'); });
-Route::get('/help/account-create', function () { return view('account-create'); });
-Route::get('/help/shipping-countries', function () { return view('shipping-countries'); });
-Route::get('/help/shipping-tax', function () { return view('shipping-tax'); });
-Route::get('/help/shipping-delivery', function () { return view('shipping-delivery'); });
-Route::get('/help/shipping-price', function () { return view('shipping-price'); });
-Route::get('/help/returns-charges', function () { return view('returns-charges'); });
-Route::get('/help/returns-processing', function () { return view('returns-processing'); });
-Route::get('/help/returns-policy', function () { return view('returns-policy'); });
-Route::get('/footer/privacy-policy', function () { return view('privacy-policy'); });
-Route::get('/footer/terms-of-service', function () { return view('terms-of-service'); });
+Route::get('/about', function() { return view('core/about'); });
+Route::get('/contact', function() { return view('core/contact'); });
 
+Route::get('/help', function() { return view('help/index'); });
+Route::get('/help/account/create', function () { return view('help/account/create'); });
+Route::get('/help/shipping/countries', function () { return view('help/shipping/countries'); });
+Route::get('/help/shipping/tax', function () { return view('help/shipping/tax'); });
+Route::get('/help/shipping/delivery', function () { return view('help/shipping/delivery'); });
+Route::get('/help/shipping/price', function () { return view('help/shipping/price'); });
+Route::get('/help/returns/charges', function () { return view('help/returns/charges'); });
+Route::get('/help/returns/processing', function () { return view('help/returns/processing'); });
+Route::get('/help/returns/policy', function () { return view('help/returns/policy'); });
+Route::get('/footer/privacy-policy', function () { return view('core/privacy-policy'); });
+Route::get('/footer/terms-of-service', function () { return view('core/terms-of-service'); });
 
-
-Route::get('/login', function() { return view('login'); })->middleware(ReverseSessionValidator::class);
-Route::get('/signup', function() { return view('signup'); })->middleware(ReverseSessionValidator::class);
+Route::get('/login', function() { return view('auth/login'); })->middleware(ReverseSessionValidator::class);
+Route::get('/signup', function() { return view('auth/signup'); })->middleware(ReverseSessionValidator::class);
 
 Route::get('/recovery/{token?}', function (?string $token = null) {
     if (!$token)
-        return view('password_recovery');
+        return view('auth/password/recovery');
 
     $reset = PasswordReset::where('token', '=', $token)->first();
     if (!$reset) {
@@ -123,7 +122,7 @@ Route::get('/recovery/{token?}', function (?string $token = null) {
         return redirect('/recovery')->with("error", "Request is invalid or has expired.");
     }
 
-    return view('password_reset')->with("token", $token);
+    return view('auth/password/reset')->with("token", $token);
 })->middleware(ReverseSessionValidator::class);
 
 // Basket
@@ -131,7 +130,7 @@ Route::get('/recovery/{token?}', function (?string $token = null) {
 Route::get('/basket', function() {
     $cart = session('cart');
     if (empty($cart) || sizeof($cart) == 0) {
-        return view('basket')->with('empty', 'true');
+        return view('shop/basket')->with('empty', 'true');
     }
 
     $total = 0;
@@ -140,13 +139,13 @@ Route::get('/basket', function() {
     }
     unset($item);
 
-    return view('basket')->with('cart', $cart)->with('total', $total);
+    return view('shop/basket')->with('cart', $cart)->with('total', $total);
 });
 
 Route::get('/basket/checkout', function() {
     $cart = session('cart');
     if (empty($cart) || sizeof($cart) == 0) {
-        return view('basket')->with('empty', 'true');
+        return view('shop/basket')->with('empty', 'true');
     }
 
     $total = 0;
@@ -158,18 +157,18 @@ Route::get('/basket/checkout', function() {
     // Check for logged in
     $id = session('id');
     if ($id == null) {
-        return view('checkout')->with('cart', $cart)->with('total', $total);
+        return view('shop/checkout')->with('cart', $cart)->with('total', $total);
     }
 
     $user = Account::where('aid', '=', $id)->first();
     if ($user == null) {
-        return view('checkout')->with('cart', $cart)->with('total', $total);
+        return view('shop/checkout')->with('cart', $cart)->with('total', $total);
     }
 
-    return view('checkout')->with('cart', $cart)->with('total', $total)->with('user', $user);
+    return view('shop/checkout')->with('cart', $cart)->with('total', $total)->with('user', $user);
 });
 
-Route::get('/basket/thankyou', function() { return view('thankyou'); });
+Route::get('/basket/thankyou', function() { return view('shop/complete'); });
 
 // Accounts
 
@@ -183,10 +182,10 @@ Route::get('/account', function() {
     if ($orders == null)
         $orders = array();
 
-    return view('useraccount')->with('name', $name)->with('email', $email)->with('fullName', $fullName)->with('orders', $orders);
+    return view('auth/account/index')->with('name', $name)->with('email', $email)->with('fullName', $fullName)->with('orders', $orders);
 })->middleware(SessionValidator::class);
 
-Route::get('/returns', function () { return view ('userreturns');});
+Route::get('/returns', function () { return view ('shop/returns');});
 
 Route::get('/account/order/{id}', function(string $id) {
     $account = Account::where('aid', '=', session('id'))->first();
@@ -198,7 +197,7 @@ Route::get('/account/order/{id}', function(string $id) {
     if ($order->user_id != $account->aid)
         abort('404');
 
-    return view('userorder')->with('order', $order);
+    return view('auth/account/order')->with('order', $order);
 })->middleware(SessionValidator::class);
 
 
@@ -270,7 +269,7 @@ Route::get('/shop', function(Request $request) {
         $finalStockList = $stockList;
     }
 
-    return view('shop')->with('stockList', $finalStockList)
+    return view('shop/index')->with('stockList', $finalStockList)
         ->with("shopTitle", $shopTitle)
         ->with('brands', $brands)
         ->with('sortBy', $sortBy)
@@ -348,7 +347,7 @@ Route::get('/shop/brand/{id}', function(string $id, Request $request) {
     }
 
 
-    return view('shop')->with('stockList', $stockList)
+    return view('shop/index')->with('stockList', $stockList)
         ->with('shopTitle', $shopTitle)
         ->with('brands', $brands)
         ->with('sortBy', $sortBy)
@@ -412,17 +411,13 @@ Route::get('/shop/{id}', function(string $id) {
     if ($reviewCount > 0)
         $reviewAverage = $reviewTotal / $reviewCount;
 
-    return view('productdisplay')->with('stock', $stock)
+    return view('shop/display')->with('stock', $stock)
         ->with('sizes', $sizes)
         ->with('reviews', $reviews)
         ->with('canLeaveReview', $canLeaveReview)
         ->with('hasLeftReview', $hasLeftReview)
         ->with('reviewAverage', $reviewAverage)
         ->with('reviewCount', $reviewCount);
-});
-
-Route::get('/exampepwdreset', function() {
-    return view('mail/password_reset');
 });
 
 // Admin routes

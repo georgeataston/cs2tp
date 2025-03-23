@@ -19,7 +19,7 @@
                     <h3>Account</h3>
                     <p>1 article in this topic</p>
                     <ul>
-                        <li><a href="/help/account-create">How do I create an account and what are the benefits?</a></li>
+                        <li><a href="/help/account/create">How do I create an account and what are the benefits?</a></li>
                     </ul>
                 </div>
 
@@ -28,10 +28,10 @@
                     <h3>Shipping & Delivery</h3>
                     <p>4 articles in this topic</p>
                     <ul>
-                        <li><a href="/help/shipping-countries">Do you ship to my country?</a></li>
-                        <li><a href="/help/shipping-tax">Tax & Import Duty?</a></li>
-                        <li><a href="/help/shipping-delivery">Who will deliver my item?</a></li>
-                        <li><a href="/help/shipping-price">Why does the price vary for the same product type?</a></li>
+                        <li><a href="/help/shipping/countries">Do you ship to my country?</a></li>
+                        <li><a href="/help/shipping/tax">Tax & Import Duty?</a></li>
+                        <li><a href="/help/shipping/delivery">Who will deliver my item?</a></li>
+                        <li><a href="/help/shipping/price">Why does the price vary for the same product type?</a></li>
                     </ul>
                 </div>
 
@@ -40,9 +40,9 @@
                     <h3>Returns</h3>
                     <p>3 articles in this topic</p>
                     <ul>
-                        <li><a href="/help/returns-processing">How do I request a refund or check its status?</a></li>
-                        <li><a href="/help/returns-charges">When will I receive my refund?</a></li>
-                        <li><a href="/help/returns-policy">What’s the return policy for online purchases?</a></li>
+                        <li><a href="/help/returns/processing">How do I request a refund or check its status?</a></li>
+                        <li><a href="/help/returns/charges">When will I receive my refund?</a></li>
+                        <li><a href="/help/returns/policy">What’s the return policy for online purchases?</a></li>
                     </ul>
                 </div>
             </div>
