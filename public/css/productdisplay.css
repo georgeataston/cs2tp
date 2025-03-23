@@ -7,8 +7,7 @@ body {
 }
 
 header nav {
-    padding: 10px 20px;
-    background-color: #111;
+    padding: 10px 20px; /* shouod get rid of the menu colour that was wrong before*/
     display: flex;
 }
 
@@ -21,6 +20,19 @@ header nav {
     margin: auto;
 }
 
+.reviews-container {
+    width: 1203px; /* set the width to the specified value */
+    height: 165.6px; /* set the height to the specified value */
+    margin: auto; /* xxenters the reviews section */
+    padding: 40px;
+    margin-bottom: 109px;
+}
+
+/* rviews section specific styling */
+.reviews-container .product-info-section {
+    width: 100%; 
+    max-width: 100%; 
+}
 .product-image-section {
     flex: 1;
     display: flex;
@@ -52,6 +64,10 @@ header nav {
     margin-bottom: 10px;
 }
 
+#orange {
+    color: #ff9000;
+}
+
 .product-info-section .price {
     font-size: 1.5rem;
     color: #fff;
@@ -68,7 +84,8 @@ header nav {
 }
 
 .product-options select,
-.product-options input {
+.product-options input,
+.product-options textarea {
     width: 100%;
     padding: 8px;
     margin-bottom: 10px;
@@ -80,6 +97,28 @@ header nav {
 
 .product-options option {
     color: #000000;
+}
+
+.alert {
+    padding: 10px;
+    font-weight: bold;
+    border-radius: 5px;
+    display: inline-block;
+    margin-top: 10px;
+    text-align: center;
+    width: 100%;
+}
+
+.low-stock {
+    color: #ff9000;
+    background-color: #fff3cd;
+    border: 1px solid #ff9000;
+}
+
+.out-of-stock {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #dc3545;
 }
 
 .add-to-cart-btn {
@@ -128,4 +167,13 @@ footer a:hover {
         flex-direction: column;
         padding: 20px;
     }
+}
+
+.review {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    padding-bottom: 20px;
 }

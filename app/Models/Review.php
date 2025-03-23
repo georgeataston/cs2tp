@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Review extends Model
 {
@@ -36,4 +38,22 @@ class Review extends Model
      * @var bool
      */
     public $timestamps = true;
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(Account::class, 'aid');
+    }
+
+    public function stock(): BelongsTo
+    {
+        return $this->belongsTo(Stock::class, 'id');
+    }
+
+    public function editor(): HasOne {
+        return $this->hasOne(Account::class, 'aid', 'edited_by');
+    }
+
+    public function deleter(): HasOne {
+        return $this->hasOne(Account::class, 'aid', 'deleted_by');
+    }
 }

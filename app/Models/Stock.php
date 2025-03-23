@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Stock extends Model
 {
@@ -51,4 +52,32 @@ class Stock extends Model
     {
         return $this->belongsTo(Category::class, 'category_id');
     }
+
+    public function sizes(): HasMany
+    {
+        return $this->hasMany(Size::class, 'stocks_id');
+    }
+
+    public function curatedOutfit(): HasOne
+    {
+        return $this->hasOne(CuratedOutfit::class);
+    }
+
+    public function isLowStock(): bool
+    {
+        return $this->quantity > 0 && $this->quantity <= 5;
+    }
+
+    public function isOutOfStock(): bool
+    {
+        return $this->quantity == 0;
+    }
+
+    public function hasSize(string $size): bool
+    {
+        $sizes = Size::where('stocks_id', '=', $this->id)->where('deleted', '=', '0')->where('quantity','>', '0')->where('size', '=', $size)->get();
+
+        return $sizes->count() > 0;
+    }
+
 }

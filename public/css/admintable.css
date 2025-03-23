@@ -1,0 +1,33 @@
+
+.form-control {
+    background-color: #495057;
+    border: 1px solid #6c757d;
+    color: #ffffff;
+}
+
+.form-control:focus {
+    background-color: #343a40;
+    border-color: #ff8c00;
+    color: #ffffff;
+}
+
+.table {
+    background-color: #343a40;
+    color: #ffffff;
+}
+
+.table th, .table td {
+    border-color: #6c757d;
+}
+
+.table th {
+    background-color: #495057;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #2f3438;
+}
+
+.table-striped tbody tr:nth-of-type(even) {
+    background-color: #343a40;
+}

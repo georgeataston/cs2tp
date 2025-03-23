@@ -14,7 +14,10 @@
         <div class="auth-form-content">
             <h2>Login to Account</h2>
             @if (session('fail') == "invalidsession")
-                <p id="form-error">You must log in to access this page.</p>
+                <p id="form-error">Please log in to access this page.</p>
+                <br>
+            @elseif (session('success'))
+                <p id="form-success">{{session('success')}}</p>
                 <br>
             @endif
             <form action="/login" method="post">
@@ -27,9 +30,17 @@
                 <input type="password" placeholder="Enter Password" name="password">
                 @error('password')<p id="form-error">{{ $message }}</p>@enderror
 
+                @if (session('redirect'))
+                    <input hidden type="text" name="redirect" value="/{{session("redirect")}}">
+                @else
+                    <input hidden type="text" name="redirect" value="/">
+                @endif
+
                 @error('login')<p id="form-error">{{ $message }}</p>@enderror
                 <button type="submit" class="submit-btn">Login</button>
             </form>
+            <br>
+            <p>Forgotten your password? <a id="white-link" href="/recovery">Recover your account.</a></p>
         </div>
     </section>
 
@@ -40,5 +51,24 @@
 <style>
     #form-error {
         color: red;
+    }
+
+    #form-success {
+        color: green;
+    }
+
+    #white-link {
+        color: white;
+        text-decoration: underline;
+    }
+
+    #white-link:visited {
+        color: white;
+        text-decoration: underline;
+    }
+
+    #white-link:hover {
+        color: white;
+        text-decoration: wavy underline;
     }
 </style>
